@@ -148,7 +148,7 @@ export default function Ficha() {
   if (!ficha) {
     return (
       <div>
-        <h2>Ficha não encontrada</h2>
+        <h1>Ficha não encontrada</h1>
         <p>
           Essa ficha não existe ou foi removida. <Link to="/nova">Crie uma nova</Link>.
         </p>
@@ -823,8 +823,23 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
     window.print();
   }
 
+  function handleTabKeyDown(event) {
+    const currentIndex = ABAS.findIndex((aba) => aba.chave === abaAtiva);
+    let nextIndex = null;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % ABAS.length;
+    if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + ABAS.length) % ABAS.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = ABAS.length - 1;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    const next = ABAS[nextIndex];
+    setAbaAtiva(next.chave);
+    requestAnimationFrame(() => document.getElementById(`ficha-aba-${next.chave}`)?.focus());
+  }
+
   return (
     <>
+      <h1>Ficha de {ficha.nome || "personagem sem nome"}</h1>
       <button type="button" className="ficha-imprimir-botao" onClick={handleImprimirFicha}>
         Imprimir / Salvar em PDF
       </button>
@@ -835,7 +850,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           className="ficha-nome-input"
           value={ficha.nome}
           onChange={handleChangeNome}
-          aria-label="Nome do personagem"
+          aria-label="Editar nome do personagem"
         />
 
        <BlocoRacaClasse
@@ -935,8 +950,11 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
               key={aba.chave}
               type="button"
               role="tab"
+              id={`ficha-aba-${aba.chave}`}
               aria-selected={abaAtiva === aba.chave}
               aria-controls={`ficha-secao-${aba.chave}`}
+              tabIndex={abaAtiva === aba.chave ? 0 : -1}
+              onKeyDown={handleTabKeyDown}
               className={
                 abaAtiva === aba.chave ? "ficha-aba is-ativa" : "ficha-aba"
               }
@@ -947,7 +965,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           ))}
         </nav>
 
-        <div id={`ficha-secao-${abaAtiva}`} className="ficha-conteudo-aba" role="tabpanel">
+        <div id={`ficha-secao-${abaAtiva}`} className="ficha-conteudo-aba" role="tabpanel" aria-labelledby={`ficha-aba-${abaAtiva}`}>
           {abaAtiva === "combate" && (
             <>
               <BlocoStatus

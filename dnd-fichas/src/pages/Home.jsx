@@ -58,7 +58,7 @@ export default function Home() {
         <img src="/logo-dd-fichas.png" alt="D&D Fichas" className="home-logo" />
       </div>
             <div className="home-cabecalho">
-            <h2 className="home-titulo">Aventureiros: {fichas.length}</h2>
+            <h1 className="home-titulo">Personagens D&D: {fichas.length}</h1>
             <div className="home-cabecalho-acoes">
               <button
                 type="button"
@@ -74,8 +74,8 @@ export default function Home() {
                 onChange={handleArquivoSelecionado}
                 className="home-input-arquivo-escondido"
               />
-              <Link to="/nova" className="home-nova-ficha">
-                + Nova ficha
+              <Link to="/characters/new" className="home-nova-ficha">
+                + Novo personagem
               </Link>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function Home() {
 
       {fichas.length === 0 ? (
         <p className="home-vazio">
-          Você ainda não tem nenhuma ficha. <Link to="/nova">Crie a primeira</Link>.
+          Você ainda não tem nenhuma ficha. <Link to="/characters/new">Crie a primeira</Link>.
         </p>
       ) : fichasFiltradas.length === 0 ? (
         <p className="home-vazio">Nenhuma ficha encontrada para "{busca}".</p>

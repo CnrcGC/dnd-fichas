@@ -1,0 +1,30 @@
+{
+  "name": "rpg-platform-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/index.js",
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "lint": "node scripts/check-syntax.mjs",
+    "auth:migrate": "node --env-file-if-exists=.env node_modules/auth/dist/index.mjs migrate --config src/auth.config.js --yes",
+    "db:migrate": "node --env-file-if-exists=.env scripts/migrate.mjs",
+    "db:setup": "npm run auth:migrate && npm run db:migrate"
+  },
+  "dependencies": {
+    "@fastify/helmet": "13.1.1",
+    "@fastify/rate-limit": "11.2.0",
+    "@fastify/swagger": "9.9.0",
+    "@fastify/swagger-ui": "6.1.1",
+    "better-auth": "1.7.6",
+    "fastify": "5.12.5",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
+    "auth": "1.7.6"
+  }
+}

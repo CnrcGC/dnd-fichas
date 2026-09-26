@@ -163,11 +163,12 @@ export default function NovaFicha() {
 
   return (
     <div className="criacao-shell">
+      <h1>Criar personagem D&D 5e</h1>
       <button type="button" className="criacao-pular" onClick={handlePular}>
         Pular e criar ficha em branco
       </button>
 
-      <ol className="criacao-passos">
+      <ol className="criacao-passos" tabIndex="0" aria-label="Etapas de criação">
         {ETAPAS.map((info, indice) => (
           <li
             key={info.chave}

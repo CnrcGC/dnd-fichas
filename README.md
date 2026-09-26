@@ -2,11 +2,11 @@
   <img src="dnd-fichas/public/logo-dd-fichas.png" alt="D&D Fichas" width="320" />
 </p>
 
-# D&D Fichas
+# Plataforma de fichas de RPG
 
-Aplicação local para criar, organizar e usar fichas de personagens de **Dungeons & Dragons 5e (regras de 2014/PHB)**. O projeto privilegia uma ficha útil à mesa, com dados e regras locais, sem depender de conta ou servidor.
+Aplicação local-first em evolução para reunir fichas de **D&D 5e**, **Yusong** e **Feiticeiros & Maldições** sem misturar as regras dos sistemas. A experiência D&D existente continua sendo a interface funcional principal enquanto os demais módulos são incorporados com migrações explícitas.
 
-O código da aplicação fica em [`dnd-fichas/`](./dnd-fichas), enquanto este README permanece na raiz do repositório.
+O frontend fica em [`dnd-fichas/`](./dnd-fichas) e o serviço opcional de sincronização em [`server/`](./server). Os quatro planos de implementação na raiz são o contrato de evolução do projeto.
 
 ## Recursos
 
@@ -29,6 +29,8 @@ npm install
 npm run dev
 ```
 
+O frontend continua funcionando sem servidor. Para configurar autenticação, PostgreSQL e sincronização, consulte [`server/README.md`](./server/README.md).
+
 ## Comandos disponíveis
 
 Execute os comandos dentro de `dnd-fichas/`:
@@ -43,7 +45,14 @@ npm run preview  # visualização do build
 
 ## Dados e privacidade
 
-As fichas são armazenadas apenas no navegador atual. Use a opção de exportação em JSON para manter cópias de segurança ou transferir uma ficha entre navegadores.
+As fichas D&D legadas continuam no `localStorage`. A camada de plataforma usa envelopes isolados por sistema e IndexedDB; a ponte de importação nunca apaga automaticamente os registros legados. A sincronização é opcional, autenticada e não envia dados locais apenas porque o usuário entrou na conta.
+
+## Estado da migração multissistema
+
+- D&D 5e: engine existente encapsulado sem alteração de regras, rotas legadas preservadas.
+- Yusong: contrato, schema v1, migração defensiva e fórmulas auditadas; a interface-fonte não está presente neste repositório.
+- Feiticeiros & Maldições: schema/registro de regras e núcleo determinístico explicitado pelos planos; catálogo e regras dependentes do livro permanecem bloqueados sem o PDF 2.5.2.
+- Plataforma: registro lazy de sistemas, envelope versionado, repositório IndexedDB, importação idempotente, temas e fundação acessível.
 
 ## Escopo do catálogo
 

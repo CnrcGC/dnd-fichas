@@ -1,10 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>D&D Fichas</title>
+    <title>Plataforma de fichas de RPG</title>
+    <script>
+      (() => {
+        try {
+          const theme = localStorage.getItem("rpg-platform:theme");
+          if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch { /* preferência opcional; a aplicação continua com o tema do sistema */ }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

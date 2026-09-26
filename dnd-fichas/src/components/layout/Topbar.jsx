@@ -1,6 +1,7 @@
 import { NavLink, useMatch } from "react-router-dom";
 import { useFichas } from "../../context/useFichas";
 import "./Topbar.css";
+import ThemeControl from "./ThemeControl";
 
 export default function Topbar() {
   const match = useMatch("/ficha/:id");
@@ -23,10 +24,14 @@ export default function Topbar() {
         >
           Início
         </NavLink>
+        <NavLink to="/characters/new" className={({ isActive }) => isActive ? "topbar-link is-active" : "topbar-link"}>
+          Novo personagem
+        </NavLink>
         {fichaAtual && (
           <span className="topbar-ficha-atual">{fichaAtual.nome}</span>
         )}
       </nav>
+      <ThemeControl />
     </header>
   );
 }
