@@ -183,6 +183,18 @@
   color: var(--color-accent);
 }
 
+.home-lixeira {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+
+.home-lixeira h2 { font-size: var(--text-base); }
+.home-lixeira p { color: var(--color-ink-soft); font-size: var(--text-sm); }
+.home-lixeira ul { display: grid; gap: var(--space-2); padding: 0; list-style: none; }
+.home-lixeira li { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.home-lixeira button { min-height: 44px; }
+
 @media (max-width: 640px) {
   .home-cabecalho { align-items: stretch; flex-direction: column; gap: var(--space-3); }
   .home-cabecalho-acoes { display: grid; grid-template-columns: 1fr 1fr; }

@@ -15,9 +15,9 @@ function motivoFalhaPersistencia(erro) {
     : "indisponivel";
 }
 
-export function carregarFichas() {
+export function carregarFichas(armazenamento = armazenamentoPadrao()) {
   try {
-    const bruto = localStorage.getItem(CHAVE_ARMAZENAMENTO);
+    const bruto = armazenamento?.getItem(CHAVE_ARMAZENAMENTO);
     if (!bruto) return null;
     const fichas = JSON.parse(bruto);
     return Array.isArray(fichas) ? fichas.map(normalizarFicha) : null;

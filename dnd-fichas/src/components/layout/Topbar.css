@@ -17,11 +17,10 @@
   color: var(--color-ink);
 }
 
-.topbar-logo {
-  display: block;
-  width: auto;
-  height: calc(var(--topbar-height) - 8px);
-  object-fit: contain;
+.topbar-platform-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .topbar-nav {
@@ -69,9 +68,18 @@
   border-radius: var(--radius-sm);
 }
 
+.system-switcher select {
+  min-height: 2.25rem;
+  max-width: 13rem;
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+  border: 1px solid var(--system-accent, var(--border-default));
+  border-radius: var(--radius-sm);
+}
+
 @media (max-width: 640px) {
   .topbar { height: auto; min-height: var(--topbar-height); flex-wrap: wrap; gap: var(--space-2); padding-block: var(--space-2); }
-  .topbar-logo { height: 2.75rem; max-width: 7rem; }
+  .topbar-platform-name { font-size: var(--text-sm); }
   .topbar-nav { order: 3; width: 100%; gap: var(--space-3); overflow-x: auto; }
   .topbar-ficha-atual { display: none; }
 }

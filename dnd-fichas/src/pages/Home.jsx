@@ -8,7 +8,7 @@ import { exportarFicha, lerArquivoFicha } from "../utils/backup";
 import "./Home.css";
 
 export default function Home() {
-  const { fichas, removerFicha, criarFicha } = useFichas();
+  const { fichas, fichasExcluidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
   const [busca, setBusca] = useState("");
   const navigate = useNavigate();
   const inputArquivoRef = useRef(null);
@@ -32,7 +32,7 @@ export default function Home() {
           "A ficha foi importada, mas os níveis foram ajustados para respeitar o total máximo de 20. Confira as classes antes de usar."
         );
       }
-      navigate(`/ficha/${novaFicha.id}`);
+      navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`);
     } catch {
       window.alert(
         "Não foi possível importar esse arquivo. Confirma que é um .json exportado daqui."
@@ -74,7 +74,7 @@ export default function Home() {
                 onChange={handleArquivoSelecionado}
                 className="home-input-arquivo-escondido"
               />
-              <Link to="/characters/new" className="home-nova-ficha">
+              <Link to="/dnd5e/characters/new" className="home-nova-ficha">
                 + Novo personagem
               </Link>
             </div>
@@ -91,7 +91,7 @@ export default function Home() {
 
       {fichas.length === 0 ? (
         <p className="home-vazio">
-          Você ainda não tem nenhuma ficha. <Link to="/characters/new">Crie a primeira</Link>.
+          Você ainda não tem nenhuma ficha. <Link to="/dnd5e/characters/new">Crie a primeira</Link>.
         </p>
       ) : fichasFiltradas.length === 0 ? (
         <p className="home-vazio">Nenhuma ficha encontrada para "{busca}".</p>
@@ -130,13 +130,30 @@ export default function Home() {
                       : "Ficha antiga"}
                   </span>
                 </div>
-                <Link to={`/ficha/${ficha.id}`} className="ficha-card-acessar">
+                <Link to={`/dnd5e/characters/${encodeURIComponent(ficha.id)}`} className="ficha-card-acessar">
                   Acessar ficha
                 </Link>
               </div>
             );
           })}
         </div>
+      )}
+
+      {fichasExcluidas.length > 0 && (
+        <section className="home-lixeira" aria-labelledby="home-lixeira-titulo">
+          <h2 id="home-lixeira-titulo">Lixeira</h2>
+          <p>As fichas excluídas continuam salvas neste dispositivo e podem ser restauradas.</p>
+          <ul>
+            {fichasExcluidas.map((ficha) => (
+              <li key={ficha.id}>
+                <span>{ficha.nome}</span>
+                <button type="button" onClick={() => restaurarFicha(ficha.id)}>
+                  Restaurar
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   );

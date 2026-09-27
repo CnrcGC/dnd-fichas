@@ -1,8 +1,10 @@
 import { SYSTEM_IDS, assertSystemEngine, validationIssue, ISSUE_LEVELS } from "../../shared/rules/engineContract";
 import { FM_ATTRIBUTES, deriveCoreStatistics, validateAttributeScore } from "./rules";
 import { FM_EDITION, validateRuleRegistry } from "./traceability";
+import { defineMigrationChain, runMigrationChain } from "../../shared/rules/migrations";
 
 export const FM_SCHEMA_VERSION = 1;
+export const FM_MIGRATIONS = defineMigrationChain(FM_SCHEMA_VERSION, []);
 
 export function createFeiticeirosCharacter({ displayName = "Sem nome", id = crypto.randomUUID() } = {}) {
   validateRuleRegistry();
@@ -28,12 +30,14 @@ export function validateFeiticeirosCharacter(character) {
 export const feiticeirosEngine = assertSystemEngine({
   systemId: SYSTEM_IDS.FEITICEIROS,
   currentSchemaVersion: FM_SCHEMA_VERSION,
+  migrations: FM_MIGRATIONS.migrations,
   createCharacter: createFeiticeirosCharacter,
   migrateCharacter(input) {
     if (!input || typeof input !== "object") return { ok: false, code: "invalid-record", input };
-    if (Number(input.schemaVersion) > FM_SCHEMA_VERSION) return { ok: false, code: "future-version", input };
-    if (input.schemaVersion !== FM_SCHEMA_VERSION) return { ok: false, code: "unsupported-version", input };
-    return { ok: true, data: structuredClone(input), schemaVersion: FM_SCHEMA_VERSION, provenance: { source: "platform", sourceVersion: FM_SCHEMA_VERSION, migrations: [] }, warnings: [] };
+    const sourceVersion = Number(input.schemaVersion);
+    const migration = runMigrationChain(input, sourceVersion, FM_MIGRATIONS, { validate: validateFeiticeirosCharacter });
+    if (!migration.ok) return migration;
+    return { ok: true, data: migration.data, schemaVersion: FM_SCHEMA_VERSION, provenance: { source: "platform", sourceVersion, migrations: migration.migrationIds }, warnings: [] };
   },
   validateCharacter: validateFeiticeirosCharacter,
   deriveCharacter: deriveCoreStatistics,
@@ -47,5 +51,6 @@ export const feiticeirosEngine = assertSystemEngine({
   commands: Object.freeze({}),
   diceRequests: Object.freeze({}),
   summarize: (character) => ({ displayName: character?.identity?.displayName ?? "Sem nome", level: Number(character?.progression?.level) || 1, origin: character?.origin?.id ?? null, specialization: character?.specialization?.id ?? null }),
+  summarizeReadOnly: (character) => ({ displayName: String(character?.identity?.displayName ?? "Ficha F&M de versão futura") }),
 });
 

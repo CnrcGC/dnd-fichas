@@ -1,9 +1,11 @@
 import { assertSystemEngine, SYSTEM_IDS } from "../../shared/rules/engineContract";
+import { assertSystemAdapter } from "./adapterContract";
+import { SYSTEM_ROUTE_SEGMENTS } from "../routing/routes";
 
 const definitions = [
-  { id: SYSTEM_IDS.DND5E, displayName: "D&D 5e", loadEngine: () => import("../../systems/dnd5e/engine").then(({ dnd5eEngine }) => dnd5eEngine), available: true },
-  { id: SYSTEM_IDS.YUSONG, displayName: "Yusong", loadEngine: () => import("../../systems/yusong/engine").then(({ yusongEngine }) => yusongEngine), available: false, unavailableReason: "A interface-fonte Yusong não está presente neste repositório." },
-  { id: SYSTEM_IDS.FEITICEIROS, displayName: "Feiticeiros & Maldições", loadEngine: () => import("../../systems/feiticeiros/engine").then(({ feiticeirosEngine }) => feiticeirosEngine), available: false, unavailableReason: "O catálogo e a revisão do livro 2.5.2 ainda são necessários para concluir a criação." },
+  { id: SYSTEM_IDS.DND5E, displayName: "D&D 5e", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.DND5E], loadEngine: () => import("../../systems/dnd5e/engine").then(({ dnd5eEngine }) => dnd5eEngine), loadAdapter: () => import("../../systems/dnd5e/adapter.jsx").then(({ dnd5eAdapter }) => dnd5eAdapter), available: true, creatorAvailable: true },
+  { id: SYSTEM_IDS.YUSONG, displayName: "Yusong", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.YUSONG], loadEngine: () => import("../../systems/yusong/engine").then(({ yusongEngine }) => yusongEngine), loadAdapter: () => import("../../systems/yusong/adapter.jsx").then(({ yusongAdapter }) => yusongAdapter), available: true, creatorAvailable: false, unavailableReason: "A interface Yusong será incorporada no pacote FE-05." },
+  { id: SYSTEM_IDS.FEITICEIROS, displayName: "Feiticeiros & Maldições", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.FEITICEIROS], loadEngine: () => import("../../systems/feiticeiros/engine").then(({ feiticeirosEngine }) => feiticeirosEngine), loadAdapter: () => import("../../systems/feiticeiros/adapter.jsx").then(({ feiticeirosAdapter }) => feiticeirosAdapter), available: true, creatorAvailable: false, unavailableReason: "A criação F&M será habilitada pelo pacote FE-06." },
 ];
 
 export const systemRegistry = new Map(definitions.map((definition) => {
@@ -25,5 +27,12 @@ export async function loadSystemEngine(systemId) {
   const engine = assertSystemEngine(await definition.loadEngine());
   if (definition.id !== engine.systemId) throw new TypeError(`Registro inconsistente para ${definition.id}.`);
   return engine;
+}
+
+export async function loadSystemAdapter(systemId) {
+  const definition = getSystem(systemId);
+  const adapter = assertSystemAdapter(await definition.loadAdapter());
+  if (definition.id !== adapter.id) throw new TypeError(`Adapter inconsistente para ${definition.id}.`);
+  return adapter;
 }
 

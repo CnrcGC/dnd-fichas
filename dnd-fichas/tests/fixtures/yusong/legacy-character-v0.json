@@ -1,0 +1,59 @@
+{
+  "id": "yusong-legacy-kang",
+  "createdAt": "2026-01-10T10:00:00.000Z",
+  "updatedAt": "2026-02-12T12:30:00.000Z",
+  "identity": {
+    "name": "Kang Ji-ho",
+    "level": 3,
+    "age": "18",
+    "height": "1.78m",
+    "school": "seirin",
+    "type": "prodigio",
+    "characterClass": "agil",
+    "origin": "Lutador Profissional",
+    "martialArt": "Boxe",
+    "concept": "Capitão do clube",
+    "image": "data:image/png;base64,fixture"
+  },
+  "resources": {
+    "currentLife": 35,
+    "maxLife": 44,
+    "currentStamina": 200,
+    "maxStamina": 275,
+    "rd": 0,
+    "movement": 7,
+    "run": 18
+  },
+  "attributes": {
+    "strength": 2,
+    "agility": 5,
+    "constitution": 3,
+    "size": 2,
+    "power": 4,
+    "intelligence": 6,
+    "charisma": 3,
+    "reaction": 5,
+    "health": 4,
+    "customAura": 9
+  },
+  "reactions": { "dodge": "1d12", "counterAttack": "1d12" },
+  "body": [
+    { "id": "head", "name": "Cabeça", "type": "vital", "dice": "-", "armor": 35, "currentArmor": 30, "maxArmor": 35 },
+    { "id": "torso", "name": "Torso", "type": "vital", "dice": "-", "armor": 35, "currentArmor": 35, "maxArmor": 35 },
+    { "id": "abdomen", "name": "Abdômen", "type": "vital", "dice": "-", "armor": 35, "currentArmor": 0, "maxArmor": 35 },
+    { "id": "rightArm", "name": "Braço Direito", "type": "member", "dice": "1d6", "armor": 12, "currentArmor": 7, "maxArmor": 12 },
+    { "id": "leftArm", "name": "Braço Esquerdo", "type": "member", "dice": "1d10", "armor": 20, "currentArmor": 20, "maxArmor": 20 },
+    { "id": "rightLeg", "name": "Perna Direita", "type": "member", "dice": "1d10", "armor": 20, "currentArmor": 15, "maxArmor": 20 },
+    { "id": "leftLeg", "name": "Perna Esquerda", "type": "member", "dice": "1d12", "armor": 24, "currentArmor": 24, "maxArmor": 24 }
+  ],
+  "talents": [{ "id": "talento-fixture", "name": "Passo Rápido", "staminaCostPercent": 15 }],
+  "genius": {
+    "name": "Olhar Analítico",
+    "abilities": [{ "id": "genius-1", "name": "Leitura", "level": "Nível 1", "action": "Passiva", "staminaCost": 5, "description": "Texto personalizado" }]
+  },
+  "inventory": [{ "id": "item-1", "name": "Faixas", "quantity": 2, "customText": "Presente" }],
+  "skills": { "acrobacia": 3, "tatica": 2 },
+  "conditions": ["amedrontado", { "id": "caido", "active": false }],
+  "notes": "Notas preservadas.",
+  "houseRule": { "name": "Regra da mesa", "enabled": true }
+}

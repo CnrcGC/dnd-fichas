@@ -150,7 +150,7 @@ export default function Ficha() {
       <div>
         <h1>Ficha não encontrada</h1>
         <p>
-          Essa ficha não existe ou foi removida. <Link to="/nova">Crie uma nova</Link>.
+          Essa ficha não existe ou foi removida. <Link to="/dnd5e/characters/new">Crie uma nova</Link>.
         </p>
       </div>
     );

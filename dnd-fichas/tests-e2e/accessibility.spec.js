@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-for (const path of ["/", "/characters/new", "/nova", "/settings", "/missing-route"]) {
+for (const path of ["/", "/characters/new", "/dnd5e", "/yusong", "/feiticeiros-maldicoes", "/settings", "/missing-route"]) {
   test(`${path} não possui violações axe automáticas`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator("main h1")).toBeVisible();
@@ -24,7 +24,7 @@ test("skip link e seletor de tema funcionam por teclado", async ({ page }) => {
 test("seletor informa sistemas bloqueados sem depender apenas de cor", async ({ page }) => {
   await page.goto("/characters/new");
   await expect(page.getByRole("heading", { name: "D&D 5e" })).toBeVisible();
-  await expect(page.getByText(/interface-fonte Yusong não está presente/i)).toBeVisible();
-  await expect(page.getByText(/catálogo e a revisão do livro 2.5.2/i)).toBeVisible();
+  await expect(page.getByText(/interface Yusong será incorporada/i)).toBeVisible();
+  await expect(page.getByText(/criação F&M será habilitada/i)).toBeVisible();
 });
 

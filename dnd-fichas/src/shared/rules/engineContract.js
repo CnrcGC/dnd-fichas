@@ -38,6 +38,9 @@ export function assertSystemEngine(engine) {
   if (!engine.commands || typeof engine.commands !== "object") {
     throw new TypeError(`O engine ${engine.systemId} não expõe commands.`);
   }
+  if (!Array.isArray(engine.migrations) || !Object.isFrozen(engine.migrations)) {
+    throw new TypeError(`O engine ${engine.systemId} não expõe uma cadeia imutável de migrações.`);
+  }
   return engine;
 }
 

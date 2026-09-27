@@ -64,7 +64,7 @@ export default function NovaFicha() {
 
   function handlePular() {
     const novaFicha = criarFicha();
-    navigate(`/ficha/${novaFicha.id}`, { replace: true });
+    navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`, { replace: true });
   }
 
   function handleEscolherRaca(id) {
@@ -158,7 +158,7 @@ export default function NovaFicha() {
       espacosMagia: espacosIniciais,
     });
 
-    navigate(`/ficha/${novaFicha.id}`, { replace: true });
+    navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`, { replace: true });
   }
 
   return (

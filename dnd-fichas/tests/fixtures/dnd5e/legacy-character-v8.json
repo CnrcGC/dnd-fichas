@@ -1,0 +1,26 @@
+{
+  "id": "dnd-v8-lyra",
+  "versaoFicha": 8,
+  "nome": "Lyra Vento-Norte",
+  "jogador": "Fixture FE-02",
+  "criadoEm": 1725148800000,
+  "atualizadoEm": 1725235200000,
+  "racaId": "humano",
+  "classeId": "mago",
+  "nivel": 3,
+  "atributos": {
+    "forca": 8,
+    "destreza": 14,
+    "constituicao": 13,
+    "inteligencia": 16,
+    "sabedoria": 12,
+    "carisma": 10
+  },
+  "aparencia": "Capa azul e grimório marcado pelo uso.",
+  "personalidade": "Curiosa e cautelosa.",
+  "historico": "Registro exportado no formato legado v8.",
+  "objetivo": "Mapear ruínas antigas.",
+  "condicoes": [],
+  "inventario": [],
+  "magiasConhecidas": []
+}
