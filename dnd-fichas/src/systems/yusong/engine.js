@@ -9,10 +9,12 @@ import {
   YUSONG_ATTRIBUTES,
   YUSONG_BODY_PARTS,
   buildYusongDiceNotation,
+  buildYusongSkillNotation,
   calculateMemberArmor,
   deriveYusong,
   distributeYusongPoints,
   rollYusongDice,
+  rollYusongSkill,
 } from "./rules";
 import { yusongCommands } from "./commands";
 
@@ -209,10 +211,10 @@ function reconcileLegacyCurrentValues(data, input, legacyResources) {
 export function listYusongValidationIssues(character) {
   const issues = [];
   if (!character || typeof character !== "object" || Array.isArray(character)) {
-    return [validationIssue(ISSUE_LEVELS.STRUCTURAL, "record.invalid", "O registro Yusong deve ser um objeto.")];
+    return [validationIssue(ISSUE_LEVELS.STRUCTURAL, "record.invalid", "O registro de Pilares de Atlas deve ser um objeto.")];
   }
   if (!character.id) issues.push(validationIssue(ISSUE_LEVELS.STRUCTURAL, "id.missing", "O personagem não possui identificador.", ["id"]));
-  if (character.schemaVersion !== YUSONG_SCHEMA_VERSION) issues.push(validationIssue(ISSUE_LEVELS.STRUCTURAL, "schema.unsupported", "A versão do schema Yusong não é suportada.", ["schemaVersion"]));
+  if (character.schemaVersion !== YUSONG_SCHEMA_VERSION) issues.push(validationIssue(ISSUE_LEVELS.STRUCTURAL, "schema.unsupported", "A versão do schema de Pilares de Atlas não é suportada.", ["schemaVersion"]));
   if (!character.identity?.displayName) issues.push(validationIssue(ISSUE_LEVELS.ERROR, "name.missing", "Informe o nome do personagem.", ["identity", "displayName"]));
   for (const key of YUSONG_ATTRIBUTES) {
     if (!Number.isFinite(Number(character.attributes?.[key]))) {
@@ -254,7 +256,12 @@ export const yusongEngine = assertSystemEngine({
   deriveCharacter: deriveYusong,
   listValidationIssues: listYusongValidationIssues,
   commands: yusongCommands,
-  diceRequests: Object.freeze({ buildNotation: buildYusongDiceNotation, roll: rollYusongDice }),
+  diceRequests: Object.freeze({
+    buildNotation: buildYusongDiceNotation,
+    roll: rollYusongDice,
+    buildSkillNotation: buildYusongSkillNotation,
+    rollSkill: rollYusongSkill,
+  }),
   random: Object.freeze({ distributePoints: distributeYusongPoints }),
   summarize: (character) => ({
     displayName: character?.identity?.displayName ?? "Sem nome",
@@ -262,6 +269,6 @@ export const yusongEngine = assertSystemEngine({
     school: character?.selections?.school || null,
   }),
   summarizeReadOnly: (character) => ({
-    displayName: String(character?.identity?.displayName ?? character?.identity?.name ?? character?.name ?? "Ficha Yusong de versão futura"),
+    displayName: String(character?.identity?.displayName ?? character?.identity?.name ?? character?.name ?? "Ficha de Pilares de Atlas de versão futura"),
   }),
 });

@@ -5,7 +5,7 @@ import { systemPath } from "../platform/routing/routes";
 
 const descriptions = {
   dnd5e: "Criação guiada e ficha completa para D&D 5e (2014).",
-  yusong: "Compatibilidade preparada; a interface de origem ainda precisa ser incorporada.",
+  yusong: "Criação de identidade e biblioteca local disponíveis; os demais painéis da ficha estão em migração.",
   "feiticeiros-maldicoes": "Engine em construção com rastreabilidade para a edição 2.5.2.",
 };
 

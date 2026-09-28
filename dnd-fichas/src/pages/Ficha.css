@@ -207,3 +207,7 @@
   .ficha-aba { flex: 0 0 auto; min-height: 44px; padding-inline: var(--space-3); }
   .ficha-stats-rapidas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+.ficha-carregando-secao {
+  min-height: 4rem;
+  color: var(--color-ink-soft);
+}

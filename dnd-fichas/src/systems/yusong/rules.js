@@ -1,15 +1,13 @@
 import { parseDiceNotation, rollDice } from "../../shared/rules/dice";
+import { YUSONG_CONDITION_ROLL_MODIFIERS } from "./conditions";
+import { YUSONG_SKILL_IDS } from "./skills";
+
+export { YUSONG_CONDITION_ROLL_MODIFIERS, YUSONG_SKILL_IDS };
 
 // Compatibility source: Fichas-Yusong-main (2).zip, supplied by the owner.
 export const YUSONG_ATTRIBUTES = Object.freeze([
   "strength", "agility", "constitution", "size", "power",
   "intelligence", "charisma", "reaction", "health",
-]);
-
-export const YUSONG_SKILL_IDS = Object.freeze([
-  "acrobacia", "atletismo", "enganacao", "fama", "fortitude", "furtividade",
-  "intimidacao", "intuicao", "medicina", "oficio", "percepcao", "persuasao",
-  "pontaria", "tatica", "tecnologia", "vontade",
 ]);
 
 export const YUSONG_BODY_PARTS = Object.freeze([
@@ -21,12 +19,6 @@ export const YUSONG_BODY_PARTS = Object.freeze([
   Object.freeze({ id: "rightLeg", name: "Perna Direita", type: "member", initialDice: "1d6", initialArmor: 12 }),
   Object.freeze({ id: "leftLeg", name: "Perna Esquerda", type: "member", initialDice: "1d6", initialArmor: 12 }),
 ]);
-
-export const YUSONG_CONDITION_ROLL_MODIFIERS = Object.freeze({
-  amedrontado: -4,
-  desesperado: -10,
-  motivado: 4,
-});
 
 const number = (value) => Number.isFinite(Number(value)) ? Number(value) : 0;
 
@@ -152,6 +144,23 @@ export function rollYusongDice({ notation, label = "", conditions = {}, random =
     label,
     modifier,
   };
+}
+
+export function getYusongSkillBonus(rank) {
+  return Math.min(5, Math.max(0, number(rank))) * 4;
+}
+
+export function buildYusongSkillNotation(rank) {
+  return `1d20+${getYusongSkillBonus(rank)}`;
+}
+
+export function rollYusongSkill({ skillName, rank, conditions = {}, random = Math.random }) {
+  return rollYusongDice({
+    notation: buildYusongSkillNotation(rank),
+    label: `Perícia (${skillName})`,
+    conditions,
+    random,
+  });
 }
 
 export function distributeYusongPoints(keys, points, base, cap, random = Math.random) {

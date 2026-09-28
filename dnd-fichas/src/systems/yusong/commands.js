@@ -1,6 +1,7 @@
 import { SYSTEM_IDS, commandResult } from "../../shared/rules/engineContract";
 import {
   YUSONG_ATTRIBUTES,
+  YUSONG_SKILL_IDS,
   calculateMemberArmor,
   deriveYusong,
   yusongTalentCost,
@@ -10,6 +11,9 @@ const RESOURCE_MAXIMUM = Object.freeze({
   currentLife: "maximumLife",
   currentStamina: "maximumStamina",
 });
+
+const IDENTITY_FIELDS = Object.freeze(["displayName", "age", "height", "concept", "image"]);
+const SELECTION_FIELDS = Object.freeze(["school", "type", "characterClass", "origin", "martialArt"]);
 
 export class YusongCommandError extends Error {
   constructor(code, message, details = {}) {
@@ -67,7 +71,7 @@ function reconcileDerivedMaximums(previous, next, reason) {
 
 export function setYusongResource(character, { resource, value }) {
   const maximumKey = RESOURCE_MAXIMUM[resource];
-  if (!maximumKey) throw new YusongCommandError("resource.unknown", `Recurso Yusong desconhecido: ${resource}.`, { resource });
+  if (!maximumKey) throw new YusongCommandError("resource.unknown", `Recurso de Pilares de Atlas desconhecido: ${resource}.`, { resource });
   const numeric = finite(value, "resource.invalid", `O valor de ${resource} é inválido.`);
   const maximum = deriveYusong(character).resources[maximumKey];
   const previous = finite(character.resources?.[resource], "resource.invalid", `O recurso ${resource} é inválido.`);
@@ -81,7 +85,7 @@ export function setYusongResource(character, { resource, value }) {
 
 export function setYusongAttribute(character, { attribute, value }) {
   if (!YUSONG_ATTRIBUTES.includes(attribute)) {
-    throw new YusongCommandError("attribute.unknown", `Atributo Yusong desconhecido: ${attribute}.`, { attribute });
+    throw new YusongCommandError("attribute.unknown", `Atributo de Pilares de Atlas desconhecido: ${attribute}.`, { attribute });
   }
   const numeric = finite(value, "attribute.invalid", `O valor de ${attribute} é inválido.`);
   const previousValue = Number(character.attributes[attribute]);
@@ -100,7 +104,7 @@ export function setYusongAttribute(character, { attribute, value }) {
 }
 
 export function setYusongLevel(character, { level }) {
-  const numeric = finite(level, "level.invalid", "O nível Yusong é inválido.");
+  const numeric = finite(level, "level.invalid", "O nível de Pilares de Atlas é inválido.");
   const previousLevel = Number(character.identity.level);
   const next = clone(character);
   next.identity.level = Math.min(20, Math.max(1, numeric));
@@ -111,6 +115,39 @@ export function setYusongLevel(character, { level }) {
       { type: "level.changed", systemId: SYSTEM_IDS.YUSONG, previous: previousLevel, current: next.identity.level },
       ...reconciled.events,
     ],
+  });
+}
+
+export function setYusongIdentity(character, { field, value }) {
+  if (!IDENTITY_FIELDS.includes(field)) {
+    throw new YusongCommandError("identity.field-unknown", `Campo de identidade desconhecido: ${field}.`, { field });
+  }
+  const current = String(value ?? "");
+  if (field === "displayName" && !current.trim()) {
+    throw new YusongCommandError("identity.name-required", "Informe o nome do personagem.", { field });
+  }
+  const previous = String(character.identity?.[field] ?? "");
+  const next = clone(character);
+  next.identity = { ...next.identity, [field]: field === "displayName" ? current.trim() : current };
+  return commandResult(next, {
+    events: previous === next.identity[field] ? [] : [{
+      type: "identity.changed", systemId: SYSTEM_IDS.YUSONG, field, previous, current: next.identity[field],
+    }],
+  });
+}
+
+export function setYusongSelection(character, { field, value }) {
+  if (!SELECTION_FIELDS.includes(field)) {
+    throw new YusongCommandError("selection.field-unknown", `Seleção desconhecida: ${field}.`, { field });
+  }
+  const previous = String(character.selections?.[field] ?? "");
+  const current = String(value ?? "");
+  const next = clone(character);
+  next.selections = { ...next.selections, [field]: current };
+  return commandResult(next, {
+    events: previous === current ? [] : [{
+      type: "selection.changed", systemId: SYSTEM_IDS.YUSONG, field, previous, current,
+    }],
   });
 }
 
@@ -175,6 +212,20 @@ export function toggleYusongCondition(character, { conditionId }) {
   });
 }
 
+export function setYusongSkill(character, { skillId, value }) {
+  if (!YUSONG_SKILL_IDS.includes(skillId)) {
+    throw new YusongCommandError("skill.unknown", `Perícia desconhecida: ${skillId}.`, { skillId });
+  }
+  const numeric = finite(value, "skill.invalid", `O valor da Perícia ${skillId} é inválido.`);
+  const previous = Number(character.skills?.[skillId] ?? 0);
+  const current = Math.min(5, Math.max(0, numeric));
+  const next = clone(character);
+  next.skills = { ...next.skills, [skillId]: current };
+  return commandResult(next, {
+    events: current === previous ? [] : [{ type: "skill.changed", systemId: SYSTEM_IDS.YUSONG, skillId, previous, current }],
+  });
+}
+
 export function useYusongTalent(character, { talentId }) {
   const talent = character.talents.find((candidate) => candidate.id === talentId);
   if (!talent) throw new YusongCommandError("talent.not-found", `Talento não encontrado: ${talentId}.`, { talentId });
@@ -182,8 +233,61 @@ export function useYusongTalent(character, { talentId }) {
   return spendStamina(character, yusongTalentCost(talent.staminaCostPercent, maximum), "talent.used", { talentId });
 }
 
+export function addYusongTalent(character, { talent }) {
+  if (!talent?.id || !talent?.name) {
+    throw new YusongCommandError("talent.invalid", "O Talento precisa de identificador e nome.", { talent });
+  }
+  if (character.talents.some((candidate) => candidate.id === talent.id)) return commandResult(clone(character));
+  const next = clone(character);
+  next.talents.push(structuredClone(talent));
+  return commandResult(next, { events: [{ type: "talent.added", systemId: SYSTEM_IDS.YUSONG, talentId: talent.id }] });
+}
+
+export function removeYusongTalent(character, { talentId }) {
+  if (!character.talents.some((candidate) => candidate.id === talentId)) return commandResult(clone(character));
+  const next = clone(character);
+  next.talents = next.talents.filter((candidate) => candidate.id !== talentId);
+  return commandResult(next, { events: [{ type: "talent.removed", systemId: SYSTEM_IDS.YUSONG, talentId }] });
+}
+
 export function useYusongGenius(character) {
   return spendStamina(character, 10, "genius.used");
+}
+
+export function setYusongGeniusName(character, { name }) {
+  const previous = String(character.genius?.name ?? "");
+  const current = String(name ?? "");
+  const next = clone(character);
+  next.genius = { ...next.genius, name: current };
+  return commandResult(next, {
+    events: previous === current ? [] : [{ type: "genius.name-changed", systemId: SYSTEM_IDS.YUSONG, previous, current }],
+  });
+}
+
+export function upsertYusongGeniusAbility(character, { ability }) {
+  if (!ability?.id) throw new YusongCommandError("genius.ability-id-missing", "A habilidade Genius precisa de um identificador.");
+  const normalized = {
+    ...structuredClone(ability),
+    name: String(ability.name || "Nova Habilidade"),
+    level: String(ability.level || "Nível 1"),
+    action: String(ability.action || "Passiva"),
+    staminaCost: Math.max(0, Math.floor(finite(ability.staminaCost ?? 0, "genius.cost-invalid", "O custo da habilidade Genius é inválido."))),
+    description: String(ability.description ?? ""),
+  };
+  const existingIndex = character.genius.abilities.findIndex((candidate) => candidate.id === normalized.id);
+  const next = clone(character);
+  if (existingIndex === -1) next.genius.abilities.push(normalized);
+  else next.genius.abilities[existingIndex] = { ...next.genius.abilities[existingIndex], ...normalized };
+  return commandResult(next, {
+    events: [{ type: existingIndex === -1 ? "genius.ability-added" : "genius.ability-updated", systemId: SYSTEM_IDS.YUSONG, abilityId: normalized.id }],
+  });
+}
+
+export function removeYusongGeniusAbility(character, { abilityId }) {
+  if (!character.genius.abilities.some((candidate) => candidate.id === abilityId)) return commandResult(clone(character));
+  const next = clone(character);
+  next.genius.abilities = next.genius.abilities.filter((candidate) => candidate.id !== abilityId);
+  return commandResult(next, { events: [{ type: "genius.ability-removed", systemId: SYSTEM_IDS.YUSONG, abilityId }] });
 }
 
 export function useYusongGeniusAbility(character, { abilityId }) {
@@ -214,11 +318,19 @@ export const yusongCommands = Object.freeze({
   setResource: setYusongResource,
   setAttribute: setYusongAttribute,
   setLevel: setYusongLevel,
+  setIdentity: setYusongIdentity,
+  setSelection: setYusongSelection,
   changeBodyArmor: changeYusongBodyArmor,
   setBodyArmor: setYusongBodyArmor,
   swapMemberDice: swapYusongMemberDice,
   toggleCondition: toggleYusongCondition,
+  setSkill: setYusongSkill,
   useTalent: useYusongTalent,
+  addTalent: addYusongTalent,
+  removeTalent: removeYusongTalent,
   useGenius: useYusongGenius,
+  setGeniusName: setYusongGeniusName,
+  upsertGeniusAbility: upsertYusongGeniusAbility,
+  removeGeniusAbility: removeYusongGeniusAbility,
   useGeniusAbility: useYusongGeniusAbility,
 });

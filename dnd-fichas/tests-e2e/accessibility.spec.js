@@ -24,7 +24,7 @@ test("skip link e seletor de tema funcionam por teclado", async ({ page }) => {
 test("seletor informa sistemas bloqueados sem depender apenas de cor", async ({ page }) => {
   await page.goto("/characters/new");
   await expect(page.getByRole("heading", { name: "D&D 5e" })).toBeVisible();
-  await expect(page.getByText(/interface Yusong será incorporada/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Criar em Pilares de Atlas" })).toBeVisible();
   await expect(page.getByText(/criação F&M será habilitada/i)).toBeVisible();
 });
 

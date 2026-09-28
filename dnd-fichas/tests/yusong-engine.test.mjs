@@ -9,12 +9,14 @@ const fixtureUrl = new URL("./fixtures/yusong/legacy-character-v0.json", import.
 let server;
 let rules;
 let engine;
+let identityForm;
 let legacyFixture;
 
 before(async () => {
   server = await createServer({ server: { middlewareMode: true, hmr: false }, appType: "custom" });
   rules = await server.ssrLoadModule("/src/systems/yusong/rules.js");
   engine = await server.ssrLoadModule("/src/systems/yusong/engine.js");
+  identityForm = await server.ssrLoadModule("/src/systems/yusong/identityForm.js");
   legacyFixture = JSON.parse(await readFile(fileURLToPath(fixtureUrl), "utf8"));
 });
 
@@ -309,4 +311,87 @@ test("MECH-03B valida recursos e partes necessários aos comandos", () => {
   assert.ok(codes.includes("resource.invalid"));
   assert.ok(codes.includes("body.invalid") || codes.includes("body.part-invalid"));
   assert.equal(engine.validateYusongCharacter(invalid), false);
+});
+
+test("FE-05B edita identidade e seleções sem mutar o personagem original", () => {
+  const original = engine.createYusongCharacter({ id: "identity", displayName: "Original" });
+  const renamed = engine.yusongEngine.commands.setIdentity(original, { field: "displayName", value: "  Hana Lee  " });
+  const selected = engine.yusongEngine.commands.setSelection(renamed.character, { field: "school", value: "shinnen" });
+
+  assert.equal(original.identity.displayName, "Original");
+  assert.equal(original.selections.school, "");
+  assert.equal(selected.character.identity.displayName, "Hana Lee");
+  assert.equal(selected.character.selections.school, "shinnen");
+  assert.equal(renamed.events[0].type, "identity.changed");
+  assert.equal(selected.events[0].type, "selection.changed");
+  assert.throws(
+    () => engine.yusongEngine.commands.setIdentity(original, { field: "displayName", value: " " }),
+    (error) => error.code === "identity.name-required",
+  );
+  assert.throws(
+    () => engine.yusongEngine.commands.setSelection(original, { field: "desconhecido", value: "x" }),
+    (error) => error.code === "selection.field-unknown",
+  );
+});
+
+test("FE-05D salvar identidade inalterada preserva a redistribuição dos dados corporais", () => {
+  const original = engine.migrateYusongCharacter(legacyFixture).data;
+  const swapped = engine.yusongEngine.commands.swapMemberDice(original, { partId: "rightArm", dice: "1d12" }).character;
+  const form = identityForm.characterToIdentityForm(swapped);
+  const reapplied = identityForm.applyIdentityForm(swapped, form);
+
+  assert.deepEqual(
+    rules.deriveYusong(reapplied).body.slice(3).map((part) => part.dice),
+    ["1d12", "1d10", "1d10", "1d6"],
+  );
+});
+
+test("FE-05E-A gerencia Talentos e habilidades Genius sem mutar o original", () => {
+  const original = engine.createYusongCharacter({ id: "talents-genius", displayName: "Recursos" });
+  const talent = { id: "talent-custom", name: "Passo Rápido", action: "Padrão", staminaCostPercent: 10, customText: "Preservar" };
+  const added = engine.yusongEngine.commands.addTalent(original, { talent });
+  const duplicate = engine.yusongEngine.commands.addTalent(added.character, { talent });
+  assert.equal(original.talents.length, 0);
+  assert.equal(duplicate.character.talents.length, 1);
+  assert.equal(duplicate.character.talents[0].customText, "Preservar");
+  const removed = engine.yusongEngine.commands.removeTalent(duplicate.character, { talentId: talent.id });
+  assert.equal(removed.character.talents.length, 0);
+
+  const named = engine.yusongEngine.commands.setGeniusName(original, { name: "Olhar Analítico" });
+  const ability = { id: "ability-custom", name: "Leitura", level: "Nível 1", action: "Padrão", staminaCost: 5, description: "Texto", customFlag: true };
+  const created = engine.yusongEngine.commands.upsertGeniusAbility(named.character, { ability });
+  const updated = engine.yusongEngine.commands.upsertGeniusAbility(created.character, { ability: { ...ability, name: "Leitura Avançada", staminaCost: 7.9 } });
+  assert.equal(original.genius.name, "");
+  assert.equal(updated.character.genius.name, "Olhar Analítico");
+  assert.equal(updated.character.genius.abilities[0].name, "Leitura Avançada");
+  assert.equal(updated.character.genius.abilities[0].staminaCost, 7);
+  assert.equal(updated.character.genius.abilities[0].customFlag, true);
+  const withoutAbility = engine.yusongEngine.commands.removeGeniusAbility(updated.character, { abilityId: ability.id });
+  assert.equal(withoutAbility.character.genius.abilities.length, 0);
+});
+
+test("FE-05F-A edita Perícias e aplica Condições à rolagem no engine", () => {
+  const original = engine.createYusongCharacter({ id: "skills-conditions", displayName: "Testadora" });
+  const ranked = engine.yusongEngine.commands.setSkill(original, { skillId: "acrobacia", value: 2 });
+  const frightened = engine.yusongEngine.commands.toggleCondition(ranked.character, { conditionId: "amedrontado" });
+  const roll = engine.yusongEngine.diceRequests.rollSkill({
+    skillName: "Acrobacia",
+    rank: frightened.character.skills.acrobacia,
+    conditions: frightened.character.conditions,
+    random: () => 0,
+  });
+
+  assert.equal(original.skills.acrobacia, undefined);
+  assert.equal(ranked.character.skills.acrobacia, 2);
+  assert.equal(ranked.events[0].type, "skill.changed");
+  assert.equal(frightened.character.conditions.amedrontado, true);
+  assert.equal(roll.label, "Perícia (Acrobacia)");
+  assert.equal(roll.notation, "1d20+8-4");
+  assert.equal(roll.modifier, -4);
+  assert.equal(roll.total, 5);
+  assert.equal(engine.yusongEngine.commands.setSkill(original, { skillId: "acrobacia", value: 8 }).character.skills.acrobacia, 5);
+  assert.throws(
+    () => engine.yusongEngine.commands.setSkill(original, { skillId: "inexistente", value: 1 }),
+    (error) => error.code === "skill.unknown",
+  );
 });

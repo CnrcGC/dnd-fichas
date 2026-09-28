@@ -11,3 +11,10 @@
 - **Substituição de requisito:** esta decisão substitui a biblioteca mista descrita originalmente em `FE-01`, `FE-03` e `VA-05`, além de qualquer pacote posterior que dependa dessa premissa.
 
 Esta decisão não autoriza duplicar autenticação, persistência, backend, preferências, primitivas acessíveis ou outra infraestrutura compartilhada.
+
+## PD-002 — Nome público do segundo sistema
+
+- **Status:** aprovada pelo proprietário em 2026-09-27.
+- **Decisão:** o nome público e canônico do segundo sistema é **Pilares de Atlas**, não Yusong.
+- **Compatibilidade técnica:** o identificador interno `yusong`, a rota transitória `/yusong`, módulos, funções, fixtures e chaves legadas `yusong.*` permanecem temporariamente para evitar quebra de dados e migrações.
+- **Aplicação:** novos textos visíveis devem usar Pilares de Atlas. Uma eventual migração de identificadores ou rota exige redirects e migrações versionadas próprios.

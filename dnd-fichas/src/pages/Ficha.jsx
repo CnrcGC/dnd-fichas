@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useFichas } from "../context/useFichas";
 import { obterRaca } from "../data/racas";
@@ -60,13 +60,6 @@ import BlocoAtributos from "../components/ficha/BlocoAtributos";
 import BlocoStatus from "../components/ficha/BlocoStatus";
 import BlocoAtaques from "../components/ficha/BlocoAtaques";
 import BlocoSalvaguardas from "../components/ficha/BlocoSalvaguardas";
-import BlocoPericias from "../components/ficha/BlocoPericias";
-import BlocoProficiencias from "../components/ficha/BlocoProficiencias"; // NOVO
-import BlocoInventario from "../components/ficha/BlocoInventario";
-import BlocoMoedas from "../components/ficha/BlocoMoedas";
-import BlocoMagias from "../components/ficha/BlocoMagias";
-import BlocoHabilidades from "../components/ficha/BlocoHabilidades";
-import ModalLevelUp from "../components/modal/ModalLevelUp";
 import BlocoDescanso from "../components/ficha/BlocoDescanso";
 import BlocoRecursos from "../components/ficha/BlocoRecursos";
 import BlocoProgressao from "../components/ficha/BlocoProgressao"; // NOVO
@@ -74,6 +67,14 @@ import BlocoValidacao from "../components/ficha/BlocoValidacao";
 import FichaImpressao from "../components/ficha/FichaImpressao";
 import "./Ficha.css";
 import Icon from "../components/icons/Icon";
+
+const BlocoHabilidades = lazy(() => import("../components/ficha/BlocoHabilidades"));
+const BlocoInventario = lazy(() => import("../components/ficha/BlocoInventario"));
+const BlocoMagias = lazy(() => import("../components/ficha/BlocoMagias"));
+const BlocoMoedas = lazy(() => import("../components/ficha/BlocoMoedas"));
+const BlocoPericias = lazy(() => import("../components/ficha/BlocoPericias"));
+const BlocoProficiencias = lazy(() => import("../components/ficha/BlocoProficiencias"));
+const ModalLevelUp = lazy(() => import("../components/modal/ModalLevelUp"));
 
 const ABAS = [
   { chave: "combate", label: "Combate" },
@@ -83,6 +84,10 @@ const ABAS = [
   { chave: "inventario", label: "Inventário" },
   { chave: "notas", label: "Notas" },
 ];
+
+function CarregandoSecao({ nome }) {
+  return <p className="ficha-carregando-secao" role="status">Carregando {nome}…</p>;
+}
 
 function calcularBonusRacialFicha(ficha) {
   const bonus = { ...(obterRaca(ficha?.racaId)?.bonusAtributos ?? {}) };
@@ -913,15 +918,19 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 </button>
 
 
-        <ModalLevelUp
-          key={`${ficha.id}-${modalLevelUpAberto ? nivelTotal : "fechado"}`}
-          aberto={modalLevelUpAberto}
-          onFechar={() => setModalLevelUpAberto(false)}
-          ficha={ficha}
-          classe={classe}
-          modificadoresAtributos={modificadoresAtributos}
-          onConcluir={handleConcluirLevelUp}
-        />
+        {modalLevelUpAberto && (
+          <Suspense fallback={<CarregandoSecao nome="subida de nível" />}>
+            <ModalLevelUp
+              key={`${ficha.id}-${nivelTotal}`}
+              aberto
+              onFechar={() => setModalLevelUpAberto(false)}
+              ficha={ficha}
+              classe={classe}
+              modificadoresAtributos={modificadoresAtributos}
+              onConcluir={handleConcluirLevelUp}
+            />
+          </Suspense>
+        )}
 
         <div className="ficha-stats-rapidas">
           <div className="ficha-stat-rapida">
@@ -1010,8 +1019,8 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
             </>
           )}
 
-                    {abaAtiva === "habilidades" && (
-            <>
+          {abaAtiva === "habilidades" && (
+            <Suspense fallback={<CarregandoSecao nome="habilidades" />}>
               <BlocoHabilidades
                 classeId={ficha.classeId}
                 classeNome={classe?.nome}
@@ -1026,11 +1035,11 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
   sugestoes={sugestoesRecursos}
   onAdicionarSugestao={handleAdicionarSugestaoRecurso}
 />
-            </>
+            </Suspense>
           )}
 
           {abaAtiva === "pericias" && (
-  <>
+  <Suspense fallback={<CarregandoSecao nome="perícias" />}>
     <BlocoPericias
       modificadoresAtributos={modificadoresAtributos}
       pericias={ficha.pericias ?? {}}
@@ -1051,11 +1060,12 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
       bonusProficiencia={bonusProficiencia}
       origensProficiencias={ficha.origensProficiencias ?? {}}
     />
-  </>
+  </Suspense>
 )}
 
           {abaAtiva === "magias" && (
-            <BlocoMagias
+            <Suspense fallback={<CarregandoSecao nome="magias" />}>
+              <BlocoMagias
               ficha={ficha}
               modificadoresAtributos={modificadoresAtributos}
               bonusProficiencia={bonusProficiencia}
@@ -1070,11 +1080,12 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
               onPararConcentracao={handlePararConcentracao}
               onAplicarEfeitoPv={handleAplicarEfeitoPv}
               onAplicarCondicao={handleAplicarCondicao}
-            />
+              />
+            </Suspense>
           )}
 
           {abaAtiva === "inventario" && (
-            <>
+            <Suspense fallback={<CarregandoSecao nome="inventário" />}>
               <BlocoInventario
                 inventario={ficha.inventario ?? []}
                 onChangeInventario={handleChangeInventario}
@@ -1082,7 +1093,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
                 onAplicarEfeitoPv={handleAplicarEfeitoPv}
               />
               <BlocoMoedas moedas={ficha.moedas ?? {}} onChangeMoedas={handleChangeMoedas} />
-            </>
+            </Suspense>
           )}
 
           {abaAtiva === "notas" && (

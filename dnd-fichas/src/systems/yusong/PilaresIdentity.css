@@ -1,0 +1,84 @@
+.pilares-identity {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+.pilares-identity header > * { margin-block: 0 var(--space-2); }
+
+.pilares-identity__eyebrow {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pilares-identity form,
+.pilares-identity__fields {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.pilares-identity__fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-raised);
+}
+
+.pilares-identity__fields legend {
+  padding-inline: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.pilares-identity__fields label {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  font-weight: 600;
+}
+
+.pilares-identity__fields :where(input, select, textarea) {
+  width: 100%;
+  min-height: 44px;
+}
+
+.pilares-identity__concept { grid-column: 1 / -1; }
+.pilares-identity__concept textarea { resize: vertical; }
+
+.pilares-identity__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.pilares-identity__actions :where(a, button) {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3);
+}
+
+.pilares-identity__message,
+.pilares-identity__error {
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-raised);
+}
+
+.pilares-identity__error { border-color: var(--color-danger); }
+
+@media (max-width: 640px) {
+  .pilares-identity__fields { grid-template-columns: 1fr; padding: var(--space-3); }
+  .pilares-identity__concept { grid-column: auto; }
+  .pilares-identity__actions { align-items: stretch; flex-direction: column-reverse; }
+}

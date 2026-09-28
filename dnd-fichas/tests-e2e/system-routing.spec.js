@@ -30,9 +30,9 @@ async function seedPlatformRecords(page, records) {
 test("primeiro acesso escolhe um sistema e a raiz reutiliza a preferência", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Escolha um sistema" })).toBeVisible();
-  await page.getByRole("link", { name: "Abrir Yusong" }).click();
+  await page.getByRole("link", { name: "Abrir Pilares de Atlas" }).click();
   await expect(page).toHaveURL(/\/yusong$/);
-  await expect(page.getByRole("heading", { name: "Personagens Yusong" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Personagens de Pilares de Atlas" })).toBeVisible();
   await page.goto("/");
   await expect(page).toHaveURL(/\/yusong$/);
 });

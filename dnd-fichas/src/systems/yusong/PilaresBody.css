@@ -1,0 +1,98 @@
+.pilares-body {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.pilares-body h2,
+.pilares-body h3,
+.pilares-body p { margin-block: 0; }
+.pilares-body > div p { margin-top: var(--space-1); color: var(--color-ink-soft); }
+
+.pilares-body__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.pilares-body__part {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-raised);
+}
+
+.pilares-body__part[data-state="disabled"] {
+  border-color: var(--color-danger);
+}
+
+.pilares-body__part > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.pilares-body__part header span,
+.pilares-body__dice { color: var(--color-ink-soft); font-size: var(--text-sm); }
+
+.pilares-body__state {
+  padding: var(--space-1) var(--space-2);
+  border-radius: 999px;
+  background: var(--color-bg-inset);
+  font-size: var(--text-xs);
+}
+
+.pilares-body__part[data-state="disabled"] .pilares-body__state {
+  color: var(--color-danger-soft);
+}
+
+.pilares-body__part > label {
+  display: grid;
+  gap: var(--space-1);
+  font-weight: 600;
+}
+
+.pilares-body__part select { min-height: 44px; }
+
+.pilares-body__armor {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  border: 0;
+}
+
+.pilares-body__armor legend {
+  float: left;
+  width: 100%;
+  margin-bottom: var(--space-1);
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+}
+
+.pilares-body__armor button { min-width: 44px; min-height: 44px; padding: 0; }
+
+.pilares-body__armor > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-weight: 700;
+}
+
+.pilares-body__armor input {
+  width: 5rem;
+  min-height: 44px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .pilares-body__list { grid-template-columns: 1fr; }
+}

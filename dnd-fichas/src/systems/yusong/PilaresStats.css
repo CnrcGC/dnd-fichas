@@ -1,0 +1,90 @@
+.pilares-stats {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.pilares-stats h2 { margin: 0; }
+
+.pilares-stats__attributes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-raised);
+}
+
+.pilares-stats__attributes legend {
+  padding-inline: var(--space-2);
+  font-weight: 700;
+}
+
+.pilares-stats__attributes label {
+  display: grid;
+  grid-template-columns: auto minmax(64px, 1fr);
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-inset);
+}
+
+.pilares-stats__attributes label > span {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.pilares-stats__attributes input {
+  min-width: 0;
+  min-height: 44px;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  text-align: center;
+}
+
+.pilares-stats__attributes small {
+  grid-column: 1 / -1;
+  color: var(--color-ink-soft);
+}
+
+.pilares-stats__resources,
+.pilares-stats__derived {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+.pilares-stats__resources label,
+.pilares-stats__derived > div {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-raised);
+}
+
+.pilares-stats__resource-value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.pilares-stats__resource-value input {
+  width: 6rem;
+  min-height: 44px;
+}
+
+.pilares-stats__derived { margin: 0; }
+.pilares-stats__derived dt { color: var(--color-ink-soft); font-size: var(--text-sm); }
+.pilares-stats__derived dd { margin: 0; font-size: var(--text-lg); font-weight: 700; }
+
+@media (max-width: 640px) {
+  .pilares-stats__attributes { grid-template-columns: 1fr; padding: var(--space-3); }
+  .pilares-stats__resources { grid-template-columns: 1fr; }
+}

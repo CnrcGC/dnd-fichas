@@ -4,7 +4,7 @@ import { SYSTEM_ROUTE_SEGMENTS } from "../routing/routes";
 
 const definitions = [
   { id: SYSTEM_IDS.DND5E, displayName: "D&D 5e", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.DND5E], loadEngine: () => import("../../systems/dnd5e/engine").then(({ dnd5eEngine }) => dnd5eEngine), loadAdapter: () => import("../../systems/dnd5e/adapter.jsx").then(({ dnd5eAdapter }) => dnd5eAdapter), available: true, creatorAvailable: true },
-  { id: SYSTEM_IDS.YUSONG, displayName: "Yusong", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.YUSONG], loadEngine: () => import("../../systems/yusong/engine").then(({ yusongEngine }) => yusongEngine), loadAdapter: () => import("../../systems/yusong/adapter.jsx").then(({ yusongAdapter }) => yusongAdapter), available: true, creatorAvailable: false, unavailableReason: "A interface Yusong será incorporada no pacote FE-05." },
+  { id: SYSTEM_IDS.YUSONG, displayName: "Pilares de Atlas", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.YUSONG], loadEngine: () => import("../../systems/yusong/engine").then(({ yusongEngine }) => yusongEngine), loadAdapter: () => import("../../systems/yusong/adapter.jsx").then(({ yusongAdapter }) => yusongAdapter), available: true, creatorAvailable: true },
   { id: SYSTEM_IDS.FEITICEIROS, displayName: "Feiticeiros & Maldições", routeSegment: SYSTEM_ROUTE_SEGMENTS[SYSTEM_IDS.FEITICEIROS], loadEngine: () => import("../../systems/feiticeiros/engine").then(({ feiticeirosEngine }) => feiticeirosEngine), loadAdapter: () => import("../../systems/feiticeiros/adapter.jsx").then(({ feiticeirosAdapter }) => feiticeirosAdapter), available: true, creatorAvailable: false, unavailableReason: "A criação F&M será habilitada pelo pacote FE-06." },
 ];
 
