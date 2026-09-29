@@ -1,0 +1,96 @@
+.pilares-school-theme,
+.pilares-school-badge {
+  --pilares-school-accent: #b5b5b5;
+  --pilares-school-wash: color-mix(in srgb, var(--pilares-school-accent) 11%, transparent);
+  --pilares-school-pattern: radial-gradient(circle at 4px 4px, var(--pilares-school-wash) 1.5px, transparent 1.5px);
+  --pilares-school-pattern-size: 12px 12px;
+}
+
+:where(.pilares-school-theme, .pilares-school-badge)[data-school="seirin"] {
+  --pilares-school-accent: #b7a9f1;
+  --pilares-school-pattern: repeating-linear-gradient(135deg, var(--pilares-school-wash) 0 2px, transparent 2px 12px);
+}
+
+:where(.pilares-school-theme, .pilares-school-badge)[data-school="shinnen"] {
+  --pilares-school-accent: #70c4e8;
+  --pilares-school-pattern: linear-gradient(var(--pilares-school-wash) 1px, transparent 1px), linear-gradient(90deg, var(--pilares-school-wash) 1px, transparent 1px);
+  --pilares-school-pattern-size: 14px 14px;
+}
+
+:where(.pilares-school-theme, .pilares-school-badge)[data-school="yosuk"] {
+  --pilares-school-accent: #ec8bd2;
+  --pilares-school-pattern: linear-gradient(45deg, transparent 44%, var(--pilares-school-wash) 45% 55%, transparent 56%), linear-gradient(-45deg, transparent 44%, var(--pilares-school-wash) 45% 55%, transparent 56%);
+  --pilares-school-pattern-size: 18px 18px;
+}
+
+:where(.pilares-school-theme, .pilares-school-badge)[data-school="yusong"] {
+  --pilares-school-accent: #ff8995;
+  --pilares-school-pattern: repeating-linear-gradient(90deg, var(--pilares-school-wash) 0 3px, transparent 3px 11px);
+}
+
+:where(.pilares-school-theme, .pilares-school-badge)[data-school="zanfei"] {
+  --pilares-school-accent: #79c6a6;
+  --pilares-school-pattern: linear-gradient(135deg, var(--pilares-school-wash) 25%, transparent 25%) -8px 0, linear-gradient(225deg, var(--pilares-school-wash) 25%, transparent 25%) -8px 0;
+  --pilares-school-pattern-size: 16px 16px;
+}
+
+:where(.pilares-school-theme, .pilares-school-badge)[data-school="custom"] {
+  --pilares-school-accent: #b5b5b5;
+}
+
+:root[data-theme="light"] :where(.pilares-school-theme, .pilares-school-badge)[data-school="seirin"] { --pilares-school-accent: #3b2a6d; }
+:root[data-theme="light"] :where(.pilares-school-theme, .pilares-school-badge)[data-school="shinnen"] { --pilares-school-accent: #17445a; }
+:root[data-theme="light"] :where(.pilares-school-theme, .pilares-school-badge)[data-school="yosuk"] { --pilares-school-accent: #762361; }
+:root[data-theme="light"] :where(.pilares-school-theme, .pilares-school-badge)[data-school="yusong"] { --pilares-school-accent: #812632; }
+:root[data-theme="light"] :where(.pilares-school-theme, .pilares-school-badge)[data-school="zanfei"] { --pilares-school-accent: #254d3e; }
+:root[data-theme="light"] :where(.pilares-school-theme, .pilares-school-badge)[data-school="custom"] { --pilares-school-accent: #4f4f4f; }
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) :where(.pilares-school-theme, .pilares-school-badge)[data-school="seirin"] { --pilares-school-accent: #3b2a6d; }
+  :root:not([data-theme="dark"]):not([data-theme="light"]) :where(.pilares-school-theme, .pilares-school-badge)[data-school="shinnen"] { --pilares-school-accent: #17445a; }
+  :root:not([data-theme="dark"]):not([data-theme="light"]) :where(.pilares-school-theme, .pilares-school-badge)[data-school="yosuk"] { --pilares-school-accent: #762361; }
+  :root:not([data-theme="dark"]):not([data-theme="light"]) :where(.pilares-school-theme, .pilares-school-badge)[data-school="yusong"] { --pilares-school-accent: #812632; }
+  :root:not([data-theme="dark"]):not([data-theme="light"]) :where(.pilares-school-theme, .pilares-school-badge)[data-school="zanfei"] { --pilares-school-accent: #254d3e; }
+  :root:not([data-theme="dark"]):not([data-theme="light"]) :where(.pilares-school-theme, .pilares-school-badge)[data-school="custom"] { --pilares-school-accent: #4f4f4f; }
+}
+
+.pilares-school-theme > header,
+.pilares-library__card.pilares-school-theme {
+  border-inline-start: 4px solid var(--pilares-school-accent);
+  background-image: var(--pilares-school-pattern);
+  background-size: var(--pilares-school-pattern-size);
+}
+
+.pilares-school-theme > header { padding-inline-start: var(--space-3); }
+
+.pilares-school-badge {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 44px;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+  border: 1px solid var(--pilares-school-accent);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-raised);
+  background-image: var(--pilares-school-pattern);
+  background-size: var(--pilares-school-pattern-size);
+  color: var(--pilares-school-accent);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.pilares-school-badge__mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--pilares-school-accent);
+  color: var(--color-bg-raised);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+}
+
+.pilares-school-badge--compact { min-height: 36px; padding-block: 0; }
+.pilares-school-badge--compact .pilares-school-badge__mark { width: 28px; height: 28px; }

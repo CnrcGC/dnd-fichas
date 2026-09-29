@@ -27,13 +27,13 @@ function blurOnEnter(event) {
   if (event.key === "Enter") event.currentTarget.blur();
 }
 
-export default function PilaresStats({ character, onAttributeChange, onResourceChange }) {
+export default function PilaresStats({ character, onAttributeChange, onResourceChange, readOnly = false }) {
   const derived = yusongEngine.deriveCharacter(character);
   return (
     <section className="pilares-stats" aria-labelledby="pilares-stats-title">
       <h2 id="pilares-stats-title">Atributos e recursos</h2>
 
-      <fieldset className="pilares-stats__attributes">
+      <fieldset className="pilares-stats__attributes" disabled={readOnly}>
         <legend>Nove atributos</legend>
         {ATTRIBUTES.map((attribute) => (
           <label key={`${attribute.key}-${character.attributes[attribute.key]}`}>
@@ -63,6 +63,7 @@ export default function PilaresStats({ character, onAttributeChange, onResourceC
               inputMode="numeric"
               min="0"
               max={derived.resources.maximumLife}
+              disabled={readOnly}
               defaultValue={character.resources.currentLife}
               onBlur={(event) => commitNumber(event, character.resources.currentLife, (value) => onResourceChange("currentLife", value))}
               onKeyDown={blurOnEnter}
@@ -79,6 +80,7 @@ export default function PilaresStats({ character, onAttributeChange, onResourceC
               inputMode="numeric"
               min="0"
               max={derived.resources.maximumStamina}
+              disabled={readOnly}
               defaultValue={character.resources.currentStamina}
               onBlur={(event) => commitNumber(event, character.resources.currentStamina, (value) => onResourceChange("currentStamina", value))}
               onKeyDown={blurOnEnter}

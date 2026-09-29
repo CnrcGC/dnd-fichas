@@ -21,10 +21,10 @@ function SelectField({ id, label, value, emptyLabel, options, onChange }) {
   );
 }
 
-export default function PilaresIdentityFields({ form, onChange, prefix }) {
+export default function PilaresIdentityFields({ form, onChange, prefix, readOnly = false }) {
   const fieldId = (field) => `${prefix}-${field}`;
   return (
-    <fieldset className="pilares-identity__fields">
+    <fieldset className="pilares-identity__fields" disabled={readOnly}>
       <legend>Identidade</legend>
       <label htmlFor={fieldId("name")}>
         Nome

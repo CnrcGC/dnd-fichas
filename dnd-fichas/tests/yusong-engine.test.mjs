@@ -395,3 +395,64 @@ test("FE-05F-A edita Perícias e aplica Condições à rolagem no engine", () =>
     (error) => error.code === "skill.unknown",
   );
 });
+
+test("FE-05F-B gerencia inventário e notas sem perder extensões", () => {
+  const original = engine.createYusongCharacter({ id: "inventory-notes", displayName: "Colecionadora" });
+  const added = engine.yusongEngine.commands.upsertInventoryItem(original, {
+    item: { id: "custom-item", name: "Caderno", quantity: 2.9, description: "Anotações", customText: "Preservar" },
+  });
+  const updated = engine.yusongEngine.commands.upsertInventoryItem(added.character, {
+    item: { id: "custom-item", name: "Caderno de campo", quantity: 0 },
+  });
+  const noted = engine.yusongEngine.commands.setNotes(updated.character, { notes: "Pistas da sessão." });
+  const removed = engine.yusongEngine.commands.removeInventoryItem(noted.character, { itemId: "custom-item" });
+
+  assert.equal(original.inventory.length, 0);
+  assert.equal(original.notes, "");
+  assert.equal(added.character.inventory[0].quantity, 2);
+  assert.equal(updated.character.inventory[0].quantity, 1);
+  assert.equal(updated.character.inventory[0].customText, "Preservar");
+  assert.equal(updated.character.inventory[0].category, "Geral");
+  assert.equal(noted.character.notes, "Pistas da sessão.");
+  assert.equal(removed.character.inventory.length, 0);
+  assert.equal(added.events[0].type, "inventory.item-added");
+  assert.equal(updated.events[0].type, "inventory.item-updated");
+  assert.equal(removed.events[0].type, "inventory.item-removed");
+  assert.throws(
+    () => engine.yusongEngine.commands.upsertInventoryItem(original, { item: { name: "Sem id" } }),
+    (error) => error.code === "inventory.item-id-missing",
+  );
+});
+
+test("FE-05G-A gera personagem completo com aleatoriedade injetável e sem avatar de rede", () => {
+  let state = 0x12345678;
+  const random = () => {
+    state = (1664525 * state + 1013904223) >>> 0;
+    return state / 0x100000000;
+  };
+  const character = engine.createRandomYusongCharacter({ id: "random-character", random });
+  const derived = rules.deriveYusong(character);
+
+  assert.equal(character.id, "random-character");
+  assert.match(character.identity.displayName, /^\S+(?:-\S+)? \S+(?:-\S+)?$/);
+  assert.ok(Number(character.identity.age) >= 16 && Number(character.identity.age) <= 19);
+  assert.match(character.identity.height, /^1\.(?:5[5-9]|[6-8]\d|90)m$/);
+  assert.equal(character.identity.image, "");
+  assert.equal(Object.values(character.attributes).reduce((sum, value) => sum + value, 0), 27);
+  assert.ok(Object.values(character.attributes).every((value) => value >= 1 && value <= 7));
+  assert.equal(Object.values(character.skills).reduce((sum, value) => sum + value, 0), 8);
+  assert.ok(Object.values(character.skills).every((value) => value >= 0 && value <= 3));
+  assert.equal(character.talents.length, 1);
+  assert.ok([character.selections.characterClass, "geral"].includes(character.talents[0].category));
+  assert.equal(String(character.talents[0].prerequisites ?? "").trim(), "");
+  assert.equal(character.resources.currentLife, Math.min(12, derived.resources.maximumLife));
+  assert.equal(character.resources.currentStamina, Math.min(150, derived.resources.maximumStamina));
+  assert.equal(engine.yusongEngine.validateCharacter(character), true);
+});
+
+test("FE-05G-A rejeita fontes aleatórias fora do intervalo contratado", () => {
+  assert.throws(
+    () => engine.createRandomYusongCharacter({ random: () => 1 }),
+    (error) => error instanceof RangeError && /entre 0 e 1/.test(error.message),
+  );
+});

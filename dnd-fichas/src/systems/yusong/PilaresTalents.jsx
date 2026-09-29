@@ -21,6 +21,7 @@ export default function PilaresTalents({
   onSaveAbility,
   onRemoveAbility,
   onUseAbility,
+  readOnly = false,
 }) {
   const [editing, setEditing] = useState(null);
   const [catalogOpen, setCatalogOpen] = useState(false);
@@ -55,7 +56,7 @@ export default function PilaresTalents({
           </div>
           <div className="pilares-talents__heading-actions">
             <span aria-label={`${character.talents.length} Talentos adicionados`}>{character.talents.length}</span>
-            <button type="button" aria-expanded={catalogOpen} aria-controls="pilares-talent-catalog" onClick={() => setCatalogOpen((current) => !current)}>
+            <button type="button" disabled={readOnly} aria-expanded={catalogOpen} aria-controls="pilares-talent-catalog" onClick={() => setCatalogOpen((current) => !current)}>
               {catalogOpen ? "Fechar catálogo" : "Adicionar Talento"}
             </button>
           </div>
@@ -79,9 +80,9 @@ export default function PilaresTalents({
                   {talent.description && <p>{talent.description}</p>}
                   <div className="pilares-talents__actions">
                     {!passive && !talent.specialCost && cost > 0 && (
-                      <button type="button" onClick={() => onUseTalent(talent.id)} disabled={stamina < cost}>Usar Talento</button>
+                      <button type="button" onClick={() => onUseTalent(talent.id)} disabled={readOnly || stamina < cost}>Usar Talento</button>
                     )}
-                    <button type="button" className="is-danger" onClick={() => onRemoveTalent(talent.id)}>Remover Talento</button>
+                    <button type="button" disabled={readOnly} className="is-danger" onClick={() => onRemoveTalent(talent.id)}>Remover Talento</button>
                   </div>
                 </details>
               );
@@ -133,7 +134,7 @@ export default function PilaresTalents({
                       {talent.derivedFrom && <p><strong>Derivado de:</strong> {talent.derivedFrom}</p>}
                       {talent.grants?.length > 0 && <p><strong>Concede:</strong> {talent.grants.join(", ")}</p>}
                       <div className="pilares-talents__actions">
-                        <button type="button" disabled={added} onClick={() => onAddTalent(talent)} aria-label={added ? `${talent.name} já adicionado` : `Adicionar ${talent.name}`}>
+                        <button type="button" disabled={readOnly || added} onClick={() => onAddTalent(talent)} aria-label={added ? `${talent.name} já adicionado` : `Adicionar ${talent.name}`}>
                           {added ? "Já adicionado" : "Adicionar"}
                         </button>
                       </div>
@@ -152,7 +153,7 @@ export default function PilaresTalents({
             <h3 id="pilares-genius-title">Genius</h3>
             <p>Habilidades personalizadas continuam editáveis.</p>
           </div>
-          <button type="button" onClick={() => setEditing(newAbility())}>Nova habilidade</button>
+          <button type="button" disabled={readOnly} onClick={() => setEditing(newAbility())}>Nova habilidade</button>
         </div>
 
         <div className="pilares-talents__genius-name">
@@ -161,12 +162,13 @@ export default function PilaresTalents({
             <input
               key={character.genius.name}
               defaultValue={character.genius.name}
+              disabled={readOnly}
               onBlur={(event) => {
                 if (event.currentTarget.value !== character.genius.name) onSetGeniusName(event.currentTarget.value);
               }}
             />
           </label>
-          <button type="button" onClick={onUseGenius} disabled={stamina < 10}>Usar Genius — 10 Stamina</button>
+          <button type="button" onClick={onUseGenius} disabled={readOnly || stamina < 10}>Usar Genius — 10 Stamina</button>
         </div>
 
         {character.genius.abilities.length === 0 ? (
@@ -186,9 +188,9 @@ export default function PilaresTalents({
                   </dl>
                   <p>{ability.description || "Sem descrição definida."}</p>
                   <div className="pilares-talents__actions">
-                    {usable && <button type="button" onClick={() => onUseAbility(ability.id)} disabled={stamina < cost}>Usar habilidade</button>}
-                    <button type="button" onClick={() => setEditing(structuredClone(ability))}>Editar habilidade</button>
-                    <button type="button" className="is-danger" onClick={() => onRemoveAbility(ability.id)}>Remover habilidade</button>
+                    {usable && <button type="button" onClick={() => onUseAbility(ability.id)} disabled={readOnly || stamina < cost}>Usar habilidade</button>}
+                    <button type="button" disabled={readOnly} onClick={() => setEditing(structuredClone(ability))}>Editar habilidade</button>
+                    <button type="button" disabled={readOnly} className="is-danger" onClick={() => onRemoveAbility(ability.id)}>Remover habilidade</button>
                   </div>
                 </details>
               );
@@ -197,7 +199,7 @@ export default function PilaresTalents({
         )}
 
         {editing && (
-          <fieldset className="pilares-talents__editor">
+          <fieldset className="pilares-talents__editor" disabled={readOnly}>
             <legend>{character.genius.abilities.some((ability) => ability.id === editing.id) ? "Editar habilidade Genius" : "Nova habilidade Genius"}</legend>
             <label>Nome<input value={editing.name} onChange={(event) => updateAbility("name", event.target.value)} /></label>
             <label>Nível<select value={editing.level} onChange={(event) => updateAbility("level", event.target.value)}>{LEVELS.map((level) => <option key={level}>{level}</option>)}</select></label>

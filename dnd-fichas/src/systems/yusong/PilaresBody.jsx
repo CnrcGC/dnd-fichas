@@ -14,7 +14,7 @@ function blurOnEnter(event) {
   if (event.key === "Enter") event.currentTarget.blur();
 }
 
-export default function PilaresBody({ character, onChangeArmor, onSetArmor, onSwapDice }) {
+export default function PilaresBody({ character, onChangeArmor, onSetArmor, onSwapDice, readOnly = false }) {
   const body = yusongEngine.deriveCharacter(character).body;
   const memberDice = [...new Set(body.filter((part) => part.type === "member").map((part) => part.dice))];
 
@@ -41,7 +41,7 @@ export default function PilaresBody({ character, onChangeArmor, onSetArmor, onSw
               {part.type === "member" ? (
                 <label>
                   Dado de {part.name}
-                  <select value={part.dice} onChange={(event) => onSwapDice(part.id, event.target.value)}>
+                  <select value={part.dice} disabled={readOnly} onChange={(event) => onSwapDice(part.id, event.target.value)}>
                     {memberDice.map((dice) => <option key={dice} value={dice}>{dice}</option>)}
                   </select>
                 </label>
@@ -51,7 +51,7 @@ export default function PilaresBody({ character, onChangeArmor, onSetArmor, onSw
 
               <fieldset className="pilares-body__armor">
                 <legend>Armadura de {part.name}</legend>
-                <button type="button" disabled={atMinimum} onClick={() => onChangeArmor(part.id, -1)} aria-label={`Reduzir armadura de ${part.name}`}>−</button>
+                <button type="button" disabled={readOnly || atMinimum} onClick={() => onChangeArmor(part.id, -1)} aria-label={`Reduzir armadura de ${part.name}`}>−</button>
                 <span>
                   <input
                     key={`${part.id}-${part.currentArmor}`}
@@ -59,6 +59,7 @@ export default function PilaresBody({ character, onChangeArmor, onSetArmor, onSw
                     inputMode="numeric"
                     min="0"
                     max={part.maximumArmor}
+                    disabled={readOnly}
                     defaultValue={part.currentArmor}
                     aria-label={`Armadura atual de ${part.name}`}
                     onBlur={(event) => commitArmor(event, part.currentArmor, (value) => onSetArmor(part.id, value))}
@@ -66,7 +67,7 @@ export default function PilaresBody({ character, onChangeArmor, onSetArmor, onSw
                   />
                   <span aria-label={`Armadura máxima de ${part.name}: ${part.maximumArmor}`}>/ {part.maximumArmor}</span>
                 </span>
-                <button type="button" disabled={atMaximum} onClick={() => onChangeArmor(part.id, 1)} aria-label={`Aumentar armadura de ${part.name}`}>+</button>
+                <button type="button" disabled={readOnly || atMaximum} onClick={() => onChangeArmor(part.id, 1)} aria-label={`Aumentar armadura de ${part.name}`}>+</button>
               </fieldset>
             </li>
           );

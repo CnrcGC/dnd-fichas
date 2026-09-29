@@ -95,6 +95,8 @@
   color: var(--color-ink-soft);
 }
 
+.pilares-library__card .pilares-library__level { color: var(--color-ink); font-weight: 600; }
+
 .pilares-library__active {
   padding: var(--space-1) var(--space-2);
   border-radius: 999px;

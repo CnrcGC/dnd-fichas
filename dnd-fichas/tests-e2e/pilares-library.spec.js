@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readFile } from "node:fs/promises";
 
 const legacyCharacter = {
   id: "pilares-e2e",
@@ -14,6 +15,8 @@ const legacyCharacter = {
   conditions: ["amedrontado"],
   talents: [{ id: "talento-e2e", name: "Passo Rápido", category: "agil", action: "Padrão", staminaCostPercent: 15, description: "Avanço veloz." }],
   genius: { name: "Olhar Analítico", abilities: [{ id: "genius-e2e", name: "Leitura", level: "Nível 1", action: "Padrão", staminaCost: 5, description: "Texto personalizado" }] },
+  inventory: [{ id: "item-e2e", name: "Faixas", quantity: 2, customText: "Presente" }],
+  notes: "Notas antigas.",
 };
 
 test.beforeEach(async ({ page }) => {
@@ -27,7 +30,8 @@ test("importa e lista Pilares de Atlas sem apagar a origem legada", async ({ pag
   await page.goto("/yusong");
   await expect(page.getByRole("heading", { name: "Personagens de Pilares de Atlas" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Kang Ji-ho" })).toBeVisible();
-  await expect(page.getByText("Nível 3 · Escola Seirin")).toBeVisible();
+  await expect(page.getByText("Nível 3", { exact: true })).toBeVisible();
+  await expect(page.getByText("Academia Seirin", { exact: true })).toBeVisible();
   await expect(page.getByText("Último ativo")).toBeVisible();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("yusong.characters"))).toBe(JSON.stringify([legacyCharacter]));
 });
@@ -76,6 +80,29 @@ test("cria e edita a identidade de Pilares de Atlas com persistência após relo
   await expect(page.getByLabel("Nível")).toHaveValue("5");
   await page.getByRole("link", { name: "Voltar para personagens" }).click();
   await expect(page.getByRole("heading", { name: "Hana Lee Atualizada" })).toBeVisible();
+});
+
+test("gera um personagem aleatório acessível e o salva sem buscar avatar externo", async ({ page }) => {
+  const externalAvatarRequests = [];
+  page.on("request", (request) => {
+    if (request.url().includes("dicebear.com")) externalAvatarRequests.push(request.url());
+  });
+  await page.goto("/yusong/characters/new");
+  await page.getByRole("button", { name: "Gerar personagem aleatório" }).click();
+
+  const generatedName = await page.getByLabel("Nome").inputValue();
+  expect(generatedName).not.toBe("Sem nome");
+  await expect(page.getByRole("status")).toContainText(`Personagem aleatório gerado: ${generatedName}`);
+  await expect(page.getByText("Nenhuma imagem externa é carregada automaticamente.")).toBeVisible();
+  await expect(page.getByLabel("Academia")).not.toHaveValue("");
+  await expect(page.getByLabel("Classe")).not.toHaveValue("");
+  expect(externalAvatarRequests).toEqual([]);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+
+  await page.getByRole("button", { name: "Criar personagem" }).click();
+  await expect(page.getByRole("heading", { name: generatedName })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: generatedName })).toBeVisible();
 });
 
 test("edita atributos e recursos enquanto derivados permanecem calculados pelo engine", async ({ page }) => {
@@ -171,6 +198,50 @@ test("edita Perícias e aplica Condições às rolagens com persistência", asyn
   await expect(motivated.getByRole("checkbox", { name: "Motivado ativa" })).toBeChecked();
 });
 
+test("gerencia itens do sistema, itens personalizados e notas com persistência", async ({ page }) => {
+  await page.goto("/yusong/characters/pilares-e2e");
+  await expect(page.getByRole("heading", { name: "Inventário e notas" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Adicionar item", exact: true }).click();
+  const addEditor = page.getByRole("group", { name: "Adicionar item" });
+  await addEditor.getByLabel("Item do sistema").selectOption("katana-espada");
+  await expect(addEditor.getByLabel("Nome")).toHaveValue("Katana/Espada");
+  await expect(addEditor.getByLabel("Nome")).toBeDisabled();
+  await addEditor.getByLabel("Quantidade").fill("2");
+  await addEditor.getByRole("button", { name: "Salvar item" }).click();
+
+  const katana = page.locator('[data-item-id]').filter({ hasText: "Katana/Espada" });
+  await katana.locator("summary").click();
+  await expect(katana).toContainText("+3d12+6");
+  await expect(katana).toContainText("84");
+  await katana.getByRole("button", { name: "Editar item" }).click();
+  const editEditor = page.getByRole("group", { name: "Editar Katana/Espada" });
+  await editEditor.getByLabel("Quantidade").fill("3");
+  await editEditor.getByRole("button", { name: "Salvar item" }).click();
+
+  await page.getByRole("button", { name: "Adicionar item", exact: true }).click();
+  const customEditor = page.getByRole("group", { name: "Adicionar item" });
+  await customEditor.getByRole("button", { name: "Criar item" }).click();
+  await customEditor.getByLabel("Nome").fill("Caderno");
+  await customEditor.getByLabel("Categoria").fill("Utilitário");
+  await customEditor.getByLabel("Quantidade").fill("2");
+  await customEditor.getByLabel("Descrição").fill("Pistas importantes.");
+  await customEditor.getByRole("button", { name: "Salvar item" }).click();
+
+  const bands = page.locator('[data-item-id="item-e2e"]');
+  await bands.locator("summary").click();
+  await bands.getByRole("button", { name: "Remover item" }).click();
+  await page.getByLabel("Notas da personagem").fill("Encontro marcado no porto.");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+
+  await page.getByRole("button", { name: "Salvar ficha" }).click();
+  await page.reload();
+  await expect(page.locator('[data-item-id="item-e2e"]')).toHaveCount(0);
+  await expect(page.getByText("Katana/Espada", { exact: true }).locator("..")).toContainText("3×");
+  await expect(page.getByText("Caderno", { exact: true })).toBeVisible();
+  await expect(page.getByLabel("Notas da personagem")).toHaveValue("Encontro marcado no porto.");
+});
+
 test("filtra o catálogo original e adiciona Talento com persistência", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
   await page.getByRole("button", { name: "Adicionar Talento", exact: true }).click();
@@ -236,5 +307,129 @@ test("usa Talento e mantém CRUD personalizado de Genius com custo de Stamina", 
   await expect(page.getByText("Passo Rápido", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Leitura Avançada", { exact: true })).toBeVisible();
   await expect(page.getByText("Análise de Combate", { exact: true })).toBeVisible();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+});
+
+test("bloqueia edição no modo de apresentação e persiste a preferência de som", async ({ page }) => {
+  await page.goto("/yusong/characters/pilares-e2e");
+  const presentationToggle = page.getByRole("button", { name: "Entrar no modo de apresentação" });
+  const soundToggle = page.getByRole("button", { name: "Desligar som das rolagens" });
+
+  await presentationToggle.click();
+  await expect(page.getByRole("status")).toContainText("Modo de apresentação ativo");
+  await expect(page.getByLabel("Nome", { exact: true })).toBeDisabled();
+  await expect(page.getByLabel("Saúde (SAU)")).toBeDisabled();
+  await expect(page.getByLabel("Armadura atual de Cabeça")).toBeDisabled();
+  await expect(page.getByLabel("Graduação de Acrobacia")).toBeDisabled();
+  await expect(page.getByLabel("Amedrontado ativa")).toBeDisabled();
+  await expect(page.getByLabel("Notas da personagem")).toHaveAttribute("readonly", "");
+  await expect(page.getByRole("button", { name: "Salvar ficha" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Rolar Acrobacia" })).toBeEnabled();
+  await page.getByRole("button", { name: "Rolar Acrobacia" }).click();
+  await expect(page.getByText(/1d20\+0-4/)).toBeVisible();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+
+  await page.getByRole("button", { name: "Sair do modo de apresentação" }).click();
+  await expect(page.getByLabel("Nome", { exact: true })).toBeEnabled();
+  await soundToggle.click();
+  await expect(page.getByRole("button", { name: "Ligar som das rolagens" })).toHaveAttribute("aria-pressed", "true");
+  await expect.poll(() => page.evaluate(() => localStorage.getItem("pilares-de-atlas:sound-muted"))).toBe("true");
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Ligar som das rolagens" })).toBeVisible();
+});
+
+test("exporta uma carteirinha PNG original, offline e acessível", async ({ page }) => {
+  const forbiddenAssetRequests = [];
+  page.on("request", (request) => {
+    if (/dicebear|emblems?\//i.test(request.url())) forbiddenAssetRequests.push(request.url());
+  });
+  await page.goto("/yusong/characters/pilares-e2e");
+
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Exportar carteirinha PNG" }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("carteirinha-kang-ji-ho.png");
+  const bytes = await readFile(await download.path());
+  expect(Array.from(bytes.subarray(0, 8))).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+  expect(bytes.length).toBeGreaterThan(1_000);
+  await expect(page.getByRole("status", { name: "" })).toContainText("Carteirinha PNG exportada");
+  await expect(page.getByText("A carteirinha é um resumo visual.")).toBeVisible();
+  expect(forbiddenAssetRequests).toEqual([]);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+});
+
+test("aplica as seis identidades de academia com rótulo e contraste em claro e escuro", async ({ page }) => {
+  await page.goto("/yusong/characters/new");
+  const schools = [
+    ["seirin", "Academia Seirin"], ["shinnen", "Instituto Shinnen"],
+    ["yosuk", "Academia Yosuk"], ["yusong", "Academia Yusong"],
+    ["zanfei", "Academia Zanfei"], ["custom", "Outra academia"],
+  ];
+
+  for (const theme of ["light", "dark"]) {
+    await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+    const accents = [];
+    for (const [schoolId, label] of schools) {
+      await page.getByLabel("Academia").selectOption(schoolId);
+      const root = page.locator(".pilares-school-theme").first();
+      await expect(root).toHaveAttribute("data-school", schoolId);
+      await expect(page.getByText(label, { exact: true }).first()).toBeVisible();
+      accents.push(await root.evaluate((element) => getComputedStyle(element).getPropertyValue("--pilares-school-accent").trim()));
+    }
+    expect(new Set(accents).size).toBe(6);
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  }
+});
+
+test("VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operáveis sem som", async ({ page }) => {
+  const routes = [
+    ["/yusong", "Personagens de Pilares de Atlas"],
+    ["/yusong/characters/new", "Novo personagem de Pilares de Atlas"],
+    ["/yusong/characters/pilares-e2e", "Kang Ji-ho"],
+  ];
+
+  for (const viewport of [{ width: 320, height: 720 }, { width: 768, height: 900 }, { width: 1280, height: 900 }]) {
+    await page.setViewportSize(viewport);
+    for (const [route, heading] of routes) {
+      await page.goto(route);
+      await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+      const overflow = await page.evaluate(() => ({
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: window.innerWidth,
+      }));
+      expect(overflow.documentWidth, `${route} em ${viewport.width}px`).toBeLessThanOrEqual(overflow.viewportWidth);
+    }
+  }
+
+  await page.goto("/yusong/characters/new");
+  let reachedRandomGenerator = false;
+  for (let index = 0; index < 40; index += 1) {
+    await page.keyboard.press("Tab");
+    reachedRandomGenerator = await page.evaluate(() => document.activeElement?.textContent?.trim() === "Gerar personagem aleatório");
+    if (reachedRandomGenerator) break;
+  }
+  expect(reachedRandomGenerator).toBe(true);
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("status")).toContainText("Personagem aleatório gerado");
+
+  await page.evaluate(() => localStorage.setItem("pilares-de-atlas:sound-muted", "true"));
+  await page.goto("/yusong/characters/pilares-e2e");
+  await expect(page.getByRole("button", { name: "Ligar som das rolagens" })).toBeVisible();
+  const rollButton = page.getByRole("button", { name: "Rolar Acrobacia" });
+  await rollButton.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByText(/1d20\+0-4/)).toBeVisible();
+
+  const bodyParts = page.locator(".pilares-body__part");
+  await expect(bodyParts).toHaveCount(7);
+  await expect(bodyParts.locator("h3")).toHaveText([
+    "Cabeça", "Torso", "Abdômen", "Braço Direito", "Braço Esquerdo", "Perna Direita", "Perna Esquerda",
+  ]);
+  for (let index = 0; index < 7; index += 1) {
+    const part = bodyParts.nth(index);
+    await expect(part).toContainText(index < 3 ? "Região vital" : "Membro");
+    await expect(part).toContainText(/Normal|Inutilizado/);
+    await expect(part.locator("fieldset")).toBeVisible();
+  }
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });

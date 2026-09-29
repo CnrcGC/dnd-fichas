@@ -2,11 +2,12 @@ import { useState } from "react";
 import { YUSONG_CONDITIONS } from "./conditions";
 import { yusongEngine } from "./engine";
 import { YUSONG_SKILLS } from "./skills";
+import { playYusongRollSound } from "./sound";
 import "./PilaresSkillsConditions.css";
 
 const SKILL_RANKS = Object.freeze([0, 1, 2, 3, 4, 5]);
 
-export default function PilaresSkillsConditions({ character, onSkillChange, onToggleCondition }) {
+export default function PilaresSkillsConditions({ character, onSkillChange, onToggleCondition, readOnly = false, soundMuted = false }) {
   const [openSkillId, setOpenSkillId] = useState(null);
   const [lastRoll, setLastRoll] = useState(null);
 
@@ -16,6 +17,7 @@ export default function PilaresSkillsConditions({ character, onSkillChange, onTo
       rank: character.skills?.[skill.id] ?? 0,
       conditions: character.conditions,
     });
+    playYusongRollSound(result, { muted: soundMuted });
     setLastRoll(result);
   }
 
@@ -57,7 +59,7 @@ export default function PilaresSkillsConditions({ character, onSkillChange, onTo
                   </button>
                   <label>
                     <span>Graduação de {skill.name}</span>
-                    <select value={rank} onChange={(event) => onSkillChange(skill.id, event.target.value)}>
+                    <select value={rank} disabled={readOnly} onChange={(event) => onSkillChange(skill.id, event.target.value)}>
                       {SKILL_RANKS.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
                   </label>
@@ -89,7 +91,7 @@ export default function PilaresSkillsConditions({ character, onSkillChange, onTo
                 <p>{condition.description}</p>
                 <p><strong>Efeito:</strong> {condition.effect}</p>
                 <label>
-                  <input type="checkbox" checked={active} onChange={() => onToggleCondition(condition.id)} />
+                  <input type="checkbox" checked={active} disabled={readOnly} onChange={() => onToggleCondition(condition.id)} />
                   {condition.name} ativa
                 </label>
               </details>

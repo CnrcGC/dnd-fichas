@@ -34,6 +34,22 @@ function finite(value, code, message) {
   return numeric;
 }
 
+function normalizeInventoryItem(item) {
+  if (!item?.id) throw new YusongCommandError("inventory.item-id-missing", "O item precisa de um identificador.");
+  const quantity = finite(item.quantity ?? 1, "inventory.quantity-invalid", "A quantidade do item é inválida.");
+  return {
+    ...structuredClone(item),
+    id: String(item.id),
+    name: String(item.name || "Item sem nome"),
+    category: String(item.category || "Geral"),
+    damage: String(item.damage || "-"),
+    use: String(item.use || "Utilitário"),
+    quantity: Math.max(1, Math.floor(quantity)),
+    description: String(item.description ?? ""),
+    source: item.source === "system" ? "system" : "custom",
+  };
+}
+
 function resourceEvent(resource, previous, current, reason) {
   return { type: "resource.changed", systemId: SYSTEM_IDS.YUSONG, resource, previous, current, reason };
 }
@@ -226,6 +242,41 @@ export function setYusongSkill(character, { skillId, value }) {
   });
 }
 
+export function upsertYusongInventoryItem(character, { item }) {
+  const existingIndex = character.inventory.findIndex((candidate) => candidate.id === item?.id);
+  const existing = existingIndex === -1 ? null : character.inventory[existingIndex];
+  const normalized = normalizeInventoryItem(existing ? { ...existing, ...item } : item);
+  const next = clone(character);
+  if (existingIndex === -1) next.inventory.push(normalized);
+  else next.inventory[existingIndex] = normalized;
+  return commandResult(next, {
+    events: [{
+      type: existingIndex === -1 ? "inventory.item-added" : "inventory.item-updated",
+      systemId: SYSTEM_IDS.YUSONG,
+      itemId: normalized.id,
+    }],
+  });
+}
+
+export function removeYusongInventoryItem(character, { itemId }) {
+  if (!character.inventory.some((item) => item.id === itemId)) return commandResult(clone(character));
+  const next = clone(character);
+  next.inventory = next.inventory.filter((item) => item.id !== itemId);
+  return commandResult(next, {
+    events: [{ type: "inventory.item-removed", systemId: SYSTEM_IDS.YUSONG, itemId }],
+  });
+}
+
+export function setYusongNotes(character, { notes }) {
+  const previous = String(character.notes ?? "");
+  const current = String(notes ?? "");
+  const next = clone(character);
+  next.notes = current;
+  return commandResult(next, {
+    events: previous === current ? [] : [{ type: "notes.changed", systemId: SYSTEM_IDS.YUSONG }],
+  });
+}
+
 export function useYusongTalent(character, { talentId }) {
   const talent = character.talents.find((candidate) => candidate.id === talentId);
   if (!talent) throw new YusongCommandError("talent.not-found", `Talento não encontrado: ${talentId}.`, { talentId });
@@ -325,6 +376,9 @@ export const yusongCommands = Object.freeze({
   swapMemberDice: swapYusongMemberDice,
   toggleCondition: toggleYusongCondition,
   setSkill: setYusongSkill,
+  upsertInventoryItem: upsertYusongInventoryItem,
+  removeInventoryItem: removeYusongInventoryItem,
+  setNotes: setYusongNotes,
   useTalent: useYusongTalent,
   addTalent: addYusongTalent,
   removeTalent: removeYusongTalent,

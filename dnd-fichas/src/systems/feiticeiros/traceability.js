@@ -5,7 +5,7 @@ const trace = (ruleId, page, section, automationClass, implementationSymbol, tes
 
 export const FM_RULES = Object.freeze([
   trace("FM-ATTR-01", "17", "Atributos", "deterministic", "validateAttributeScore", ["FM-ATTR-01-caps"]),
-  trace("FM-CREATE-01", "18", "Valores de atributo", "deterministic", "FIXED_ATTRIBUTE_ARRAY / rollFourDropLowest / pointBuyCost", ["FM-CREATE-01-methods"]),
+  trace("FM-CREATE-01", "18", "Valores de atributo", "deterministic", "validateFixedAttributeAssignment / rollAttributeSet / calculatePointBuyLedger", ["FM-CREATE-01-fixed", "FM-CREATE-01-roll", "FM-CREATE-01-point-buy"]),
   trace("FM-MOD-01", "19", "Modificadores", "deterministic", "attributeModifier", ["FM-MOD-01-floor"]),
   trace("FM-DERIVED-01", "19–20", "Valores derivados", "deterministic", "deriveCoreStatistics", ["FM-DERIVED-01-core"]),
   trace("FM-SOUL-01", "20; 311–312", "Integridade da Alma", "assisted", "soulIntegrityBand", ["FM-SOUL-01-thresholds"]),
@@ -13,9 +13,9 @@ export const FM_RULES = Object.freeze([
   trace("FM-PE-01", "21; 44–46", "Pontos de Energia / Estamina", "pending-content", null),
   trace("FM-ASPECT-01", "22", "Aspectos", "manual", "character.narrative", ["FM-ASPECT-01-roundtrip"]),
   trace("FM-ORIGIN-01", "27–39", "Origens", "pending-content", null),
-  trace("FM-SPEC-01", "43–128", "Especializações", "pending-content", null),
+  trace("FM-SPEC-01", "43–128", "Especializações", "assisted", "FM_SPECIALIZATIONS / createSpecializationLevelOneSkeleton", ["FM-SPEC-01-core-metadata", "FM-SPEC-01-level-one"]),
   trace("FM-LEVEL-01", "45–48", "Níveis", "deterministic", "trainingBonus / unarmedDie", ["FM-LEVEL-01-boundaries"]),
-  trace("FM-MULTI-01", "47", "Multiclasse", "pending-content", null),
+  trace("FM-MULTI-01", "47", "Multiclasse", "deterministic", "checkSpecializationMulticlassEntry", ["FM-MULTI-01-entry"]),
   trace("FM-XP-01", "48", "Experiência", "deterministic", "XP_THRESHOLDS / levelForExperience", ["FM-XP-01-thresholds"]),
   trace("FM-TALENT-01", "163–171", "Talentos", "pending-content", null),
   trace("FM-APT-01", "172–195", "Aptidões Amaldiçoadas", "pending-content", null),

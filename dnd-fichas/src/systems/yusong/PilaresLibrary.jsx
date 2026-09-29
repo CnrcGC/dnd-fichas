@@ -1,14 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { pilaresCharacterStore } from "./characterStore";
+import PilaresSchoolIdentity from "./PilaresSchoolIdentity";
 import "./PilaresLibrary.css";
 
 const initialState = { status: "loading", characters: [], deleted: [], error: null };
-
-function schoolLabel(school) {
-  if (!school) return "Escola não definida";
-  return `Escola ${school.charAt(0).toLocaleUpperCase("pt-BR")}${school.slice(1)}`;
-}
 
 async function readLibrary() {
   await pilaresCharacterStore.initialize();
@@ -99,12 +95,13 @@ export default function PilaresLibrary() {
       {state.status === "ready" && state.characters.length > 0 && (
         <ul className="pilares-library__grid" aria-label="Personagens salvos">
           {state.characters.map((character) => (
-            <li className="pilares-library__card" key={character.id}>
+            <li className="pilares-library__card pilares-school-theme" data-school={character.school || "custom"} key={character.id}>
               <div className="pilares-library__card-heading">
                 <h2>{character.displayName}</h2>
                 {character.wasLegacyActive && <span className="pilares-library__active">Último ativo</span>}
               </div>
-              <p>Nível {character.level} · {schoolLabel(character.school)}</p>
+              <p className="pilares-library__level">Nível {character.level}</p>
+              <PilaresSchoolIdentity schoolId={character.school} compact />
               <div className="pilares-library__actions">
                 <Link to={`/yusong/characters/${encodeURIComponent(character.id)}`}>Abrir ficha</Link>
                 <button type="button" onClick={() => moveToTrash(character)}>Mover para lixeira</button>

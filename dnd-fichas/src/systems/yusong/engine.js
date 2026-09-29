@@ -17,6 +17,7 @@ import {
   rollYusongSkill,
 } from "./rules";
 import { yusongCommands } from "./commands";
+import { generateYusongRandomProfile } from "./randomCharacter";
 
 export const YUSONG_SCHEMA_VERSION = 1;
 export const YUSONG_MIGRATIONS = defineMigrationChain(YUSONG_SCHEMA_VERSION, [
@@ -90,6 +91,26 @@ export function createYusongCharacter({ displayName = "Sem nome", id = crypto.ra
     notes: "",
     legacyExtensions: {},
   };
+}
+
+export function createRandomYusongCharacter({ id = crypto.randomUUID(), random = Math.random } = {}) {
+  const character = createYusongCharacter({ id });
+  const profile = generateYusongRandomProfile({ random });
+  character.identity = { ...character.identity, ...profile.identity };
+  character.selections = profile.selections;
+  character.attributes = profile.attributes;
+  character.skills = profile.skills;
+  character.talents = profile.talent ? [profile.talent] : [];
+
+  const derived = deriveYusong(character);
+  character.resources.currentLife = Math.min(character.resources.currentLife, derived.resources.maximumLife);
+  character.resources.currentStamina = Math.min(character.resources.currentStamina, derived.resources.maximumStamina);
+  character.body = derived.body.map((part) => ({
+    id: part.id,
+    currentArmor: Math.min(part.currentArmor, part.maximumArmor),
+    ...(part.type === "member" ? { dice: part.dice } : {}),
+  }));
+  return character;
 }
 
 function migrateLegacyBody(body) {
@@ -262,7 +283,11 @@ export const yusongEngine = assertSystemEngine({
     buildSkillNotation: buildYusongSkillNotation,
     rollSkill: rollYusongSkill,
   }),
-  random: Object.freeze({ distributePoints: distributeYusongPoints }),
+  random: Object.freeze({
+    distributePoints: distributeYusongPoints,
+    generateProfile: generateYusongRandomProfile,
+    createCharacter: createRandomYusongCharacter,
+  }),
   summarize: (character) => ({
     displayName: character?.identity?.displayName ?? "Sem nome",
     level: Number(character?.identity?.level) || 1,
