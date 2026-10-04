@@ -18,6 +18,14 @@ function transactionResult(transaction) {
   });
 }
 
+async function committedRequest(transaction, request) {
+  const [result] = await Promise.all([
+    requestResult(request),
+    transactionResult(transaction),
+  ]);
+  return result;
+}
+
 function persistenceError(message, code, details = {}) {
   return Object.assign(new Error(message), { code, ...details });
 }
@@ -90,6 +98,7 @@ export class IndexedDbCharacterRepository {
 
   async put(envelope, { expectedRevision = null, createMutationId } = {}) {
     const transaction = this.transaction(["characters"], "readwrite");
+    const completed = transactionResult(transaction);
     const store = transaction.objectStore("characters");
     const existing = await requestResult(store.get(envelope.id));
     let prepared;
@@ -97,21 +106,40 @@ export class IndexedDbCharacterRepository {
       prepared = prepareEnvelopeWrite(envelope, existing, { expectedRevision, createMutationId });
     } catch (error) {
       transaction.abort();
+      await completed.catch(() => {});
       throw error;
     }
-    await requestResult(store.put(prepared));
+    await Promise.all([requestResult(store.put(prepared)), completed]);
     return structuredClone(prepared);
   }
 
   async getReceipt(id) { return requestResult(this.transaction(["migrationReceipts"]).objectStore("migrationReceipts").get(id)); }
-  async putReceipt(receipt) { await requestResult(this.transaction(["migrationReceipts"], "readwrite").objectStore("migrationReceipts").put(receipt)); return receipt; }
-  async quarantine(record) { await requestResult(this.transaction(["quarantine"], "readwrite").objectStore("quarantine").put(record)); return record; }
+  async putReceipt(receipt) {
+    const transaction = this.transaction(["migrationReceipts"], "readwrite");
+    await committedRequest(transaction, transaction.objectStore("migrationReceipts").put(receipt));
+    return receipt;
+  }
+  async quarantine(record) {
+    const transaction = this.transaction(["quarantine"], "readwrite");
+    await committedRequest(transaction, transaction.objectStore("quarantine").put(record));
+    return record;
+  }
   async getQuarantine(id) { return requestResult(this.transaction(["quarantine"]).objectStore("quarantine").get(id)); }
   async listQuarantine() { return requestResult(this.transaction(["quarantine"]).objectStore("quarantine").getAll()); }
-  async deleteQuarantine(id) { await requestResult(this.transaction(["quarantine"], "readwrite").objectStore("quarantine").delete(id)); }
+  async deleteQuarantine(id) {
+    const transaction = this.transaction(["quarantine"], "readwrite");
+    await committedRequest(transaction, transaction.objectStore("quarantine").delete(id));
+  }
   async getMigrationBackup(id) { return requestResult(this.transaction(["migrationBackups"]).objectStore("migrationBackups").get(id)); }
-  async putMigrationBackup(record) { await requestResult(this.transaction(["migrationBackups"], "readwrite").objectStore("migrationBackups").put(structuredClone(record))); return record; }
-  async deleteMigrationBackup(id) { await requestResult(this.transaction(["migrationBackups"], "readwrite").objectStore("migrationBackups").delete(id)); }
+  async putMigrationBackup(record) {
+    const transaction = this.transaction(["migrationBackups"], "readwrite");
+    await committedRequest(transaction, transaction.objectStore("migrationBackups").put(structuredClone(record)));
+    return record;
+  }
+  async deleteMigrationBackup(id) {
+    const transaction = this.transaction(["migrationBackups"], "readwrite");
+    await committedRequest(transaction, transaction.objectStore("migrationBackups").delete(id));
+  }
 
   async commitLegacyImport({ receipt, records, quarantined }) {
     const stores = ["characters", "migrationReceipts", "quarantine", "migrationBackups"];

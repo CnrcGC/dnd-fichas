@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useFichas } from "../context/useFichas";
-import { obterRaca } from "../data/racas";
+import { obterBonusRaciais, obterDeslocamentoRacial } from "../data/racas";
 import { obterClasse } from "../data/classes";
 import {
   sincronizarFichaComSubclasses,
@@ -12,12 +12,13 @@ import { calcularBonusProficiencia, calcularModificadoresAtributos } from "../ut
 import { criarEspacosMagiaVazios } from "../utils/magia";
 import { calcularCaEquipada } from "../utils/equipamento";
 import { somarEfeitoItens } from "../utils/itensMagicos";
-import { atualizarStatus } from "../utils/status";
+import { atualizarStatus, estadoTestesMorte } from "../utils/status";
 import { atualizarMoeda } from "../utils/moedas";
 import {
   adicionarCondicao,
   aplicarEfeitoPv,
   avisoConcentracaoPorDano,
+  concentracaoTerminaPorStatus,
   avancarCondicao,
   criarCondicaoAtiva,
 } from "../utils/efeitos";
@@ -54,6 +55,8 @@ import {
   sincronizarRecursosCatalogo,
 } from "../utils/recurso";
 import { reconciliarProficienciasCriacao } from "../utils/proficienciasCriacao";
+import { atualizarEscolhaClasse, especializacoesDaFicha } from "../utils/escolhasClasses";
+import { atualizarEscolhaSubclasse, especializacoesSubclasseDaFicha } from "../utils/escolhasSubclasses";
 import { RECURSOS_RASTREAVEIS } from "../data/recursosRastreaveis";
 import BlocoRacaClasse from "../components/ficha/BlocoRacaClasse";
 import BlocoAtributos from "../components/ficha/BlocoAtributos";
@@ -90,11 +93,11 @@ function CarregandoSecao({ nome }) {
 }
 
 function calcularBonusRacialFicha(ficha) {
-  const bonus = { ...(obterRaca(ficha?.racaId)?.bonusAtributos ?? {}) };
-  for (const chave of ficha?.bonusRacialEscolhido ?? []) {
-    if (chave) bonus[chave] = (bonus[chave] ?? 0) + 1;
-  }
-  return bonus;
+  return obterBonusRaciais(
+    ficha?.racaId,
+    ficha?.subracaId,
+    ficha?.bonusRacialEscolhido
+  );
 }
 
 function contextoRecursos(ficha, modificadores) {
@@ -125,10 +128,15 @@ export default function Ficha() {
   const { obterFicha, atualizarFicha } = useFichas();
   const ficha = obterFicha(id);
   const [abaAtiva, setAbaAtiva] = useState("combate");
+  const [abaComFoco, setAbaComFoco] = useState("combate");
   const [modalLevelUpAberto, setModalLevelUpAberto] = useState(false);
   const [avisoConcentracao, setAvisoConcentracao] = useState(null); // { cd } | null   NOVO
 
   const bonusRacial = calcularBonusRacialFicha(ficha);
+  const especializacoes = new Set([
+    ...especializacoesDaFicha(ficha ?? {}),
+    ...especializacoesSubclasseDaFicha(ficha ?? {}),
+  ]);
   const modificadoresAtributos = ficha
     ? calcularModificadoresAtributos(ficha.atributos, bonusRacial)
     : null;
@@ -223,11 +231,11 @@ const ehConjurador =
   const percepcaoPassiva =
     10 +
     modificadoresAtributos.sabedoria +
-    (ficha.pericias?.percepcao ? bonusProficiencia : 0);
+    (ficha.pericias?.percepcao ? bonusProficiencia * (especializacoes.has("percepcao") ? 2 : 1) : 0);
   const investigacaoPassiva =
     10 +
     modificadoresAtributos.inteligencia +
-    (ficha.pericias?.investigacao ? bonusProficiencia : 0);
+    (ficha.pericias?.investigacao ? bonusProficiencia * (especializacoes.has("investigacao") ? 2 : 1) : 0);
 
   function handleChangeAtributo(chave, novoValor) {
     atualizarFicha(id, (fichaAtual) => {
@@ -277,12 +285,19 @@ function avisarTesteConcentracao(danoRecebido) {
   if (chave === "pvAtual" && ficha.concentracao) {
     const statusAtualizado = atualizarStatus(ficha.status, chave, novoValor);
     const danoRecebido = (ficha.status.pvAtual ?? 0) - statusAtualizado.pvAtual;
-    avisarTesteConcentracao(danoRecebido);
+    if (concentracaoTerminaPorStatus(statusAtualizado)) setAvisoConcentracao(null);
+    else avisarTesteConcentracao(danoRecebido);
   }
 
-  atualizarFicha(id, (fichaAtual) => ({
-    status: atualizarStatus(fichaAtual.status, chave, novoValor),
-  }));
+  atualizarFicha(id, (fichaAtual) => {
+    const status = atualizarStatus(fichaAtual.status, chave, novoValor);
+    return {
+      status,
+      ...(chave === "pvAtual" && concentracaoTerminaPorStatus(status)
+        ? { concentracao: null }
+        : {}),
+    };
+  });
   }
 
   function handleChangeRecursos(novosRecursos) {
@@ -310,6 +325,7 @@ function handleAdicionarSugestaoRecurso(sugestao) {
 
   function handleGastarDadoDeVida(classeId, cura) {
   atualizarFicha(id, (fichaAtual) => {
+    if (estadoTestesMorte(fichaAtual.status).morto) return {};
     const dadosVidaPorClasse = gastarDadoVida(fichaAtual.dadosVidaPorClasse, classeId);
     return {
       status: {
@@ -330,8 +346,11 @@ function handleRestaurarEspacosMagia() {
   }));
 }
 
-function handleDescansoLongo() {
-  atualizarFicha(id, aplicarDescansoLongo);
+function handleDescansoLongo(prioridadeDadosVida) {
+  atualizarFicha(id, (fichaAtual) =>
+    aplicarDescansoLongo(fichaAtual, { prioridadeDadosVida })
+  );
+  setAvisoConcentracao(null);
 }
 
 function handleDescansoCurto() {
@@ -342,8 +361,13 @@ function handleDescansoCurto() {
 function handleChangeRaca(novoRacaId) {
   atualizarFicha(id, (fichaAtual) => {
     const fichaComRaca = reconciliarProficienciasCriacao({
-      ...fichaAtual, racaId: novoRacaId, bonusRacialEscolhido: [],
-      escolhasCriacao: { ...(fichaAtual.escolhasCriacao ?? {}), idiomasRaca: [], periciasRaca: [], ferramentasRaca: [], ferramentasSubstitutas: [] },
+      ...fichaAtual,
+      racaId: novoRacaId,
+      subracaId: null,
+      escolhasRaciais: {},
+      bonusRacialEscolhido: [],
+      status: { ...fichaAtual.status, deslocamento: obterDeslocamentoRacial(novoRacaId, null) },
+      escolhasCriacao: { ...(fichaAtual.escolhasCriacao ?? {}), idiomasRaca: [], periciasRaca: [], ferramentasRaca: [], idiomasSubraca: [], ferramentasSubraca: [], ferramentasSubstitutas: [] },
     });
     const modificadores = calcularModificadoresAtributos(
       fichaComRaca.atributos,
@@ -354,6 +378,28 @@ function handleChangeRaca(novoRacaId) {
       recursos: sincronizarRecursosDaFicha(fichaComRaca, modificadores),
     };
   });
+}
+
+function handleChangeSubraca(novaSubracaId) {
+  atualizarFicha(id, (fichaAtual) => {
+    const fichaComSubraca = reconciliarProficienciasCriacao({
+      ...fichaAtual,
+      subracaId: novaSubracaId,
+      status: { ...fichaAtual.status, deslocamento: obterDeslocamentoRacial(fichaAtual.racaId, novaSubracaId) },
+      escolhasCriacao: { ...(fichaAtual.escolhasCriacao ?? {}), idiomasSubraca: [], ferramentasSubraca: [], ferramentasSubstitutas: [] },
+    });
+    const modificadores = calcularModificadoresAtributos(
+      fichaComSubraca.atributos,
+      calcularBonusRacialFicha(fichaComSubraca)
+    );
+    return { ...fichaComSubraca, recursos: sincronizarRecursosDaFicha(fichaComSubraca, modificadores) };
+  });
+}
+
+function handleChangeEscolhaRacial(chave, valor) {
+  atualizarFicha(id, (fichaAtual) => ({
+    escolhasRaciais: { ...(fichaAtual.escolhasRaciais ?? {}), [chave]: valor || null },
+  }));
 }
 
   function handleChangeAntecedente(novoAntecedenteId) {
@@ -484,8 +530,10 @@ function handleChangeRaca(novoRacaId) {
             recurso.origemClasseId !== fichaAtual.classeId
         ),
       });
-      return {
+      return reconciliarProficienciasCriacao({
+        ...fichaSincronizada,
         subclasseId: novaSubclasseId,
+        perfilEscolhasSubclasse: "me-02c",
         recursos: sincronizarRecursosDaFicha(fichaSincronizada, modificadoresAtributos),
         habilidades: fichaSincronizada.habilidades,
         magias: fichaSincronizada.magias,
@@ -493,7 +541,7 @@ function handleChangeRaca(novoRacaId) {
           ...fichaAtual,
           subclasseId: novaSubclasseId,
         }),
-      };
+      });
     });
   }
 
@@ -604,8 +652,10 @@ function handleAlterarClasseSecundaria(indice, campo, valor) {
         : {};
     const fichaComProficiencias = { ...fichaComClasses, ...atualizacoesProf };
     const fichaSincronizada = sincronizarFichaComSubclasses(fichaComProficiencias);
-    return {
+    return reconciliarProficienciasCriacao({
+      ...fichaSincronizada,
       classesSecundarias: novasClasses,
+      ...(campo === "subclasseId" ? { perfilEscolhasSubclasse: "me-02c" } : {}),
       ...atualizacoesPv,
       ...atualizacoesProf,
       recursos: sincronizarRecursosDaFicha(fichaSincronizada, modificadoresAtributos),
@@ -615,7 +665,7 @@ function handleAlterarClasseSecundaria(indice, campo, valor) {
         ...fichaAtual,
         classesSecundarias: novasClasses,
       }),
-    };
+    });
   });
 }
 
@@ -781,21 +831,33 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 }
 
   function handleIrParaSecaoValidacao(secao) {
-    if (secao !== "identidade") setAbaAtiva(secao);
+    if (secao !== "identidade") {
+      setAbaAtiva(secao);
+      setAbaComFoco(secao);
+    }
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         document.getElementById(`ficha-secao-${secao}`)?.scrollIntoView({
-          behavior: "smooth",
+          behavior: "auto",
           block: "start",
         });
+        document.getElementById(`ficha-secao-${secao}`)?.focus({ preventScroll: true });
       });
     });
   }
 
   function handleAplicarEfeitoPv(tipo, valor) {
     const resultado = aplicarEfeitoPv(ficha.status, tipo, valor);
-    avisarTesteConcentracao(resultado.danoRecebido);
-    atualizarFicha(id, () => ({ status: resultado.status }));
+    if (concentracaoTerminaPorStatus(resultado.status)) setAvisoConcentracao(null);
+    else avisarTesteConcentracao(resultado.danoRecebido);
+    atualizarFicha(id, (fichaAtual) => {
+      const aplicado = aplicarEfeitoPv(fichaAtual.status, tipo, valor);
+      return {
+        status: aplicado.status,
+        ...(concentracaoTerminaPorStatus(aplicado.status) ? { concentracao: null } : {}),
+      };
+    });
+    return resultado;
   }
 
   function handleAplicarCondicao(dadosCondicao) {
@@ -829,7 +891,14 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
   }
 
   function handleTabKeyDown(event) {
-    const currentIndex = ABAS.findIndex((aba) => aba.chave === abaAtiva);
+    const chaveAtual = event.currentTarget.dataset.aba;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setAbaAtiva(chaveAtual);
+      return;
+    }
+
+    const currentIndex = ABAS.findIndex((aba) => aba.chave === chaveAtual);
     let nextIndex = null;
     if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % ABAS.length;
     if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + ABAS.length) % ABAS.length;
@@ -838,9 +907,21 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
     if (nextIndex === null) return;
     event.preventDefault();
     const next = ABAS[nextIndex];
-    setAbaAtiva(next.chave);
-    requestAnimationFrame(() => document.getElementById(`ficha-aba-${next.chave}`)?.focus());
+    setAbaComFoco(next.chave);
+    requestAnimationFrame(() => {
+      const proximaAba = document.getElementById(`ficha-aba-${next.chave}`);
+      proximaAba?.focus({ preventScroll: true });
+      proximaAba?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    });
   }
+
+  const motivoLevelUpBloqueado = !classe
+    ? "Escolha uma classe primeiro."
+    : !podeSubirPorXp
+    ? nivelTotal >= NIVEL_MAXIMO_PERSONAGEM
+      ? "O personagem já atingiu o nível máximo (20)."
+      : `Faltam ${xpNecessariaProximoNivel - xpAtualPersonagem} XP para o próximo nível.`
+    : "";
 
   return (
     <>
@@ -849,7 +930,15 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
         Imprimir / Salvar em PDF
       </button>
       <div className="ficha-shell">
-      <aside id="ficha-secao-identidade" className="ficha-coluna-fixa">
+      <aside
+        id="ficha-secao-identidade"
+        className="ficha-coluna-fixa"
+        tabIndex={-1}
+        aria-labelledby="ficha-identidade-titulo"
+      >
+        <h2 id="ficha-identidade-titulo" className="visually-hidden">
+          Identidade e progressão
+        </h2>
         <input
           type="text"
           className="ficha-nome-input"
@@ -859,7 +948,10 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
         />
 
        <BlocoRacaClasse
+  ficha={ficha}
   racaId={ficha.racaId}
+  subracaId={ficha.subracaId}
+  escolhasRaciais={ficha.escolhasRaciais ?? {}}
   classeId={ficha.classeId}
   antecedenteId={ficha.antecedenteId}
   nivel={ficha.nivel ?? 1}
@@ -872,6 +964,8 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
   proficienciasMulticlasse={ficha.proficienciasMulticlasse ?? {}}
   bonusRacialEscolhido={ficha.bonusRacialEscolhido ?? []}
   onChangeRaca={handleChangeRaca}
+  onChangeSubraca={handleChangeSubraca}
+  onChangeEscolhaRacial={handleChangeEscolhaRacial}
   onChangeClasse={handleChangeClasse}
   onChangeAntecedente={handleChangeAntecedente}
   onChangeNivel={handleChangeNivel}
@@ -883,6 +977,8 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
   onChangeBonusRacialEscolhido={handleChangeBonusRacialEscolhido}
   escolhasCriacao={ficha.escolhasCriacao ?? {}}
   onChangeEscolhasCriacao={(chave, valores) => atualizarFicha(id, (fichaAtual) => reconciliarProficienciasCriacao({ ...fichaAtual, escolhasCriacao: { ...(fichaAtual.escolhasCriacao ?? {}), [chave]: valores } }))}
+  onChangeEscolhaClasse={(classeId, escolhaId, valores) => atualizarFicha(id, (fichaAtual) => reconciliarProficienciasCriacao(atualizarEscolhaClasse(fichaAtual, classeId, escolhaId, valores)))}
+  onChangeEscolhaSubclasse={(subclasseId, escolhaId, valores) => atualizarFicha(id, (fichaAtual) => reconciliarProficienciasCriacao(atualizarEscolhaSubclasse(fichaAtual, subclasseId, escolhaId, valores)))}
 />
 
 <BlocoProgressao
@@ -904,18 +1000,14 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
   className="ficha-levelup-botao"
   onClick={() => setModalLevelUpAberto(true)}
   disabled={!classe || !podeSubirPorXp}
-  title={
-    !classe
-      ? "Escolha uma classe primeiro"
-      : !podeSubirPorXp
-       ? nivelTotal >= NIVEL_MAXIMO_PERSONAGEM
-         ? "O personagem já atingiu o nível máximo (20)"
-         : `Faltam ${xpNecessariaProximoNivel - xpAtualPersonagem} XP para o próximo nível`
-      : undefined
-  }
+  title={motivoLevelUpBloqueado || undefined}
+  aria-describedby={motivoLevelUpBloqueado ? "ficha-levelup-motivo" : undefined}
 >
           <Icon name="levelUp" /> Subir de Nível
 </button>
+{motivoLevelUpBloqueado && (
+  <p id="ficha-levelup-motivo" className="status-nota">{motivoLevelUpBloqueado}</p>
+)}
 
 
         {modalLevelUpAberto && (
@@ -953,28 +1045,44 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
       </aside>
 
       <div className="ficha-coluna-principal">
-        <nav className="ficha-abas" role="tablist" aria-label="Seções da ficha">
+        <nav
+          className="ficha-abas"
+          role="tablist"
+          aria-label="Seções da ficha"
+          aria-orientation="horizontal"
+        >
           {ABAS.map((aba) => (
             <button
               key={aba.chave}
               type="button"
               role="tab"
               id={`ficha-aba-${aba.chave}`}
+              data-aba={aba.chave}
               aria-selected={abaAtiva === aba.chave}
               aria-controls={`ficha-secao-${aba.chave}`}
-              tabIndex={abaAtiva === aba.chave ? 0 : -1}
+              tabIndex={abaComFoco === aba.chave ? 0 : -1}
+              onFocus={() => setAbaComFoco(aba.chave)}
               onKeyDown={handleTabKeyDown}
               className={
                 abaAtiva === aba.chave ? "ficha-aba is-ativa" : "ficha-aba"
               }
-              onClick={() => setAbaAtiva(aba.chave)}
+              onClick={() => {
+                setAbaAtiva(aba.chave);
+                setAbaComFoco(aba.chave);
+              }}
             >
               {aba.label}
             </button>
           ))}
         </nav>
 
-        <div id={`ficha-secao-${abaAtiva}`} className="ficha-conteudo-aba" role="tabpanel" aria-labelledby={`ficha-aba-${abaAtiva}`}>
+        <div
+          id={`ficha-secao-${abaAtiva}`}
+          className="ficha-conteudo-aba"
+          role="tabpanel"
+          aria-labelledby={`ficha-aba-${abaAtiva}`}
+          tabIndex={0}
+        >
           {abaAtiva === "combate" && (
             <>
               <BlocoStatus
@@ -995,6 +1103,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
               <BlocoAtaques
                 modificadoresAtributos={modificadoresAtributos}
                 bonusProficiencia={bonusProficiencia}
+                proficienciasArmas={ficha.proficienciasArmas ?? []}
                 inventario={ficha.inventario ?? []}
                 ataques={ficha.ataques ?? []}
                 onChangeAtaques={handleChangeAtaques}
@@ -1045,6 +1154,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
       pericias={ficha.pericias ?? {}}
       bonusProficiencia={bonusProficiencia}
       onTogglePericia={handleTogglePericia}
+      especializacoes={especializacoes}
     />
     <BlocoProficiencias
       idiomas={ficha.idiomas ?? ["comum"]}
@@ -1059,6 +1169,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
       modificadoresAtributos={modificadoresAtributos}
       bonusProficiencia={bonusProficiencia}
       origensProficiencias={ficha.origensProficiencias ?? {}}
+      especializacoes={especializacoes}
     />
   </Suspense>
 )}

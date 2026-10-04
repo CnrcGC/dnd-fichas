@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFichas } from "../context/useFichas";
-import { RACAS } from "../data/racas";
+import {
+  RACAS,
+  obterBonusRaciais,
+  obterDeslocamentoRacial,
+  obterSubraca,
+  obterSubracasPorRaca,
+} from "../data/racas";
 import { CLASSES } from "../data/classes";
 import { ANTECEDENTES } from "../data/antecedentes";
 import { PERICIAS } from "../data/pericias";
@@ -13,7 +19,15 @@ import { obterEspacosPorNivel, mesclarEspacosNoAtual } from "../utils/conjuracao
 import {
   opcoesFerramentas,
   quantidadeSubstituicoesFerramentas,
+  reconciliarProficienciasCriacao,
 } from "../utils/proficienciasCriacao";
+import { obterEscolhasPorClasse } from "../data/escolhasClasses";
+import {
+  escolhaAtiva,
+  opcoesDaEscolha,
+  quantidadeDaEscolha,
+  valoresDaEscolha,
+} from "../utils/escolhasClasses";
 import "./NovaFicha.css";
 
 const ETAPAS = [
@@ -38,9 +52,15 @@ export default function NovaFicha() {
   const { criarFicha } = useFichas();
   const navigate = useNavigate();
   const [etapa, setEtapa] = useState(0);
+  const conteudoRef = useRef(null);
+  const primeiraEtapaRef = useRef(true);
   const [rascunho, setRascunho] = useState(() => ({
     nomePersonagem: "",
     racaId: null,
+    subracaId: null,
+    escolhasRaciais: {},
+    escolhasClasse: {},
+    escolhasSubclasse: {},
     classeId: null,
     antecedenteId: null,
     atributos: distribuicaoInicial(),
@@ -49,14 +69,23 @@ export default function NovaFicha() {
     personalidade: "",
     historico: "",
     objetivo: "",
-    escolhasCriacao: { periciasClasse: [], ferramentasClasse: [], periciasRaca: [], idiomasRaca: [], ferramentasRaca: [], idiomasAntecedente: [], ferramentasAntecedente: [], ferramentasSubstitutas: [] },
+    escolhasCriacao: { periciasClasse: [], ferramentasClasse: [], periciasRaca: [], idiomasRaca: [], ferramentasRaca: [], idiomasSubraca: [], ferramentasSubraca: [], idiomasAntecedente: [], ferramentasAntecedente: [], ferramentasSubstitutas: [] },
     bonusRacialEscolhido: [],
   }));
 
   const racaEscolhida = RACAS.find((r) => r.id === rascunho.racaId) ?? null;
+  const subracaEscolhida = obterSubraca(rascunho.subracaId);
   const classeEscolhida = CLASSES.find((c) => c.id === rascunho.classeId) ?? null;
   const antecedenteEscolhido =
     ANTECEDENTES.find((a) => a.id === rascunho.antecedenteId) ?? null;
+
+  useEffect(() => {
+    if (primeiraEtapaRef.current) {
+      primeiraEtapaRef.current = false;
+      return;
+    }
+    requestAnimationFrame(() => conteudoRef.current?.querySelector("[data-etapa-titulo]")?.focus());
+  }, [etapa]);
 
   function irPara(indice) {
     setEtapa(Math.min(Math.max(indice, 0), ETAPAS.length - 1));
@@ -68,6 +97,9 @@ export default function NovaFicha() {
   }
 
   function handleEscolherRaca(id) {
+    const raca = RACAS.find((item) => item.id === id);
+    if (raca?.requerSubraca && (!rascunho.subracaId || obterSubraca(rascunho.subracaId)?.racaId !== id)) return;
+    if (raca?.ancestralidadesDraconicas?.length && !rascunho.escolhasRaciais?.ancestralidadeDraconicaId) return;
     setRascunho((atual) => ({
       ...atual,
       racaId: id,
@@ -75,6 +107,17 @@ export default function NovaFicha() {
       escolhasCriacao: { ...atual.escolhasCriacao, periciasRaca: [], idiomasRaca: [], ferramentasRaca: [], ferramentasSubstitutas: [] },
     }));
     irPara(etapa + 1);
+  }
+
+  function podeEscolherRaca(raca) {
+    const selecionada = rascunho.racaId === raca.id;
+    const subracaValida = !raca.requerSubraca || (
+      selecionada && obterSubraca(rascunho.subracaId)?.racaId === raca.id
+    );
+    const ancestralidadeValida = !raca.ancestralidadesDraconicas?.length || (
+      selecionada && Boolean(rascunho.escolhasRaciais?.ancestralidadeDraconicaId)
+    );
+    return subracaValida && ancestralidadeValida;
   }
 
   function handleEscolherClasse(id) {
@@ -115,10 +158,7 @@ export default function NovaFicha() {
   }
 
   function handleFinalizar() {
-    const bonusRacial = { ...(racaEscolhida?.bonusAtributos ?? {}) };
-    for (const atributo of rascunho.bonusRacialEscolhido ?? []) {
-      if (atributo) bonusRacial[atributo] = (bonusRacial[atributo] ?? 0) + 1;
-    }
+    const bonusRacial = obterBonusRaciais(rascunho.racaId, rascunho.subracaId, rascunho.bonusRacialEscolhido);
     const modCon = calcularModificador(
       rascunho.atributos.constituicao + (bonusRacial.constituicao ?? 0)
     );
@@ -136,6 +176,10 @@ export default function NovaFicha() {
 
     const novaFicha = criarFicha(rascunho.nomePersonagem, {
       racaId: rascunho.racaId,
+      subracaId: rascunho.subracaId,
+      escolhasRaciais: rascunho.escolhasRaciais,
+      escolhasClasse: rascunho.escolhasClasse,
+      escolhasSubclasse: rascunho.escolhasSubclasse,
       classeId: rascunho.classeId,
       antecedenteId: rascunho.antecedenteId,
       atributos: rascunho.atributos,
@@ -152,7 +196,7 @@ export default function NovaFicha() {
         pvMax: pvInicial,
         ca: 10 + modDes,
         iniciativa: modDes,
-        deslocamento: racaEscolhida?.deslocamento ?? 9,
+        deslocamento: obterDeslocamentoRacial(rascunho.racaId, rascunho.subracaId),
       },
       pvPorNivel: { 1: pvInicial },
       espacosMagia: espacosIniciais,
@@ -168,10 +212,18 @@ export default function NovaFicha() {
         Pular e criar ficha em branco
       </button>
 
-      <ol className="criacao-passos" tabIndex="0" aria-label="Etapas de criação">
+      <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+        Etapa {etapa + 1} de {ETAPAS.length}: {ETAPAS[etapa].label}
+      </p>
+      <ol
+        className="criacao-passos"
+        aria-label="Etapas de criação; role horizontalmente para consultar todas"
+        tabIndex={0}
+      >
         {ETAPAS.map((info, indice) => (
           <li
             key={info.chave}
+            aria-current={indice === etapa ? "step" : undefined}
             className={
               indice === etapa
                 ? "criacao-passo is-ativo"
@@ -185,22 +237,41 @@ export default function NovaFicha() {
         ))}
       </ol>
 
-      <div className="criacao-conteudo">
+      <div className="criacao-conteudo" ref={conteudoRef}>
         {etapa === 0 && (
           <EtapaEscolha
             titulo="Escolha sua Raça"
             texto="A raça define traços físicos, bônus de atributo e alguns talentos naturais do seu personagem."
             itens={RACAS}
-            renderExtra={(raca) => (
+            renderExtra={(raca) => {
+              const subracas = obterSubracasPorRaca(raca.id);
+              const selecionada = rascunho.racaId === raca.id;
+              return <>
               <p className="criacao-card-extra">
-                {Object.entries(raca.bonusAtributos)
+                {Object.entries(obterBonusRaciais(raca.id, selecionada ? rascunho.subracaId : null))
                   .map(
                     ([chave, valor]) =>
                       `${ATRIBUTOS.find((a) => a.chave === chave)?.abreviacao} ${formatarModificador(valor)}`
                   )
                   .join(" · ")}
               </p>
-            )}
+              {subracas.length > 0 && <label className="criacao-campo">
+                <span>Sub-raça</span>
+                <select value={selecionada ? rascunho.subracaId ?? "" : ""} onChange={(evento) => setRascunho((atual) => ({ ...atual, racaId: raca.id, subracaId: evento.target.value || null, escolhasRaciais: {}, bonusRacialEscolhido: [], escolhasCriacao: { ...atual.escolhasCriacao, idiomasRaca: [], ferramentasRaca: [], periciasRaca: [], idiomasSubraca: [], ferramentasSubraca: [], ferramentasSubstitutas: [] } }))}>
+                  <option value="">Selecione...</option>
+                  {subracas.map((subraca) => <option key={subraca.id} value={subraca.id}>{subraca.nome}</option>)}
+                </select>
+              </label>}
+              {raca.ancestralidadesDraconicas?.length > 0 && <label className="criacao-campo">
+                <span>Ancestralidade dracônica</span>
+                <select value={selecionada ? rascunho.escolhasRaciais?.ancestralidadeDraconicaId ?? "" : ""} onChange={(evento) => setRascunho((atual) => ({ ...atual, racaId: raca.id, subracaId: null, escolhasRaciais: { ancestralidadeDraconicaId: evento.target.value || null }, bonusRacialEscolhido: [] }))}>
+                  <option value="">Selecione...</option>
+                  {raca.ancestralidadesDraconicas.map((item) => <option key={item.id} value={item.id}>{item.nome} — {item.dano}, {item.forma}</option>)}
+                </select>
+              </label>}
+              </>;
+            }}
+            podeEscolher={podeEscolherRaca}
             onEscolher={handleEscolherRaca}
             onVoltar={null}
             onPular={() => irPara(etapa + 1)}
@@ -243,7 +314,7 @@ export default function NovaFicha() {
 
         {etapa === 3 && (
           <section>
-            <h2 className="criacao-titulo">Distribua seus Atributos</h2>
+            <h2 className="criacao-titulo" data-etapa-titulo tabIndex={-1}>Distribua seus Atributos</h2>
             <p className="criacao-texto">
               Distribua os valores {ARRANJO_PADRAO.join(", ")} entre os seis
               atributos (arranjo padrão — cada valor só pode ser usado uma
@@ -252,7 +323,7 @@ export default function NovaFicha() {
 
             <div className="criacao-atributos-grid">
               {ATRIBUTOS.map((atributo) => {
-                const bonusRacial = (racaEscolhida?.bonusAtributos?.[atributo.chave] ?? 0) + (rascunho.bonusRacialEscolhido ?? []).filter((chave) => chave === atributo.chave).length;
+                const bonusRacial = obterBonusRaciais(rascunho.racaId, rascunho.subracaId, rascunho.bonusRacialEscolhido)[atributo.chave] ?? 0;
                 const valorBase = rascunho.atributos[atributo.chave];
                 const valorFinal = valorBase + bonusRacial;
                 return (
@@ -300,7 +371,7 @@ export default function NovaFicha() {
 
         {etapa === 4 && (
           <section>
-            <h2 className="criacao-titulo">Toques Finais</h2>
+            <h2 className="criacao-titulo" data-etapa-titulo tabIndex={-1}>Toques Finais</h2>
             <p className="criacao-texto">
               Até aqui você definiu as características mecânicas da sua
               ficha — mas um bom personagem é mais do que apenas números.
@@ -311,6 +382,7 @@ export default function NovaFicha() {
             <EscolhasDeCriacao
               rascunho={rascunho}
               raca={racaEscolhida}
+              subraca={subracaEscolhida}
               classe={classeEscolhida}
               antecedente={antecedenteEscolhido}
               onChange={(chave, valores) => setRascunho((atual) => ({
@@ -318,6 +390,16 @@ export default function NovaFicha() {
                 escolhasCriacao: { ...atual.escolhasCriacao, [chave]: valores },
               }))}
               onBonusRacial={(valores) => setRascunho((atual) => ({ ...atual, bonusRacialEscolhido: valores }))}
+              onEscolhaClasse={(escolhaId, valores) => setRascunho((atual) => ({
+                ...atual,
+                escolhasClasse: {
+                  ...(atual.escolhasClasse ?? {}),
+                  [atual.classeId]: {
+                    ...(atual.escolhasClasse?.[atual.classeId] ?? {}),
+                    [escolhaId]: valores,
+                  },
+                },
+              }))}
             />
 
             <div className="criacao-toques-grid">
@@ -396,7 +478,7 @@ export default function NovaFicha() {
   );
 }
 
-function EscolhasDeCriacao({ rascunho, raca, classe, antecedente, onChange, onBonusRacial }) {
+function EscolhasDeCriacao({ rascunho, raca, subraca, classe, antecedente, onChange, onBonusRacial, onEscolhaClasse }) {
   const escolha = rascunho.escolhasCriacao ?? {};
   const seletor = (titulo, chave, quantidade, opcoes, rotulos, bloqueadas = []) => {
     if (!quantidade) return null;
@@ -404,9 +486,14 @@ function EscolhasDeCriacao({ rascunho, raca, classe, antecedente, onChange, onBo
     return <div className="criacao-campo" key={chave}>
       <span>{titulo} — escolha {quantidade}</span>
       {Array.from({ length: quantidade }).map((_, indice) => (
-        <select key={indice} value={valores[indice] ?? ""} onChange={(evento) => {
+        <select
+          key={indice}
+          aria-label={`${titulo}, escolha ${indice + 1} de ${quantidade}`}
+          value={valores[indice] ?? ""}
+          onChange={(evento) => {
           const proximos = [...valores]; proximos[indice] = evento.target.value || null; onChange(chave, proximos);
-        }}>
+          }}
+        >
           <option value="">Selecione...</option>
           {opcoes.filter((id) => !bloqueadas.includes(id) && (!valores.includes(id) || valores[indice] === id)).map((id) => <option key={id} value={id}>{rotulos[id] ?? id}</option>)}
         </select>
@@ -415,6 +502,7 @@ function EscolhasDeCriacao({ rascunho, raca, classe, antecedente, onChange, onBo
   };
   const pericias = Object.fromEntries(PERICIAS.map((item) => [item.chave, item.label]));
   const idiomas = Object.fromEntries(IDIOMAS.map((item) => [item.id, item.nome]));
+  const idiomasEscolhiveis = IDIOMAS.filter((item) => item.tipo !== "secreto").map((item) => item.id);
   const ferramentas = Object.fromEntries(FERRAMENTAS.map((item) => [item.id, item.nome]));
   const classeRegra = classe?.proficienciasIniciais?.pericias;
   const periciasClasse = classeRegra?.opcoes === "todas" ? PERICIAS.map((item) => item.chave) : classeRegra?.opcoes ?? [];
@@ -423,27 +511,49 @@ function EscolhasDeCriacao({ rascunho, raca, classe, antecedente, onChange, onBo
   const ferramentasFixas = [
     ...(classe?.proficienciasIniciais?.ferramentas ?? []),
     ...(raca?.ferramentasFixas ?? []),
+    ...(subraca?.ferramentasFixas ?? []),
     ...(antecedente?.ferramentasFixas ?? []),
   ];
-  const substituicoes = quantidadeSubstituicoesFerramentas(classe, raca, antecedente);
+  const substituicoes = quantidadeSubstituicoesFerramentas(classe, raca, antecedente, subraca);
+  const fichaParaEscolhas = reconciliarProficienciasCriacao({ ...rascunho, nivel: 1, classesSecundarias: [] });
+  const escolhasClasse = obterEscolhasPorClasse(classe?.id, 1)
+    .filter((item) => escolhaAtiva(item, fichaParaEscolhas, classe?.id));
   return <section className="criacao-escolhas">
     <h3 className="criacao-titulo">Escolhas obrigatórias</h3>
-    {raca?.atributosEscolhaLivre && Array.from({ length: raca.atributosEscolhaLivre }).map((_, indice) => <select key={`atributo-${indice}`} value={rascunho.bonusRacialEscolhido?.[indice] ?? ""} onChange={(evento) => { const proximos = [...(rascunho.bonusRacialEscolhido ?? [])]; proximos[indice] = evento.target.value || null; onBonusRacial(proximos); }}><option value="">Atributo para +1...</option>{ATRIBUTOS.filter((a) => !raca.bonusAtributos?.[a.chave] && (!(rascunho.bonusRacialEscolhido ?? []).includes(a.chave) || rascunho.bonusRacialEscolhido?.[indice] === a.chave)).map((a) => <option key={a.chave} value={a.chave}>{a.label}</option>)}</select>)}
+    {raca?.atributosEscolhaLivre && Array.from({ length: raca.atributosEscolhaLivre }).map((_, indice) => <select aria-label={`Atributo para bônus racial, escolha ${indice + 1} de ${raca.atributosEscolhaLivre}`} key={`atributo-${indice}`} value={rascunho.bonusRacialEscolhido?.[indice] ?? ""} onChange={(evento) => { const proximos = [...(rascunho.bonusRacialEscolhido ?? [])]; proximos[indice] = evento.target.value || null; onBonusRacial(proximos); }}><option value="">Atributo para +1...</option>{ATRIBUTOS.filter((a) => !raca.bonusAtributos?.[a.chave] && (!(rascunho.bonusRacialEscolhido ?? []).includes(a.chave) || rascunho.bonusRacialEscolhido?.[indice] === a.chave)).map((a) => <option key={a.chave} value={a.chave}>{a.label}</option>)}</select>)}
     {seletor("Perícias da classe", "periciasClasse", classeRegra?.quantidade, periciasClasse, pericias, bloqueadasClasse)}
     {seletor("Ferramentas da classe", "ferramentasClasse", classe?.proficienciasIniciais?.ferramentasEscolha?.quantidade, opcoesFerramentas(classe?.proficienciasIniciais?.ferramentasEscolha), ferramentas, [...ferramentasFixas, ...(escolha.ferramentasRaca ?? []), ...(escolha.ferramentasAntecedente ?? [])])}
     {seletor("Perícias da raça", "periciasRaca", raca?.periciasEscolha?.quantidade, periciasRaca, pericias, antecedente?.periciasConcedidas ?? [])}
-    {seletor("Idiomas da raça", "idiomasRaca", raca?.idiomasEscolha, IDIOMAS.map((item) => item.id), idiomas, raca?.idiomasFixos ?? [])}
+    {seletor("Idiomas da raça", "idiomasRaca", raca?.idiomasEscolha, idiomasEscolhiveis, idiomas, raca?.idiomasFixos ?? [])}
     {seletor("Ferramentas da raça", "ferramentasRaca", raca?.ferramentasEscolha?.quantidade, opcoesFerramentas(raca?.ferramentasEscolha), ferramentas, [...ferramentasFixas, ...(escolha.ferramentasClasse ?? []), ...(escolha.ferramentasAntecedente ?? [])])}
-    {seletor("Idiomas do antecedente", "idiomasAntecedente", antecedente?.idiomasEscolha, IDIOMAS.map((item) => item.id), idiomas, [...(raca?.idiomasFixos ?? []), ...(escolha.idiomasRaca ?? [])])}
+    {seletor("Idiomas da sub-raça", "idiomasSubraca", subraca?.idiomasEscolha, idiomasEscolhiveis, idiomas, [...(raca?.idiomasFixos ?? []), ...(escolha.idiomasRaca ?? [])])}
+    {seletor("Ferramentas da sub-raça", "ferramentasSubraca", subraca?.ferramentasEscolha?.quantidade, opcoesFerramentas(subraca?.ferramentasEscolha), ferramentas, [...ferramentasFixas, ...(escolha.ferramentasClasse ?? []), ...(escolha.ferramentasRaca ?? []), ...(escolha.ferramentasAntecedente ?? [])])}
+    {seletor("Idiomas do antecedente", "idiomasAntecedente", antecedente?.idiomasEscolha, idiomasEscolhiveis, idiomas, [...(raca?.idiomasFixos ?? []), ...(escolha.idiomasRaca ?? [])])}
     {seletor("Ferramentas do antecedente", "ferramentasAntecedente", antecedente?.ferramentasEscolha?.quantidade, opcoesFerramentas(antecedente?.ferramentasEscolha), ferramentas, [...ferramentasFixas, ...(escolha.ferramentasClasse ?? []), ...(escolha.ferramentasRaca ?? [])])}
     {seletor("Substituições por proficiências repetidas", "ferramentasSubstitutas", substituicoes, FERRAMENTAS.map((item) => item.id), ferramentas, [...new Set([...ferramentasFixas, ...(escolha.ferramentasClasse ?? []), ...(escolha.ferramentasRaca ?? []), ...(escolha.ferramentasAntecedente ?? [])])])}
+    {escolhasClasse.map((escolhaClasse) => {
+      const quantidade = quantidadeDaEscolha(escolhaClasse, 1);
+      const valores = valoresDaEscolha(fichaParaEscolhas, classe.id, escolhaClasse.id);
+      const opcoes = opcoesDaEscolha(escolhaClasse, fichaParaEscolhas, { classeId: classe.id, nivel: 1 });
+      return <div className="criacao-campo" key={escolhaClasse.id}>
+        <span>{escolhaClasse.nome} — escolha {quantidade}</span>
+        {Array.from({ length: quantidade }, (_, indice) => escolhaClasse.tipo === "texto" ? (
+          <input key={indice} type="text" value={valores[indice] ?? ""} aria-label={`${escolhaClasse.nome}, escolha ${indice + 1} de ${quantidade}`} onChange={(evento) => { const proximos = [...valores]; proximos[indice] = evento.target.value; onEscolhaClasse(escolhaClasse.id, proximos); }} />
+        ) : (
+          <select key={indice} value={valores[indice] ?? ""} aria-label={`${escolhaClasse.nome}, escolha ${indice + 1} de ${quantidade}`} onChange={(evento) => { const proximos = [...valores]; proximos[indice] = evento.target.value || null; onEscolhaClasse(escolhaClasse.id, proximos); }}>
+            <option value="">Selecione...</option>
+            {opcoes.filter((opcao) => !valores.includes(opcao.id) || valores[indice] === opcao.id).map((opcao) => <option key={opcao.id} value={opcao.id}>{opcao.nome}</option>)}
+          </select>
+        ))}
+      </div>;
+    })}
   </section>;
 }
 
-function EtapaEscolha({ titulo, texto, itens, renderExtra, onEscolher, onVoltar, onPular }) {
+function EtapaEscolha({ titulo, texto, itens, renderExtra, podeEscolher = () => true, onEscolher, onVoltar, onPular }) {
   return (
     <section>
-      <h2 className="criacao-titulo">{titulo}</h2>
+      <h2 className="criacao-titulo" data-etapa-titulo tabIndex={-1}>{titulo}</h2>
       <p className="criacao-texto">{texto}</p>
 
       <div className="criacao-cards-lista">
@@ -458,6 +568,8 @@ function EtapaEscolha({ titulo, texto, itens, renderExtra, onEscolher, onVoltar,
               type="button"
               className="criacao-card-escolher"
               onClick={() => onEscolher(item.id)}
+              disabled={!podeEscolher(item)}
+              aria-label={`Escolher ${item.nome}`}
             >
               Escolher
             </button>

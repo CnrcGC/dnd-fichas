@@ -7,6 +7,7 @@ import Icon from "../icons/Icon";
 
 const IDIOMAS_PADRAO = IDIOMAS.filter((idioma) => idioma.tipo === "padrao");
 const IDIOMAS_EXOTICOS = IDIOMAS.filter((idioma) => idioma.tipo === "exotico");
+const IDIOMAS_SECRETOS = IDIOMAS.filter((idioma) => idioma.tipo === "secreto");
 
 export default function BlocoProficiencias({
   idiomas,
@@ -21,6 +22,7 @@ export default function BlocoProficiencias({
   modificadoresAtributos,
   bonusProficiencia,
   origensProficiencias = {},
+  especializacoes = new Set(),
 }) {
   const { registrarRolagem, rolarD20 } = useRolagem();
   const idiomasLegados = idiomas
@@ -55,7 +57,7 @@ export default function BlocoProficiencias({
   function handleRolarFerramenta(ferramenta, proficiente) {
     const atributoChave = atributoFerramentas[ferramenta.id] ?? "inteligencia";
     const modificador =
-      modificadoresAtributos[atributoChave] + (proficiente ? bonusProficiencia : 0);
+      modificadoresAtributos[atributoChave] + (proficiente ? bonusProficiencia * (especializacoes.has(ferramenta.id) ? 2 : 1) : 0);
     const resultado = rolarD20(modificador);
     registrarRolagem(`Ferramenta: ${ferramenta.nome}`, resultado, "d20");
   }
@@ -74,6 +76,13 @@ export default function BlocoProficiencias({
 
         <h4 className="proficiencias-subtitulo">Exóticos</h4>
         <div className="idiomas-grid">{renderChipsIdiomas(IDIOMAS_EXOTICOS)}</div>
+
+        {IDIOMAS_SECRETOS.some((idioma) => idiomas.includes(idioma.id)) && (
+          <>
+            <h4 className="proficiencias-subtitulo">Secretos de classe</h4>
+            <div className="idiomas-grid">{renderChipsIdiomas(IDIOMAS_SECRETOS.filter((idioma) => idiomas.includes(idioma.id)))}</div>
+          </>
+        )}
 
         {idiomasLegados.length > 0 && (
           <>
@@ -107,7 +116,7 @@ export default function BlocoProficiencias({
             const atributoChave = atributoFerramentas[ferramenta.id] ?? "inteligencia";
             const modificadorAtributo = modificadoresAtributos[atributoChave];
             const modificador =
-              modificadorAtributo + (proficiente ? bonusProficiencia : 0);
+              modificadorAtributo + (proficiente ? bonusProficiencia * (especializacoes.has(ferramenta.id) ? 2 : 1) : 0);
 
             return (
               <li key={ferramenta.id} className="ferramenta-item">

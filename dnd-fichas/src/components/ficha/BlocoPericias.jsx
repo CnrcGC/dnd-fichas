@@ -10,6 +10,7 @@ export default function BlocoPericias({
   pericias,
   bonusProficiencia,
   onTogglePericia,
+  especializacoes = new Set(),
 }) {
   const [expandidas, setExpandidas] = useState(() => new Set());
   const { registrarRolagem, rolarD20 } = useRolagem();
@@ -32,10 +33,11 @@ export default function BlocoPericias({
       <ul className="pericias-lista">
         {PERICIAS.map((pericia) => {
           const proficiente = Boolean(pericias[pericia.chave]);
+          const especializado = especializacoes.has(pericia.chave);
           const atributo = ATRIBUTOS.find((a) => a.chave === pericia.atributo);
           const modificadorAtributo = modificadoresAtributos[pericia.atributo];
           const modificador =
-            modificadorAtributo + (proficiente ? bonusProficiencia : 0);
+            modificadorAtributo + (proficiente ? bonusProficiencia * (especializado ? 2 : 1) : 0);
           const aberta = expandidas.has(pericia.chave);
 
           function handleRolar(evento) {
@@ -54,6 +56,7 @@ export default function BlocoPericias({
                   <input
                     type="checkbox"
                     checked={proficiente}
+                    aria-label={`Proficiência em ${pericia.label}`}
                     onChange={() => onTogglePericia(pericia.chave)}
                   />
                 </label>
@@ -86,7 +89,7 @@ export default function BlocoPericias({
                   </span>
                   <span>
                     Bônus de proficiência: {proficiente
-                      ? formatarModificador(bonusProficiencia)
+                      ? `${formatarModificador(bonusProficiencia * (especializado ? 2 : 1))}${especializado ? " (Especialização)" : ""}`
                       : "não treinada"}
                   </span>
                 </div>

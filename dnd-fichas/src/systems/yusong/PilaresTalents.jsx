@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { yusongEngine } from "./engine";
 import { yusongTalentCost } from "./rules";
 import { filterYusongTalents, YUSONG_TALENT_CATEGORIES } from "./talents";
+import { useModalA11y } from "../../hooks/useModalA11y";
 import "./PilaresTalents.css";
 
 const LEVELS = Object.freeze(["Nível 1", "Nível 2", "Nível 3", "Despertar"]);
@@ -9,6 +10,41 @@ const ACTIONS = Object.freeze(["Passiva", "Livre", "Movimento", "Padrão", "Comp
 
 function newAbility() {
   return { id: crypto.randomUUID(), name: "Nova Habilidade", level: "Nível 1", action: "Passiva", staminaCost: 0, description: "" };
+}
+
+function TalentCatalogDialog({ open, onClose, search, onSearch, category, onCategory, talents, selectedTalentIds, maximumStamina, onAddTalent, readOnly }) {
+  const dialogRef = useModalA11y(open, onClose);
+  if (!open) return null;
+  return (
+    <div className="pilares-talents__backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <section ref={dialogRef} tabIndex="-1" className="pilares-talents__dialog" role="dialog" aria-modal="true" aria-labelledby="pilares-talent-catalog-title">
+        <header>
+          <div><p>Catálogo de combate</p><h2 id="pilares-talent-catalog-title">Adicionar Talento</h2></div>
+          <button type="button" onClick={onClose} aria-label="Fechar catálogo de Talentos">×</button>
+        </header>
+        <div className="pilares-talents__filters">
+          <label>Buscar Talento<input autoFocus type="search" value={search} onChange={(event) => onSearch(event.target.value)} placeholder="Nome ou descrição" /></label>
+          <label>Categoria<select value={category} onChange={(event) => onCategory(event.target.value)}>{YUSONG_TALENT_CATEGORIES.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+        </div>
+        <p className="pilares-talents__catalog-count" aria-live="polite">{talents.length} {talents.length === 1 ? "Talento encontrado." : "Talentos encontrados."}</p>
+        <div className="pilares-talents__catalog-list">
+          {talents.length === 0 && <p className="pilares-talents__empty">Nenhum Talento corresponde aos filtros.</p>}
+          {talents.map((talent) => {
+            const added = selectedTalentIds.has(talent.id);
+            const cost = yusongTalentCost(talent.staminaCostPercent, maximumStamina);
+            return (
+              <details key={talent.id} className="pilares-talents__catalog-card">
+                <summary><span>{talent.name}</span><span>{added ? "Adicionado" : talent.category}</span></summary>
+                <dl><div><dt>Categoria</dt><dd>{talent.category}</dd></div><div><dt>Ação</dt><dd>{talent.action}</dd></div><div><dt>Custo</dt><dd>{talent.specialCost || `${cost} Stamina (${talent.staminaCostPercent}%)`}</dd></div>{talent.prerequisites && <div><dt>Pré-requisitos</dt><dd>{talent.prerequisites}</dd></div>}</dl>
+                <p>{talent.description}</p>
+                <div className="pilares-talents__actions"><button type="button" disabled={readOnly || added} onClick={() => onAddTalent(talent)} aria-label={added ? `${talent.name} já adicionado` : `Adicionar ${talent.name}`}>{added ? "Já adicionado" : "Adicionar"}</button></div>
+              </details>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  );
 }
 
 export default function PilaresTalents({
@@ -22,6 +58,7 @@ export default function PilaresTalents({
   onRemoveAbility,
   onUseAbility,
   readOnly = false,
+  view = "all",
 }) {
   const [editing, setEditing] = useState(null);
   const [catalogOpen, setCatalogOpen] = useState(false);
@@ -45,19 +82,19 @@ export default function PilaresTalents({
   }
 
   return (
-    <section className="pilares-talents" aria-labelledby="pilares-talents-title">
-      <h2 id="pilares-talents-title">Talentos e Genius</h2>
+    <div className="pilares-talents">
+      {view === "all" && <h2>Talentos e Genius</h2>}
 
-      <section className="pilares-talents__group" aria-labelledby="pilares-talent-list-title">
+      {(view === "all" || view === "talents") && <section className="pilares-talents__group" aria-labelledby="pilares-talent-list-title">
         <div className="pilares-talents__heading">
           <div>
-            <h3 id="pilares-talent-list-title">Talentos</h3>
+            <h2 id="pilares-talent-list-title">Talentos</h2>
             <p>Escolha no catálogo original ou gerencie os Talentos já salvos.</p>
           </div>
           <div className="pilares-talents__heading-actions">
             <span aria-label={`${character.talents.length} Talentos adicionados`}>{character.talents.length}</span>
-            <button type="button" disabled={readOnly} aria-expanded={catalogOpen} aria-controls="pilares-talent-catalog" onClick={() => setCatalogOpen((current) => !current)}>
-              {catalogOpen ? "Fechar catálogo" : "Adicionar Talento"}
+            <button type="button" disabled={readOnly} aria-haspopup="dialog" aria-expanded={catalogOpen} onClick={() => setCatalogOpen(true)}>
+              Adicionar Talento
             </button>
           </div>
         </div>
@@ -90,67 +127,13 @@ export default function PilaresTalents({
           </div>
         )}
 
-        {catalogOpen && (
-          <section id="pilares-talent-catalog" className="pilares-talents__catalog" aria-labelledby="pilares-talent-catalog-title">
-            <div>
-              <h4 id="pilares-talent-catalog-title">Catálogo de Talentos</h4>
-              <p>49 Talentos preservados do projeto original de Pilares de Atlas.</p>
-            </div>
-            <div className="pilares-talents__filters">
-              <label>
-                Buscar Talento
-                <input type="search" value={talentSearch} onChange={(event) => setTalentSearch(event.target.value)} />
-              </label>
-              <label>
-                Categoria
-                <select value={talentCategory} onChange={(event) => setTalentCategory(event.target.value)}>
-                  {YUSONG_TALENT_CATEGORIES.map((category) => <option key={category.id} value={category.id}>{category.label}</option>)}
-                </select>
-              </label>
-            </div>
-            <p className="pilares-talents__catalog-count" aria-live="polite">
-              {filteredTalents.length} {filteredTalents.length === 1 ? "Talento encontrado." : "Talentos encontrados."}
-            </p>
-            {filteredTalents.length === 0 ? (
-              <p className="pilares-talents__empty">Nenhum Talento corresponde aos filtros.</p>
-            ) : (
-              <div className="pilares-talents__catalog-list">
-                {filteredTalents.map((talent) => {
-                  const added = selectedTalentIds.has(talent.id);
-                  const cost = yusongTalentCost(talent.staminaCostPercent, derived.resources.maximumStamina);
-                  return (
-                    <details key={talent.id} className="pilares-talents__catalog-card">
-                      <summary>
-                        <span>{talent.name}</span>
-                        <span>{added ? "Adicionado" : talent.category}</span>
-                      </summary>
-                      <dl>
-                        <div><dt>Categoria</dt><dd>{talent.category}</dd></div>
-                        <div><dt>Ação</dt><dd>{talent.action}</dd></div>
-                        <div><dt>Custo</dt><dd>{talent.specialCost || `${cost} Stamina (${talent.staminaCostPercent}%)`}</dd></div>
-                        {talent.prerequisites && <div><dt>Pré-requisitos</dt><dd>{talent.prerequisites}</dd></div>}
-                      </dl>
-                      <p>{talent.description}</p>
-                      {talent.derivedFrom && <p><strong>Derivado de:</strong> {talent.derivedFrom}</p>}
-                      {talent.grants?.length > 0 && <p><strong>Concede:</strong> {talent.grants.join(", ")}</p>}
-                      <div className="pilares-talents__actions">
-                        <button type="button" disabled={readOnly || added} onClick={() => onAddTalent(talent)} aria-label={added ? `${talent.name} já adicionado` : `Adicionar ${talent.name}`}>
-                          {added ? "Já adicionado" : "Adicionar"}
-                        </button>
-                      </div>
-                    </details>
-                  );
-                })}
-              </div>
-            )}
-          </section>
-        )}
-      </section>
+        <TalentCatalogDialog open={catalogOpen} onClose={() => setCatalogOpen(false)} search={talentSearch} onSearch={setTalentSearch} category={talentCategory} onCategory={setTalentCategory} talents={filteredTalents} selectedTalentIds={selectedTalentIds} maximumStamina={derived.resources.maximumStamina} onAddTalent={onAddTalent} readOnly={readOnly} />
+      </section>}
 
-      <section className="pilares-talents__group" aria-labelledby="pilares-genius-title">
+      {(view === "all" || view === "genius") && <section className="pilares-talents__group" aria-labelledby="pilares-genius-title">
         <div className="pilares-talents__heading">
           <div>
-            <h3 id="pilares-genius-title">Genius</h3>
+            <h2 id="pilares-genius-title">Genius</h2>
             <p>Habilidades personalizadas continuam editáveis.</p>
           </div>
           <button type="button" disabled={readOnly} onClick={() => setEditing(newAbility())}>Nova habilidade</button>
@@ -212,7 +195,7 @@ export default function PilaresTalents({
             </div>
           </fieldset>
         )}
-      </section>
-    </section>
+      </section>}
+    </div>
   );
 }

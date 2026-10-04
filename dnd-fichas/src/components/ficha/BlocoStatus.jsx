@@ -112,6 +112,7 @@ export default function BlocoStatus({
             type="number"
             className="status-iniciativa-bonus"
             value={status.iniciativa ?? 0}
+            aria-label="Bônus extra de iniciativa"
             onChange={(evento) => handleChange("iniciativa", evento)}
             title="Bônus extra (ex: talento Alerta)"
           />
@@ -176,7 +177,7 @@ export default function BlocoStatus({
       )}
 
       {avisoConcentracao && (
-        <div className="concentracao-aviso">
+        <div className="concentracao-aviso" role="alert">
           <p className="concentracao-aviso-texto">
             <Icon name="warning" /> Você tomou dano — faça um teste de Constituição (CD{" "}
             {avisoConcentracao.cd}) para manter a concentração.
@@ -192,6 +193,8 @@ export default function BlocoStatus({
           ) : (
             <>
               <p
+                role="status"
+                aria-live="polite"
                 className={
                   resultadoConcentracao.sucesso
                     ? "concentracao-resultado is-sucesso"

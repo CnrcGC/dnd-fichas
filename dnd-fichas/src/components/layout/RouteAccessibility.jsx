@@ -4,7 +4,7 @@ import { getSystemIdFromPath } from "../../platform/routing/routes";
 import { getSystem } from "../../platform/systems/registry";
 
 const routeTitles = [
-  [/^\/$/, "Escolher sistema"],
+  [/^\/$/, "Personagens"],
   [/^\/characters\/new$/, "Novo personagem"],
   [/^\/(nova)$/, "Nova ficha D&D"],
   [/\/tabletop$/, "Modo de mesa"],
@@ -24,7 +24,7 @@ export default function RouteAccessibility() {
     const systemName = systemId ? getSystem(systemId).displayName : null;
     const routeTitle = routeTitles.find(([pattern]) => pattern.test(location.pathname))?.[1]
       ?? (systemName && location.pathname.split("/").filter(Boolean).length === 1 ? "Personagens" : "Página não encontrada");
-    document.title = `${routeTitle}${systemName ? ` — ${systemName}` : ""} · Plataforma de RPG`;
+    document.title = `${routeTitle}${systemName ? ` — ${systemName}` : ""} · D&D Fichas`;
     if (navigationType === "POP") return;
     requestAnimationFrame(() => {
       const heading = document.querySelector("main h1");

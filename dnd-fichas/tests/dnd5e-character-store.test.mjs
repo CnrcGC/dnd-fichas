@@ -45,6 +45,27 @@ test("FE-04A importa v8 pelo adapter e preserva os campos normalizados no envelo
   assert.equal(storage.getItem("pilares-de-atlas:fichas"), JSON.stringify([fixture]));
 });
 
+test("ME-00 tenta reabrir o repositório após indisponibilidade temporária", async () => {
+  const storage = memoryStorage([]);
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const unavailable = Object.assign(new Error("IndexedDB temporariamente indisponível."), { code: "indexeddb-unavailable" });
+  let attempts = 0;
+  const store = characterStoreModule.createDnd5eCharacterStore({
+    storage,
+    openRepository() {
+      attempts += 1;
+      if (attempts === 1) throw unavailable;
+      return repository;
+    },
+    now: () => NOW,
+    createMutationId: () => "retry-repository",
+  });
+
+  await assert.rejects(store.initialize(), (error) => error === unavailable);
+  assert.deepEqual(await store.initialize(), []);
+  assert.equal(attempts, 2);
+});
+
 test("FE-04A serializa updates, incrementa só fichas alteradas e não duplica revisão", async () => {
   const storage = memoryStorage();
   const repository = new repositoryModule.MemoryCharacterRepository();

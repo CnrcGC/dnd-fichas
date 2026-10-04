@@ -1,4 +1,5 @@
 import { calcularCdConcentracao } from "./concentracao";
+import { estadoTestesMorte } from "./status";
 
 export function avisoConcentracaoPorDano(concentracao, danoRecebido) {
   return concentracao && Number(danoRecebido) > 0
@@ -6,30 +7,69 @@ export function avisoConcentracaoPorDano(concentracao, danoRecebido) {
     : null;
 }
 
-export function aplicarEfeitoPv(statusAtual, tipo, valor) {
+// RULEBOOK FACT: Livro do Jogador (2014), p. 205, "Concentração".
+export function concentracaoTerminaPorStatus(status = {}) {
+  return Number(status.pvAtual) <= 0 || estadoTestesMorte(status).morto;
+}
+
+// RULEBOOK FACT: Livro do Jogador (2014), p. 199, "Cura",
+// "Morte Instantânea" e "Sofrendo Dano com 0 Pontos de Vida".
+export function aplicarEfeitoPv(statusAtual, tipo, valor, { critico = false } = {}) {
   const status = { ...statusAtual };
   const quantidade = Math.max(0, Math.floor(Number(valor) || 0));
   const pvMax = Math.max(1, Number(status.pvMax) || 1);
   const pvAtual = Math.min(pvMax, Math.max(0, Number(status.pvAtual) || 0));
   const pvTemp = Math.max(0, Number(status.pvTemp) || 0);
+  const mortoAntes = estadoTestesMorte(status).morto;
 
   if (tipo === "cura") {
+    if (mortoAntes) {
+      return {
+        status,
+        danoRecebido: 0,
+        valorAplicado: 0,
+        erro: "Uma criatura morta não recupera PV sem um efeito que restaure sua vida.",
+      };
+    }
     status.pvAtual = Math.min(pvMax, pvAtual + quantidade);
     if (status.pvAtual > 0) {
       status.testesMorteSucessos = 0;
       status.testesMorteFalhas = 0;
     }
-    return { status, danoRecebido: 0, valorAplicado: status.pvAtual - pvAtual };
+    return { status, danoRecebido: 0, valorAplicado: status.pvAtual - pvAtual, erro: null };
   }
 
   const absorvido = Math.min(pvTemp, quantidade);
-  const danoNosPv = Math.min(pvAtual, quantidade - absorvido);
+  const danoAposTemporarios = Math.max(0, quantidade - absorvido);
+  const danoNosPv = Math.min(pvAtual, danoAposTemporarios);
+  const excesso = Math.max(0, danoAposTemporarios - danoNosPv);
   status.pvTemp = pvTemp - absorvido;
   status.pvAtual = pvAtual - danoNosPv;
+  let morteInstantanea = false;
+
+  if (quantidade > 0 && !mortoAntes && pvAtual === 0) {
+    status.testesMorteSucessos = 0;
+    if (quantidade >= pvMax) {
+      status.testesMorteFalhas = 3;
+      morteInstantanea = true;
+    } else {
+      status.testesMorteFalhas = Math.min(
+        3,
+        Math.max(0, Number(status.testesMorteFalhas) || 0) + (critico ? 2 : 1)
+      );
+    }
+  } else if (!mortoAntes && pvAtual > 0 && status.pvAtual === 0 && excesso >= pvMax) {
+    status.testesMorteSucessos = 0;
+    status.testesMorteFalhas = 3;
+    morteInstantanea = true;
+  }
+
   return {
     status,
     danoRecebido: quantidade,
     valorAplicado: absorvido + danoNosPv,
+    morteInstantanea,
+    erro: null,
   };
 }
 

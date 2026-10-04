@@ -27,23 +27,22 @@ async function seedPlatformRecords(page, records) {
   }, records);
 }
 
-test("primeiro acesso escolhe um sistema e a raiz reutiliza a preferência", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Escolha um sistema" })).toBeVisible();
-  await page.getByRole("link", { name: "Abrir Pilares de Atlas" }).click();
-  await expect(page).toHaveURL(/\/yusong$/);
+test("entrada abre D&D mesmo quando a preferência legada aponta para outro sistema", async ({ page }) => {
+  await page.goto("/yusong");
   await expect(page.getByRole("heading", { name: "Personagens de Pilares de Atlas" })).toBeVisible();
   await page.goto("/");
-  await expect(page).toHaveURL(/\/yusong$/);
-});
-
-test("seletor persistente troca de seção sem recarregar a página", async ({ page }) => {
-  await page.goto("/yusong");
-  await page.evaluate(() => { window.__systemSwitchMarker = "preserved"; });
-  await page.getByLabel("Sistema ativo").selectOption("dnd5e");
   await expect(page).toHaveURL(/\/dnd5e$/);
   await expect(page.getByRole("heading", { name: /Personagens D&D/ })).toBeVisible();
-  await expect.poll(() => page.evaluate(() => window.__systemSwitchMarker)).toBe("preserved");
+});
+
+test("navegação ativa oferece somente fluxos D&D disponíveis", async ({ page }) => {
+  await page.goto("/dnd5e");
+  const navegacao = page.getByRole("navigation", { name: "Navegação D&D 5e" });
+  await expect(page.getByLabel("Sistema ativo")).toHaveCount(0);
+  await expect(navegacao.getByRole("link", { name: "Personagens" })).toBeVisible();
+  await expect(navegacao.getByRole("link", { name: "Novo personagem" })).toBeVisible();
+  await expect(navegacao.getByRole("link", { name: "Criaturas" })).toHaveCount(0);
+  await expect(navegacao.getByRole("link", { name: "Encontros" })).toHaveCount(0);
 });
 
 test("refresh direto mantém seção, título e landmark", async ({ page }) => {
@@ -51,10 +50,12 @@ test("refresh direto mantém seção, título e landmark", async ({ page }) => {
   await page.reload();
   await expect(page.getByRole("main")).toBeVisible();
   await expect(page.getByRole("heading", { name: /Criaturas — Feiticeiros & Maldições/ })).toBeVisible();
-  await expect(page).toHaveTitle(/Criaturas — Feiticeiros & Maldições · Plataforma de RPG/);
+  await expect(page).toHaveTitle(/Criaturas — Feiticeiros & Maldições · D&D Fichas/);
 });
 
 test("rotas D&D legadas redirecionam sem perder o identificador", async ({ page }) => {
+  await page.goto("/characters/new");
+  await expect(page).toHaveURL(/\/dnd5e\/characters\/new$/);
   await page.goto("/nova");
   await expect(page).toHaveURL(/\/dnd5e\/characters\/new$/);
   await page.goto("/ficha/personagem-legado");
@@ -62,9 +63,20 @@ test("rotas D&D legadas redirecionam sem perder o identificador", async ({ page 
   await expect(page.getByText(/Essa ficha não existe ou foi removida/)).toBeVisible();
 });
 
+test("aliases genéricos de ferramentas apontam somente para D&D", async ({ page }) => {
+  await page.goto("/creatures");
+  await expect(page).toHaveURL(/\/dnd5e\/creatures$/);
+  await expect(page.getByRole("heading", { name: "Criaturas — D&D 5e" })).toBeVisible();
+
+  await page.goto("/encounters");
+  await expect(page).toHaveURL(/\/dnd5e\/encounters$/);
+  await expect(page.getByRole("heading", { name: "Encontros — D&D 5e" })).toBeVisible();
+});
+
 test("rota genérica ausente mostra estado explícito", async ({ page }) => {
   await page.goto("/characters/personagem-inexistente");
   await expect(page.getByRole("heading", { name: "Personagem não encontrado" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Voltar aos personagens D&D" })).toHaveAttribute("href", "/dnd5e");
 });
 
 test("rota genérica diferencia sistema desconhecido, corrupção e versão futura", async ({ page }) => {

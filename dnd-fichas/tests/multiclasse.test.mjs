@@ -103,6 +103,19 @@ test("descanso longo recupera primeiro o maior dado gasto", () => {
   assert.equal(recuperados.mago.usados, 1);
 });
 
+test("ME-01 recuperação de dados de vida aceita preferência explícita", () => {
+  const pools = {
+    mago: { classeId: "mago", dadoVida: 6, maximo: 2, usados: 1 },
+    barbaro: { classeId: "barbaro", dadoVida: 12, maximo: 2, usados: 2 },
+  };
+  const menores = dadosVida.restaurarDadosVidaLongo(pools, 4, "menores");
+  const ordemClasses = dadosVida.restaurarDadosVidaLongo(pools, 4, "ordem-classes");
+
+  assert.equal(menores.mago.usados, 0);
+  assert.equal(menores.barbaro.usados, 1);
+  assert.deepEqual(ordemClasses, menores);
+});
+
 test("migração antiga distribui dados gastos pela classe principal e é idempotente", () => {
   const antiga = fichaBase({
     dadosDeVidaUsados: 4,

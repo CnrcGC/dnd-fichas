@@ -4,7 +4,7 @@
 // subclasse não estão detalhadas ainda, só o ponto em que você escolhe
 // uma (fica como próxima etapa).
 
-export const HABILIDADES_CLASSES = [
+const HABILIDADES_CLASSES_BASE = [
   // ---- Bárbaro ----
   { id: "barbaro-furia", classeId: "barbaro", nivel: 1, nome: "Fúria", descricao: "Entra em fúria um número limitado de vezes por dia, ganhando bônus de dano corpo a corpo e resistência a dano cortante, perfurante e concussão." },
   { id: "barbaro-defesa-sem-armadura", classeId: "barbaro", nivel: 1, nome: "Defesa sem Armadura", descricao: "Sem armadura, sua CA é 10 + mod. Destreza + mod. Constituição." },
@@ -23,12 +23,13 @@ export const HABILIDADES_CLASSES = [
   // ---- Bardo ----
   { id: "bardo-inspiracao", classeId: "bardo", nivel: 1, nome: "Inspiração de Bardo", descricao: "Dá um dado de inspiração a um aliado, que pode somá-lo a um teste, ataque ou resistência." },
   { id: "bardo-conjuracao", classeId: "bardo", nivel: 1, nome: "Conjuração", descricao: "Aprende a conjurar magias usando Carisma." },
-  { id: "bardo-versatilidade", classeId: "bardo", nivel: 2, nome: "Versatilidade Mágica", descricao: "Soma metade do bônus de proficiência (arredondado pra baixo) em testes de habilidade sem proficiência." },
+  { id: "bardo-versatilidade", classeId: "bardo", nivel: 2, nome: "Pau pra Toda Obra", descricao: "Soma metade do bônus de proficiência, arredondado para baixo, nos testes de habilidade que ainda não incluam esse bônus." },
   { id: "bardo-cancao-descanso", classeId: "bardo", nivel: 2, nome: "Canção de Descanso", descricao: "Aliados que ouvem sua música recuperam pontos de vida extras num descanso curto." },
   { id: "bardo-colegio", classeId: "bardo", nivel: 3, nome: "Colégio de Bardo", descricao: "Escolhe uma subclasse que define seu estilo artístico." },
-  { id: "bardo-pericia-extra", classeId: "bardo", nivel: 3, nome: "Perícia Extra", descricao: "Dobra o bônus de proficiência em duas perícias treinadas à sua escolha." },
+  { id: "bardo-pericia-extra", classeId: "bardo", nivel: 3, nome: "Especialização", descricao: "Dobra o bônus de proficiência em duas perícias treinadas à sua escolha." },
   { id: "bardo-fonte-inspiracao", classeId: "bardo", nivel: 5, nome: "Fonte de Inspiração", descricao: "Recupera todos os usos de Inspiração de Bardo ao terminar um descanso curto." },
   { id: "bardo-contra-encantamento", classeId: "bardo", nivel: 6, nome: "Contra-encantamento", descricao: "Gasta uma ação pra ajudar aliados próximos a resistir a medo e encantamento." },
+  { id: "bardo-especializacao-2", classeId: "bardo", nivel: 10, nome: "Especialização Adicional", descricao: "Escolhe mais duas perícias treinadas para dobrar o bônus de proficiência." },
   { id: "bardo-segredos-magicos", classeId: "bardo", nivel: 10, nome: "Segredos Mágicos", descricao: "Aprende magias de qualquer classe conjuradora." },
   { id: "bardo-inspiracao-suprema", classeId: "bardo", nivel: 20, nome: "Inspiração Suprema", descricao: "Recupera todos os usos de Inspiração de Bardo ao rolar iniciativa, se estiver sem nenhum." },
 
@@ -75,10 +76,12 @@ export const HABILIDADES_CLASSES = [
 
   // ---- Ladino ----
   { id: "ladino-ataque-furtivo", classeId: "ladino", nivel: 1, nome: "Ataque Furtivo", descricao: "Causa dano extra quando ataca com vantagem, ou quando tem um aliado perto do alvo." },
+  { id: "ladino-especializacao", classeId: "ladino", nivel: 1, nome: "Especialização", descricao: "Dobra o bônus de proficiência em duas perícias treinadas, ou em uma perícia treinada e ferramentas de ladrão." },
   { id: "ladino-giria", classeId: "ladino", nivel: 1, nome: "Gíria de Ladrão", descricao: "Conhece um código secreto de sinais e palavras usado por ladinos." },
   { id: "ladino-acao-ardilosa", classeId: "ladino", nivel: 2, nome: "Ação Ardilosa", descricao: "Pode usar Disparada, Desengajar ou Esconder-se como ação bônus." },
   { id: "ladino-arquetipo", classeId: "ladino", nivel: 3, nome: "Arquétipo de Ladino", descricao: "Escolhe uma subclasse que define sua especialidade." },
   { id: "ladino-esquiva-sobrenatural", classeId: "ladino", nivel: 5, nome: "Esquiva Sobrenatural", descricao: "Reduz pela metade o dano de um ataque que consiga ver acertando você." },
+  { id: "ladino-especializacao-2", classeId: "ladino", nivel: 6, nome: "Especialização Adicional", descricao: "Escolhe mais duas perícias treinadas, ou uma perícia e ferramentas de ladrão, para dobrar o bônus de proficiência." },
   { id: "ladino-evasao", classeId: "ladino", nivel: 7, nome: "Evasão", descricao: "Em certos efeitos de área, não sofre dano nenhum com sucesso na resistência (metade em vez de nada numa falha)." },
   { id: "ladino-talento-confiavel", classeId: "ladino", nivel: 11, nome: "Talento Confiável", descricao: "Testes com uma perícia ou ferramenta treinada nunca contam menos que 10 no d20." },
   { id: "ladino-sentido-cego", classeId: "ladino", nivel: 14, nome: "Sentido Cego", descricao: "Percebe criaturas invisíveis ou escondidas próximas, mesmo sem enxergá-las." },
@@ -103,6 +106,7 @@ export const HABILIDADES_CLASSES = [
   { id: "monge-queda-lenta", classeId: "monge", nivel: 4, nome: "Queda Lenta", descricao: "Reduz o dano de quedas gastando uma reação." },
   { id: "monge-ataque-extra", classeId: "monge", nivel: 5, nome: "Ataque Extra", descricao: "Ataca duas vezes sempre que usar a ação de Atacar." },
   { id: "monge-golpe-atordoante", classeId: "monge", nivel: 5, nome: "Golpe Atordoante", descricao: "Gasta um ponto de ki pra tentar atordoar um alvo que acabou de acertar." },
+  { id: "monge-golpes-chi", classeId: "monge", nivel: 6, nome: "Golpes de Chi", descricao: "Ataques desarmados contam como mágicos para superar resistência e imunidade." },
   { id: "monge-evasao", classeId: "monge", nivel: 7, nome: "Evasão", descricao: "Em certos efeitos de área, não sofre dano nenhum com sucesso na resistência." },
   { id: "monge-mente-estavel", classeId: "monge", nivel: 7, nome: "Mente Estável", descricao: "Gasta um ponto de ki pra encerrar em si mesmo um efeito de medo ou encantamento." },
   { id: "monge-autopurificacao", classeId: "monge", nivel: 10, nome: "Autopurificação", descricao: "Fica imune a doenças e neutraliza venenos no próprio corpo." },
@@ -114,8 +118,10 @@ export const HABILIDADES_CLASSES = [
   // ---- Paladino ----
   { id: "paladino-sentir", classeId: "paladino", nivel: 1, nome: "Sentir o Mal e o Bem", descricao: "Detecta presenças celestiais, infernais ou mortos-vivos próximas." },
   { id: "paladino-imposicao", classeId: "paladino", nivel: 1, nome: "Imposição de Mãos", descricao: "Reservatório de energia curativa que pode usar tocando uma criatura." },
-  { id: "paladino-estilo-conjuracao", classeId: "paladino", nivel: 2, nome: "Estilo de Combate e Conjuração", descricao: "Escolhe uma especialização de combate e passa a conjurar magias divinas." },
-  { id: "paladino-juramento", classeId: "paladino", nivel: 3, nome: "Juramento Sagrado", descricao: "Escolhe uma subclasse que define seu código de conduta e concede Punição Divina, dano radiante extra em acertos." },
+  { id: "paladino-estilo-conjuracao", classeId: "paladino", nivel: 2, nome: "Estilo de Combate e Conjuração", descricao: "Escolhe uma especialização de combate e passa a preparar e conjurar magias divinas." },
+  { id: "paladino-punicao-divina", classeId: "paladino", nivel: 2, nome: "Punição Divina", descricao: "Ao acertar com arma corpo a corpo, pode gastar um espaço de magia para acrescentar dano radiante; certos tipos de criatura recebem dano adicional." },
+  { id: "paladino-saude-divina", classeId: "paladino", nivel: 3, nome: "Saúde Divina", descricao: "Fica imune a doenças." },
+  { id: "paladino-juramento", classeId: "paladino", nivel: 3, nome: "Juramento Sagrado", descricao: "Escolhe uma subclasse que define seus dogmas, magias e opções de Canalizar Divindade." },
   { id: "paladino-ataque-extra", classeId: "paladino", nivel: 5, nome: "Ataque Extra", descricao: "Ataca duas vezes sempre que usar a ação de Atacar." },
   { id: "paladino-aura-protecao", classeId: "paladino", nivel: 6, nome: "Aura de Proteção", descricao: "Soma seu modificador de Carisma nas salvaguardas de aliados próximos." },
   { id: "paladino-aura-coragem", classeId: "paladino", nivel: 10, nome: "Aura de Coragem", descricao: "Aliados próximos ficam imunes a serem amedrontados." },
@@ -127,13 +133,60 @@ export const HABILIDADES_CLASSES = [
   { id: "patrulheiro-explorador", classeId: "patrulheiro", nivel: 1, nome: "Explorador Nato", descricao: "Ganha vantagens e bônus específicos num tipo de terreno favorito." },
   { id: "patrulheiro-estilo-conjuracao", classeId: "patrulheiro", nivel: 2, nome: "Estilo de Combate e Conjuração", descricao: "Escolhe uma especialização de combate e passa a conjurar magias da natureza." },
   { id: "patrulheiro-arquetipo", classeId: "patrulheiro", nivel: 3, nome: "Arquétipo de Patrulheiro", descricao: "Escolhe uma subclasse que define sua especialidade." },
+  { id: "patrulheiro-consciencia-primitiva", classeId: "patrulheiro", nivel: 3, nome: "Consciência Primitiva", descricao: "Gasta um espaço de magia para perceber a presença, mas não a localização ou quantidade, de certos tipos de criatura na região." },
   { id: "patrulheiro-ataque-extra", classeId: "patrulheiro", nivel: 5, nome: "Ataque Extra", descricao: "Ataca duas vezes sempre que usar a ação de Atacar." },
+  { id: "patrulheiro-inimigo-favorito-aprimorado", classeId: "patrulheiro", nivel: 6, nome: "Inimigo Favorito Adicional", descricao: "Escolhe outro inimigo favorito e um idioma associado quando aplicável." },
+  { id: "patrulheiro-explorador-aprimorado", classeId: "patrulheiro", nivel: 6, nome: "Terreno Favorito Adicional", descricao: "Escolhe outro tipo de terreno favorito." },
   { id: "patrulheiro-terra-pes", classeId: "patrulheiro", nivel: 8, nome: "Terra sob os Pés", descricao: "Move-se por terreno difícil natural sem gastar deslocamento extra." },
   { id: "patrulheiro-esconder", classeId: "patrulheiro", nivel: 10, nome: "Esconder-se na Natureza", descricao: "Pode se camuflar rapidamente em ambientes naturais." },
   { id: "patrulheiro-vanish", classeId: "patrulheiro", nivel: 14, nome: "Desaparecer", descricao: "Pode se esconder mesmo estando apenas levemente obscurecido pelo ambiente." },
   { id: "patrulheiro-sentidos-selvagens", classeId: "patrulheiro", nivel: 18, nome: "Sentidos Selvagens", descricao: "Percebe a localização de criaturas invisíveis próximas." },
   { id: "patrulheiro-matador", classeId: "patrulheiro", nivel: 20, nome: "Matador de Inimigos", descricao: "Uma vez por turno, soma um modificador de atributo extra a um ataque ou dano." },
 ];
+
+const PAGINAS_CLASSES = {
+  barbaro: [46, 50], bardo: [51, 55], bruxo: [56, 61], clerigo: [62, 70],
+  druida: [71, 76], feiticeiro: [77, 82], guerreiro: [83, 88], ladino: [89, 93],
+  mago: [94, 101], monge: [102, 107], paladino: [108, 114], patrulheiro: [115, 121],
+};
+
+const PROGRESSAO_NIVEIS_1_A_5 = {
+  "barbaro-furia": { usos: [[1, 2], [3, 3]], bonusDano: [[1, 2]] },
+  "bardo-inspiracao": { dado: [[1, "d6"], [5, "d8"]], recuperacao: [[1, "longo"], [5, "curto"]] },
+  "bardo-cancao-descanso": { dado: [[2, "d6"], [9, "d8"]] },
+  "bruxo-invocacoes": { quantidade: [[2, 2], [5, 3], [7, 4], [9, 5]] },
+  "clerigo-canalizar": { usos: [[2, 1], [6, 2]] },
+  "clerigo-destruir-mortosvivos": { ndMaximo: [[5, "1/2"], [8, "1"]] },
+  "druida-forma-selvagem": { ndMaximo: [[2, "1/4"], [4, "1/2"]], limitacoes: [[2, "sem voo ou natação"], [4, "sem voo"]] },
+  "feiticeiro-fonte": { pontos: [[2, 2], [3, 3], [4, 4], [5, 5]] },
+  "ladino-ataque-furtivo": { dano: [[1, "1d6"], [3, "2d6"], [5, "3d6"], [7, "4d6"], [9, "5d6"]] },
+  "monge-artes-marciais": { dado: [[1, "d4"], [5, "d6"]] },
+  "monge-ki": { pontos: [[2, 2], [3, 3], [4, 4], [5, 5]] },
+  "monge-movimento-sem-armadura": { bonusMetros: [[2, 3], [6, 4.5], [10, 6]] },
+  "paladino-imposicao": { pontos: [[1, 5], [2, 10], [3, 15], [4, 20], [5, 25]] },
+};
+
+export const HABILIDADES_CLASSES = HABILIDADES_CLASSES_BASE.map((habilidade) => {
+  const [printedPage, endPrintedPage] = PAGINAS_CLASSES[habilidade.classeId];
+  return {
+    ...habilidade,
+    ...(PROGRESSAO_NIVEIS_1_A_5[habilidade.id]
+      ? { progressaoNiveis1a5: PROGRESSAO_NIVEIS_1_A_5[habilidade.id] }
+      : {}),
+    catalogVersion: 1,
+    rulesProfile: "dnd5e-books-2014",
+    verificationStatus: habilidade.nivel <= 5 ? "verified" : "pending-review",
+    automationLevel: "descriptive",
+    sourceRefs: [{
+      ruleId: `R-CLASS-FEATURE-${habilidade.id.toUpperCase()}`,
+      bookId: "LJ",
+      edition: "dnd5e-books-2014",
+      printedPage,
+      endPrintedPage,
+      section: habilidade.nome,
+    }],
+  };
+});
 
 export function obterHabilidadesPorClasse(classeId) {
   return HABILIDADES_CLASSES.filter((h) => h.classeId === classeId).sort(

@@ -4,6 +4,7 @@ import { createServer } from "vite";
 
 let servidor;
 let subclasses;
+let catalogoSubclasses;
 let fichaUtils;
 let conjuracao;
 let acesso;
@@ -36,6 +37,7 @@ function fichaBase(overrides = {}) {
 before(async () => {
   servidor = await createServer({ server: { middlewareMode: true, hmr: false }, appType: "custom" });
   subclasses = await servidor.ssrLoadModule("/src/utils/subclassesFicha.js");
+  catalogoSubclasses = await servidor.ssrLoadModule("/src/data/subclasses.js");
   fichaUtils = await servidor.ssrLoadModule("/src/utils/ficha.js");
   conjuracao = await servidor.ssrLoadModule("/src/utils/conjuracao.js");
   acesso = await servidor.ssrLoadModule("/src/utils/acessoMagias.js");
@@ -46,6 +48,44 @@ before(async () => {
 });
 
 after(async () => { await servidor?.close(); });
+
+test("ME-01 Assassinar não promete acerto automático", () => {
+  const descricao = catalogoSubclasses.obterSubclasse("assassino").descricao;
+
+  assert.match(descricao, /vantagem.+ainda não agiram/i);
+  assert.match(descricao, /ataques que atinjam.+surpreendidas.+críticos/i);
+  assert.doesNotMatch(descricao, /acerto automático/i);
+});
+
+test("ME-01 Arquifada descreve lista expandida e Presença Feérica sem conceder teleporte", () => {
+  const descricao = catalogoSubclasses.obterSubclasse("patrono-arquifada").descricao;
+
+  assert.match(descricao, /amplia.+lista de magias/i);
+  assert.match(descricao, /Presença Feérica.+enfeitiçar ou amedrontar/i);
+  assert.doesNotMatch(descricao, /Passo Fey|teleport/i);
+});
+
+test("ME-01 Bravura descreve proficiências e Inspiração em Combate sem auto-inspiração", () => {
+  const descricao = catalogoSubclasses.obterSubclasse("colegio-bravura").descricao;
+
+  assert.match(descricao, /armaduras médias, escudos e armas marciais/i);
+  assert.match(descricao, /outra criatura.+Inspiração.+dano.+CA/i);
+  assert.doesNotMatch(descricao, /si mesmo|resistência extra/i);
+});
+
+test("ME-01 Mão Aberta impede reações em vez de atribuir atordoamento à subclasse", () => {
+  const descricao = catalogoSubclasses.obterSubclasse("mao-aberta").descricao;
+
+  assert.match(descricao, /Rajada de Golpes.+derrubar.+empurrar.+impedir reações/i);
+  assert.doesNotMatch(descricao, /atordoar/i);
+});
+
+test("ME-01 Mestre das Feras não inventa comando geral como ação bônus", () => {
+  const descricao = catalogoSubclasses.obterSubclasse("mestre-das-feras").descricao;
+
+  assert.match(descricao, /companheiro animal.+própria iniciativa.+obedece aos seus comandos/i);
+  assert.doesNotMatch(descricao, /comandado como ação bônus/i);
+});
 
 test("subclasse só é compatível no nível da própria classe", () => {
   assert.equal(subclasses.subclasseCompativel("guerreiro", "cavaleiro-arcano", 2), false);

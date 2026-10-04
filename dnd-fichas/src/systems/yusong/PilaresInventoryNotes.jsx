@@ -21,7 +21,7 @@ function newEditor() {
   };
 }
 
-export default function PilaresInventoryNotes({ character, onSaveItem, onRemoveItem, onNotesChange, readOnly = false }) {
+export default function PilaresInventoryNotes({ character, onSaveItem, onRemoveItem, onNotesChange, readOnly = false, view = "all" }) {
   const [editor, setEditor] = useState(null);
 
   function editItem(item) {
@@ -63,13 +63,13 @@ export default function PilaresInventoryNotes({ character, onSaveItem, onRemoveI
   const lockedSystemItem = editor?.isNew && editor.mode === "system";
 
   return (
-    <section className="pilares-inventory" aria-labelledby="pilares-inventory-notes-title">
-      <h2 id="pilares-inventory-notes-title">Inventário e notas</h2>
+    <div className="pilares-inventory">
+      {view === "all" && <h2>Inventário e notas</h2>}
 
-      <section className="pilares-inventory__group" aria-labelledby="pilares-inventory-title">
+      {(view === "all" || view === "inventory") && <section className="pilares-inventory__group" aria-labelledby="pilares-inventory-title">
         <div className="pilares-inventory__heading">
           <div>
-            <h3 id="pilares-inventory-title">Inventário</h3>
+            <h2 id="pilares-inventory-title">Inventário</h2>
             <p>Itens do catálogo e itens personalizados são preservados na ficha.</p>
           </div>
           <button type="button" disabled={readOnly} onClick={() => setEditor(newEditor())}>Adicionar item</button>
@@ -128,12 +128,12 @@ export default function PilaresInventoryNotes({ character, onSaveItem, onRemoveI
             </div>
           </fieldset>
         )}
-      </section>
+      </section>}
 
-      <section className="pilares-inventory__group" aria-labelledby="pilares-notes-title">
+      {(view === "all" || view === "notes") && <section className="pilares-inventory__group" aria-labelledby="pilares-notes-title">
         <div className="pilares-inventory__heading">
           <div>
-            <h3 id="pilares-notes-title">Notas</h3>
+            <h2 id="pilares-notes-title">Notas</h2>
             <p>Texto livre para informações da personagem e da sessão.</p>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function PilaresInventoryNotes({ character, onSaveItem, onRemoveI
           Notas da personagem
           <textarea rows="8" value={character.notes ?? ""} readOnly={readOnly} onChange={(event) => onNotesChange(event.target.value)} placeholder="Anotações da sessão…" />
         </label>
-      </section>
-    </section>
+      </section>}
+    </div>
   );
 }

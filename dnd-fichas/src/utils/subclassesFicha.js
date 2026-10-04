@@ -55,14 +55,17 @@ export function sincronizarHabilidadesAutomaticasSubclasses(ficha, criarId = () 
             item.origemClasseId === classe.classeId &&
             item.origemSubclasseId === classe.subclasseId
         );
-        return existente ?? {
-          id: criarId(),
+        return {
+          ...(existente ?? { id: criarId() }),
           nome: habilidade.nome,
           tipo: "subclasse",
           nivel: habilidade.nivel,
           origemId: habilidade.id,
           origemSubclasseId: classe.subclasseId,
           origemClasseId: classe.classeId,
+          sourceRefs: habilidade.sourceRefs,
+          verificationStatus: habilidade.verificationStatus,
+          automationLevel: habilidade.automationLevel,
         };
       })
   );

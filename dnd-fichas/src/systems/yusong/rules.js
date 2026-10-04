@@ -150,6 +150,11 @@ export function getYusongSkillBonus(rank) {
   return Math.min(5, Math.max(0, number(rank))) * 4;
 }
 
+// Compatibility source: AttributeBox.jsx from the owner-supplied Pilares project.
+export function buildYusongAttributeNotation(value) {
+  return `1d20+${number(value)}`;
+}
+
 export function buildYusongSkillNotation(rank) {
   return `1d20+${getYusongSkillBonus(rank)}`;
 }

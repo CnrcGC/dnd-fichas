@@ -81,10 +81,10 @@ export default function ModalCatalogoHabilidades({
         className="modal-catalogo"
         role="dialog"
         aria-modal="true"
-        aria-label="Adicionar habilidades e talentos"
+        aria-labelledby="modal-catalogo-habilidades-titulo"
       >
         <div className="modal-catalogo-cabecalho">
-          <h2>Adicionar Habilidade</h2>
+          <h2 id="modal-catalogo-habilidades-titulo">Adicionar Habilidade</h2>
           <button
             type="button"
             className="modal-catalogo-fechar"
@@ -130,6 +130,9 @@ export default function ModalCatalogoHabilidades({
           value={busca}
           onChange={(evento) => setBusca(evento.target.value)}
         />
+        <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+          {listaFiltrada.length} {listaFiltrada.length === 1 ? "resultado encontrado" : "resultados encontrados"}.
+        </p>
 
         <div className="modal-catalogo-lista">
           {abaAtiva === "classe" && !classeId ? (

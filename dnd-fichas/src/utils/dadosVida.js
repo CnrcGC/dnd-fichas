@@ -56,13 +56,22 @@ export function gastarDadoVida(dadosVidaPorClasse, classeId) {
   };
 }
 
-// Descansos longos recuperam metade dos níveis totais (mínimo um). Quando há
-// dados de tamanhos diferentes, recuperamos primeiro d12, d10, d8 e d6.
-export function restaurarDadosVidaLongo(dadosVidaPorClasse, nivelTotal) {
+// O livro define quantos dados retornam, mas não uma prioridade entre pools de
+// multiclasse. A ordem é, portanto, uma preferência explícita do aplicativo.
+export function restaurarDadosVidaLongo(
+  dadosVidaPorClasse,
+  nivelTotal,
+  prioridade = "maiores"
+) {
   let restantes = Math.max(1, Math.floor(Number(nivelTotal) / 2));
-  const ordenados = Object.values(dadosVidaPorClasse ?? []).sort(
-    (a, b) => Number(b.dadoVida) - Number(a.dadoVida)
-  );
+  const ordenados = Object.values(dadosVidaPorClasse ?? {})
+    .map((pool, indice) => ({ pool, indice }))
+    .sort((a, b) => {
+      if (prioridade === "ordem-classes") return a.indice - b.indice;
+      const diferenca = Number(a.pool.dadoVida) - Number(b.pool.dadoVida);
+      return prioridade === "menores" ? diferenca : -diferenca;
+    })
+    .map(({ pool }) => pool);
   const resultado = { ...(dadosVidaPorClasse ?? {}) };
   for (const pool of ordenados) {
     const recuperar = Math.min(restantes, Math.max(0, Number(pool.usados) || 0));

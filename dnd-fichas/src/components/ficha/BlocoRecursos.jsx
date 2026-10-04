@@ -69,6 +69,7 @@ export default function BlocoRecursos({
                   type="text"
                   className="recurso-nome"
                   placeholder="Nome do recurso"
+                  aria-label="Nome do recurso"
                   value={recurso.nome}
                   onChange={(evento) =>
                     handleAlterar(recurso.id, "nome", evento.target.value)

@@ -89,13 +89,27 @@ export default function PainelRolagens() {
     : desvantagem
     ? "Desvantagem"
     : "Normal";
+  const anuncioUltima = ultima
+    ? `${ultima.titulo}: resultado ${ultima.resultado.total}${
+        ultima.tipo === "d20" && ultima.resultado.d20 === 20
+          ? ", crítico"
+          : ultima.tipo === "d20" && ultima.resultado.d20 === 1
+          ? ", falha crítica"
+          : ""
+      }.`
+    : "";
 
   return (
     <div className={expandido ? "painel-rolagens is-expandido" : "painel-rolagens"}>
+      <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+        {anuncioUltima}
+      </p>
       <button
         type="button"
         className="painel-rolagens-toggle"
         onClick={() => setExpandido((atual) => !atual)}
+        aria-expanded={expandido}
+        aria-controls="painel-rolagens-historico"
       >
         <span className="painel-rolagens-icone" aria-hidden="true">
           <Icon name="dice" size={20} />
@@ -109,7 +123,7 @@ export default function PainelRolagens() {
       </button>
 
       {expandido && (
-        <div className="painel-rolagens-lista">
+        <div className="painel-rolagens-lista" id="painel-rolagens-historico">
           <fieldset className="painel-rolagens-modo">
             <legend>Modo das próximas rolagens d20</legend>
             <label>

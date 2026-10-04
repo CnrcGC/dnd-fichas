@@ -19,6 +19,7 @@ const OPCOES_ATRIBUTO = [
 export default function BlocoAtaques({
   modificadoresAtributos,
   bonusProficiencia,
+  proficienciasArmas,
   inventario,
   ataques,
   onChangeAtaques,
@@ -26,7 +27,10 @@ export default function BlocoAtaques({
   const { registrarRolagem, rolarD20 } = useRolagem();
   const armasEquipadas = inventario
     .filter((item) => item.tipoItem === "arma" && item.equipado)
-    .map(criarAtaqueApartirDeItemEquipado)
+    .map((item) => criarAtaqueApartirDeItemEquipado(item, {
+      modificadoresAtributos,
+      proficienciasArmas,
+    }))
     .filter(Boolean);
 
   function handleAdicionarManual() {
@@ -94,6 +98,7 @@ export default function BlocoAtaques({
               type="text"
               value={ataque.nome}
               placeholder="Nome do ataque"
+              aria-label="Nome do ataque manual"
               onChange={(evento) =>
                 handleAlterar(ataque.id, "nome", evento.target.value)
               }
@@ -102,20 +107,38 @@ export default function BlocoAtaques({
         </td>
         <td>
           {somenteLeitura ? (
-            <span className="ataques-nome-fixo">{atributo?.abreviacao}</span>
+            <span className="ataques-nome-fixo">
+              {atributo?.abreviacao}{ataque.proficiente ? "" : " (não prof.)"}
+            </span>
           ) : (
-            <select
-              value={ataque.atributo}
-              onChange={(evento) =>
-                handleAlterar(ataque.id, "atributo", evento.target.value)
-              }
-            >
-              {OPCOES_ATRIBUTO.map((opcao) => (
-                <option key={opcao.valor} value={opcao.valor}>
-                  {opcao.label}
-                </option>
-              ))}
-            </select>
+            <>
+              <select
+                value={ataque.atributo}
+                aria-label={`Atributo do ataque ${ataque.nome || "manual"}`}
+                onChange={(evento) =>
+                  handleAlterar(ataque.id, "atributo", evento.target.value)
+                }
+              >
+                {OPCOES_ATRIBUTO.map((opcao) => (
+                  <option key={opcao.valor} value={opcao.valor}>
+                    {opcao.label}
+                  </option>
+                ))}
+              </select>
+              {ataque.atributo !== "manual" && (
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={ataque.proficiente !== false}
+                    aria-label={`Aplicar proficiência em ${ataque.nome || "ataque manual"}`}
+                    onChange={(evento) =>
+                      handleAlterar(ataque.id, "proficiente", evento.target.checked)
+                    }
+                  />
+                  Proficiente
+                </label>
+              )}
+            </>
           )}
         </td>
         <td className="ataques-coluna-acerto">
@@ -125,6 +148,7 @@ export default function BlocoAtaques({
                 type="number"
                 className="ataques-bonus-input"
                 value={ataque.bonusManual ?? 0}
+                aria-label={`Bônus manual de acerto de ${ataque.nome || "ataque"}`}
                 onChange={(evento) =>
                   handleAlterar(ataque.id, "bonusManual", Number(evento.target.value))
                 }
@@ -163,6 +187,7 @@ export default function BlocoAtaques({
                 className="ataques-dano-input"
                 placeholder="1d8"
                 value={ataque.dano}
+                aria-label={`Dano de ${ataque.nome || "ataque"}`}
                 onChange={(evento) =>
                   handleAlterar(ataque.id, "dano", evento.target.value)
                 }
@@ -189,6 +214,7 @@ export default function BlocoAtaques({
               className="ataques-tipo-input"
               placeholder="cortante"
               value={ataque.tipoDano ?? ""}
+              aria-label={`Tipo de dano de ${ataque.nome || "ataque"}`}
               onChange={(evento) =>
                 handleAlterar(ataque.id, "tipoDano", evento.target.value)
               }

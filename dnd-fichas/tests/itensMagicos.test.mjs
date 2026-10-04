@@ -8,6 +8,7 @@ let itens;
 let ataque;
 let equipamento;
 let fichaUtils;
+let validacao;
 
 before(async () => {
   servidor = await createServer({ server: { middlewareMode: true, hmr: false }, appType: "custom" });
@@ -16,6 +17,7 @@ before(async () => {
   ataque = await servidor.ssrLoadModule("/src/utils/ataque.js");
   equipamento = await servidor.ssrLoadModule("/src/utils/equipamento.js");
   fichaUtils = await servidor.ssrLoadModule("/src/utils/ficha.js");
+  validacao = await servidor.ssrLoadModule("/src/utils/validacaoFicha.js");
 });
 
 after(async () => { await servidor?.close(); });
@@ -54,14 +56,79 @@ test("sintonização respeita o limite de três itens", () => {
   assert.equal(itens.contarItensSintonizados(excedente.inventario), 3);
 });
 
-test("normalização de importação remove sintonização acima do limite", () => {
+test("ME-01 normalização preserva sintonia excedente e desativa somente seu efeito", () => {
   const inventario = [0, 1, 2, 3].map((indice) => ({
     id: `item-${indice}`,
     magico: true,
     requerSintonizacao: true,
     sintonizado: true,
   }));
-  assert.equal(itens.contarItensSintonizados(itens.normalizarInventario(inventario)), 3);
+  const normalizado = itens.normalizarInventario(inventario);
+  assert.equal(itens.contarItensSintonizados(normalizado), 4);
+  assert.equal(normalizado[3].sintonizacaoExcedente, true);
+  assert.equal(itens.itemMagicoAtivo(normalizado[3]), false);
+});
+
+test("ME-01 reconciliação de catálogo preserva e restaura a versão anterior", () => {
+  const anterior = {
+    id: "manto-antigo",
+    nome: "Manto antigo",
+    itemMagicoId: "manto-protecao",
+    magico: true,
+    raridade: "raro",
+    bonusMagico: 0,
+    requerEquipado: true,
+    equipado: true,
+    requerSintonizacao: true,
+    sintonizado: true,
+    efeitos: [{ tipo: "bonus-ca", valor: 2 }],
+    regras: ["Regra preservada da versão anterior."],
+  };
+
+  const reconciliado = itens.normalizarInventario([anterior]);
+  assert.equal(reconciliado[0].raridade, "incomum");
+  assert.equal(reconciliado[0].efeitos[0].valor, 1);
+  assert.equal(reconciliado[0].dadosCatalogoAnteriores.raridade, "raro");
+
+  const restaurado = itens.restaurarDadosCatalogoAnteriores(reconciliado, "manto-antigo");
+  const renormalizado = itens.normalizarInventario(restaurado.inventario);
+  assert.equal(renormalizado[0].raridade, "raro");
+  assert.equal(renormalizado[0].efeitos[0].valor, 2);
+  assert.equal(renormalizado[0].preferirDadosCatalogoAnteriores, true);
+
+  const atual = itens.usarDadosCatalogoAtuais(renormalizado, "manto-antigo");
+  assert.equal(atual.inventario[0].raridade, "incomum");
+  assert.equal(atual.inventario[0].preferirDadosCatalogoAnteriores, false);
+});
+
+test("ME-01 validação explica sintonia excedente sem apagar os itens", () => {
+  const ficha = fichaUtils.normalizarFicha({
+    id: "sintonias",
+    nome: "Sintonias",
+    racaId: "humano",
+    antecedenteId: "acolito",
+    classeId: "mago",
+    nivel: 1,
+    atributos: {},
+    status: { pvMax: 6, pvAtual: 6, pvTemp: 0 },
+    inventario: [0, 1, 2, 3].map((indice) => ({
+      id: `item-${indice}`,
+      magico: true,
+      requerSintonizacao: true,
+      sintonizado: true,
+    })),
+  });
+  const resultado = validacao.validarFicha(ficha, {
+    forca: 10,
+    destreza: 10,
+    constituicao: 10,
+    inteligencia: 10,
+    sabedoria: 10,
+    carisma: 10,
+  });
+
+  assert.equal(ficha.inventario.length, 4);
+  assert.ok(resultado.avisos.some((aviso) => aviso.includes("4 itens estão marcados")));
 });
 
 test("cargas não podem ficar negativas e a recuperação respeita o máximo", () => {

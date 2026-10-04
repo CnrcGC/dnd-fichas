@@ -26,6 +26,13 @@ test.beforeEach(async ({ page }) => {
   }, legacyCharacter);
 });
 
+async function openMobileSection(page, name) {
+  if ((page.viewportSize()?.width ?? 1280) > 700) return;
+  const button = page.getByRole("navigation", { name: "Seções da ficha" }).getByRole("button", { name, exact: true });
+  await button.waitFor({ state: "visible" });
+  await button.click();
+}
+
 test("importa e lista Pilares de Atlas sem apagar a origem legada", async ({ page }) => {
   await page.goto("/yusong");
   await expect(page.getByRole("heading", { name: "Personagens de Pilares de Atlas" })).toBeVisible();
@@ -67,19 +74,20 @@ test("cria e edita a identidade de Pilares de Atlas com persistência após relo
   await page.getByRole("button", { name: "Criar personagem" }).click();
 
   await expect(page).toHaveURL(/\/yusong\/characters\/.+$/);
-  await expect(page.getByRole("heading", { name: "Hana Lee" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hana Lee", exact: true })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.getByLabel("Nome", { exact: true }).fill("Hana Lee Atualizada");
   await page.getByLabel("Nível").fill("5");
   await page.getByRole("button", { name: "Salvar ficha" }).click();
   await expect(page.getByRole("status")).toContainText("Ficha salva");
-  await expect(page.getByRole("heading", { name: "Hana Lee Atualizada" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hana Lee Atualizada", exact: true })).toBeVisible();
 
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Hana Lee Atualizada" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hana Lee Atualizada", exact: true })).toBeVisible();
   await expect(page.getByLabel("Nível")).toHaveValue("5");
   await page.getByRole("link", { name: "Voltar para personagens" }).click();
-  await expect(page.getByRole("heading", { name: "Hana Lee Atualizada" })).toBeVisible();
+  await expect(page).toHaveURL(/\/yusong$/);
+  await expect(page.getByRole("heading", { name: "Hana Lee Atualizada", exact: true })).toBeVisible();
 });
 
 test("gera um personagem aleatório acessível e o salva sem buscar avatar externo", async ({ page }) => {
@@ -100,14 +108,14 @@ test("gera um personagem aleatório acessível e o salva sem buscar avatar exter
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 
   await page.getByRole("button", { name: "Criar personagem" }).click();
-  await expect(page.getByRole("heading", { name: generatedName })).toBeVisible();
+  await expect(page.getByRole("heading", { name: generatedName, exact: true })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("heading", { name: generatedName })).toBeVisible();
+  await expect(page.getByRole("heading", { name: generatedName, exact: true })).toBeVisible();
 });
 
 test("edita atributos e recursos enquanto derivados permanecem calculados pelo engine", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
-  await expect(page.getByRole("heading", { name: "Kang Ji-ho" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Kang Ji-ho", exact: true })).toBeVisible();
   await expect(page.getByLabel("Vida máxima 44")).toBeVisible();
   await expect(page.getByLabel("Stamina máxima 275")).toBeVisible();
   await expect(page.getByText("Esquiva", { exact: true }).locator("..")).toContainText("1d12");
@@ -136,6 +144,7 @@ test("edita atributos e recursos enquanto derivados permanecem calculados pelo e
 
 test("edita as sete regiões, recupera membro inutilizado e redistribui dados", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
+  await openMobileSection(page, "Corpo");
   await expect(page.getByRole("heading", { name: "Corpo" })).toBeVisible();
   await expect(page.locator(".pilares-body__part")).toHaveCount(7);
 
@@ -162,6 +171,7 @@ test("edita as sete regiões, recupera membro inutilizado e redistribui dados", 
   await page.getByRole("button", { name: "Salvar ficha" }).click();
   await expect(page.getByRole("status")).toContainText("Ficha salva");
   await page.reload();
+  await openMobileSection(page, "Corpo");
   await expect(page.getByLabel("Armadura atual de Abdômen")).toHaveValue("10");
   await expect(page.getByLabel("Dado de Braço Direito")).toHaveValue("1d12");
   await expect(page.getByLabel("Dado de Perna Esquerda")).toHaveValue("1d6");
@@ -171,12 +181,15 @@ test("edita as sete regiões, recupera membro inutilizado e redistribui dados", 
 
 test("edita Perícias e aplica Condições às rolagens com persistência", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
-  await expect(page.getByRole("heading", { name: "Perícias e condições" })).toBeVisible();
+  await openMobileSection(page, "Mais");
+  await page.getByRole("tab", { name: "Perícias" }).click();
+  await expect(page.getByRole("heading", { name: "Perícias" })).toBeVisible();
 
   await page.getByLabel("Graduação de Acrobacia").selectOption("2");
   await page.getByRole("button", { name: "Rolar Acrobacia" }).click();
   await expect(page.getByText(/1d20\+8-4/)).toBeVisible();
 
+  await page.getByRole("tab", { name: "Condições" }).click();
   const frightened = page.locator('[data-condition-id="amedrontado"]');
   await frightened.locator("summary").click();
   await expect(frightened.getByRole("checkbox", { name: "Amedrontado ativa" })).toBeChecked();
@@ -185,13 +198,17 @@ test("edita Perícias e aplica Condições às rolagens com persistência", asyn
   const motivated = page.locator('[data-condition-id="motivado"]');
   await motivated.locator("summary").click();
   await motivated.getByRole("checkbox", { name: "Motivado ativa" }).check();
+  await page.getByRole("tab", { name: "Perícias" }).click();
   await page.getByRole("button", { name: "Rolar Acrobacia" }).click();
   await expect(page.getByText(/1d20\+8\+4/)).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 
   await page.getByRole("button", { name: "Salvar ficha" }).click();
   await page.reload();
+  await openMobileSection(page, "Mais");
+  await page.getByRole("tab", { name: "Perícias" }).click();
   await expect(page.getByLabel("Graduação de Acrobacia")).toHaveValue("2");
+  await page.getByRole("tab", { name: "Condições" }).click();
   await frightened.locator("summary").click();
   await motivated.locator("summary").click();
   await expect(frightened.getByRole("checkbox", { name: "Amedrontado ativa" })).not.toBeChecked();
@@ -200,7 +217,8 @@ test("edita Perícias e aplica Condições às rolagens com persistência", asyn
 
 test("gerencia itens do sistema, itens personalizados e notas com persistência", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
-  await expect(page.getByRole("heading", { name: "Inventário e notas" })).toBeVisible();
+  await openMobileSection(page, "Mais");
+  await expect(page.getByRole("heading", { name: "Inventário" })).toBeVisible();
 
   await page.getByRole("button", { name: "Adicionar item", exact: true }).click();
   const addEditor = page.getByRole("group", { name: "Adicionar item" });
@@ -231,22 +249,27 @@ test("gerencia itens do sistema, itens personalizados e notas com persistência"
   const bands = page.locator('[data-item-id="item-e2e"]');
   await bands.locator("summary").click();
   await bands.getByRole("button", { name: "Remover item" }).click();
+  await page.getByRole("tab", { name: "Notas" }).click();
   await page.getByLabel("Notas da personagem").fill("Encontro marcado no porto.");
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 
   await page.getByRole("button", { name: "Salvar ficha" }).click();
   await page.reload();
+  await openMobileSection(page, "Mais");
+  await page.getByRole("tab", { name: "Inventário" }).click();
   await expect(page.locator('[data-item-id="item-e2e"]')).toHaveCount(0);
   await expect(page.getByText("Katana/Espada", { exact: true }).locator("..")).toContainText("3×");
   await expect(page.getByText("Caderno", { exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Notas" }).click();
   await expect(page.getByLabel("Notas da personagem")).toHaveValue("Encontro marcado no porto.");
 });
 
 test("filtra o catálogo original e adiciona Talento com persistência", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
+  await openMobileSection(page, "Talentos");
   await page.getByRole("button", { name: "Adicionar Talento", exact: true }).click();
 
-  const catalog = page.getByRole("region", { name: "Catálogo de Talentos" });
+  const catalog = page.getByRole("dialog", { name: "Adicionar Talento" });
   await expect(catalog.getByText("49 Talentos encontrados.")).toBeVisible();
   await catalog.getByLabel("Categoria").selectOption("bruto");
   await expect(catalog.getByText("10 Talentos encontrados.")).toBeVisible();
@@ -260,16 +283,18 @@ test("filtra o catálogo original e adiciona Talento com persistência", async (
   await expect(catalog.getByRole("button", { name: "Corpo de Ferro já adicionado" })).toBeDisabled();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 
-  await page.getByRole("button", { name: "Fechar catálogo" }).click();
+  await page.getByRole("button", { name: "Fechar catálogo de Talentos" }).click();
   await page.getByRole("button", { name: "Salvar ficha" }).click();
   await page.reload();
+  await openMobileSection(page, "Talentos");
   await expect(page.getByText("Corpo de Ferro", { exact: true })).toBeVisible();
   await expect(page.getByLabel("2 Talentos adicionados")).toBeVisible();
 });
 
 test("usa Talento e mantém CRUD personalizado de Genius com custo de Stamina", async ({ page }) => {
   await page.goto("/yusong/characters/pilares-e2e");
-  await expect(page.getByRole("heading", { name: "Talentos e Genius" })).toBeVisible();
+  await openMobileSection(page, "Talentos");
+  await expect(page.getByRole("heading", { name: "Talentos" })).toBeVisible();
 
   await page.getByText("Passo Rápido", { exact: true }).click();
   await expect(page.getByText("42 Stamina (15%)")).toBeVisible();
@@ -278,6 +303,7 @@ test("usa Talento e mantém CRUD personalizado de Genius com custo de Stamina", 
   await page.getByRole("button", { name: "Remover Talento" }).click();
   await expect(page.getByText("Passo Rápido", { exact: true })).toHaveCount(0);
 
+  await page.getByRole("tab", { name: "Gênio" }).click();
   await expect(page.getByLabel("Nome do Genius")).toHaveValue("Olhar Analítico");
   await page.getByText("Leitura", { exact: true }).click();
   await page.getByRole("button", { name: "Usar habilidade" }).click();
@@ -303,6 +329,8 @@ test("usa Talento e mantém CRUD personalizado de Genius com custo de Stamina", 
 
   await page.getByRole("button", { name: "Salvar ficha" }).click();
   await page.reload();
+  await openMobileSection(page, "Talentos");
+  await page.getByRole("tab", { name: "Gênio" }).click();
   await expect(page.getByLabel(/Stamina atual/)).toHaveValue("146");
   await expect(page.getByText("Passo Rápido", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Leitura Avançada", { exact: true })).toBeVisible();
@@ -319,11 +347,17 @@ test("bloqueia edição no modo de apresentação e persiste a preferência de s
   await expect(page.getByRole("status")).toContainText("Modo de apresentação ativo");
   await expect(page.getByLabel("Nome", { exact: true })).toBeDisabled();
   await expect(page.getByLabel("Saúde (SAU)")).toBeDisabled();
+  await openMobileSection(page, "Corpo");
   await expect(page.getByLabel("Armadura atual de Cabeça")).toBeDisabled();
+  await openMobileSection(page, "Mais");
+  await page.getByRole("tab", { name: "Perícias" }).click();
   await expect(page.getByLabel("Graduação de Acrobacia")).toBeDisabled();
+  await page.getByRole("tab", { name: "Condições" }).click();
   await expect(page.getByLabel("Amedrontado ativa")).toBeDisabled();
+  await page.getByRole("tab", { name: "Notas" }).click();
   await expect(page.getByLabel("Notas da personagem")).toHaveAttribute("readonly", "");
   await expect(page.getByRole("button", { name: "Salvar ficha" })).toBeDisabled();
+  await page.getByRole("tab", { name: "Perícias" }).click();
   await expect(page.getByRole("button", { name: "Rolar Acrobacia" })).toBeEnabled();
   await page.getByRole("button", { name: "Rolar Acrobacia" }).click();
   await expect(page.getByText(/1d20\+0-4/)).toBeVisible();
@@ -382,6 +416,7 @@ test("aplica as seis identidades de academia com rótulo e contraste em claro e 
 });
 
 test("VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operáveis sem som", async ({ page }) => {
+  test.slow();
   const routes = [
     ["/yusong", "Personagens de Pilares de Atlas"],
     ["/yusong/characters/new", "Novo personagem de Pilares de Atlas"],
@@ -415,6 +450,7 @@ test("VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operá
   await page.evaluate(() => localStorage.setItem("pilares-de-atlas:sound-muted", "true"));
   await page.goto("/yusong/characters/pilares-e2e");
   await expect(page.getByRole("button", { name: "Ligar som das rolagens" })).toBeVisible();
+  await page.getByRole("tab", { name: "Perícias" }).click();
   const rollButton = page.getByRole("button", { name: "Rolar Acrobacia" });
   await rollButton.focus();
   await page.keyboard.press("Enter");
@@ -432,4 +468,25 @@ test("VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operá
     await expect(part.locator("fieldset")).toBeVisible();
   }
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+});
+
+test("usa composição B2 no desktop e navegação local no mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/yusong/characters/pilares-e2e");
+  await expect(page.locator(".pilares-sheet__main")).toBeVisible();
+  await expect(page.locator(".pilares-sheet__panel--left")).toBeVisible();
+  await expect(page.locator(".pilares-sheet__body")).toBeVisible();
+  await expect(page.locator(".pilares-sheet__panel--right")).toBeVisible();
+  await expect(page.locator(".pilares-stats__attribute")).toHaveCount(9);
+  await expect(page.locator(".pilares-body__part")).toHaveCount(7);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole("navigation", { name: "Seções da ficha" })).toBeVisible();
+  await expect(page.locator('[data-mobile-section="summary"]').first()).toBeVisible();
+  await expect(page.locator('[data-mobile-section="body"]')).toBeHidden();
+  await page.getByRole("button", { name: "Corpo", exact: true }).click();
+  await expect(page.locator('[data-mobile-section="body"]')).toBeVisible();
+  await expect(page.locator('[data-mobile-section="summary"]').first()).toBeHidden();
+  await page.getByRole("button", { name: "Talentos", exact: true }).click();
+  await expect(page.locator('[data-mobile-section="talents"]')).toBeVisible();
 });

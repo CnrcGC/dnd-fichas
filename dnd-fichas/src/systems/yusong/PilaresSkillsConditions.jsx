@@ -7,7 +7,7 @@ import "./PilaresSkillsConditions.css";
 
 const SKILL_RANKS = Object.freeze([0, 1, 2, 3, 4, 5]);
 
-export default function PilaresSkillsConditions({ character, onSkillChange, onToggleCondition, readOnly = false, soundMuted = false }) {
+export default function PilaresSkillsConditions({ character, onSkillChange, onToggleCondition, readOnly = false, soundMuted = false, view = "all" }) {
   const [openSkillId, setOpenSkillId] = useState(null);
   const [lastRoll, setLastRoll] = useState(null);
 
@@ -22,13 +22,13 @@ export default function PilaresSkillsConditions({ character, onSkillChange, onTo
   }
 
   return (
-    <section className="pilares-abilities" aria-labelledby="pilares-abilities-title">
-      <h2 id="pilares-abilities-title">Perícias e condições</h2>
+    <div className="pilares-abilities">
+      {view === "all" && <h2>Perícias e condições</h2>}
 
-      <section className="pilares-abilities__group" aria-labelledby="pilares-skills-title">
+      {(view === "all" || view === "skills") && <section className="pilares-abilities__group" aria-labelledby="pilares-skills-title">
         <div className="pilares-abilities__heading">
           <div>
-            <h3 id="pilares-skills-title">Perícias</h3>
+            <h2 id="pilares-skills-title">Perícias</h2>
             <p>A graduação varia de 0 a 5 e concede +4 por ponto.</p>
           </div>
           <span aria-label="16 Perícias">16</span>
@@ -72,12 +72,12 @@ export default function PilaresSkillsConditions({ character, onSkillChange, onTo
             );
           })}
         </div>
-      </section>
+      </section>}
 
-      <section className="pilares-abilities__group" aria-labelledby="pilares-conditions-title">
+      {(view === "all" || view === "conditions") && <section className="pilares-abilities__group" aria-labelledby="pilares-conditions-title">
         <div className="pilares-abilities__heading">
           <div>
-            <h3 id="pilares-conditions-title">Condições</h3>
+            <h2 id="pilares-conditions-title">Condições</h2>
             <p>Estados ativos são aplicados pelo engine às rolagens compatíveis.</p>
           </div>
           <span aria-label="9 Condições">9</span>
@@ -98,7 +98,7 @@ export default function PilaresSkillsConditions({ character, onSkillChange, onTo
             );
           })}
         </div>
-      </section>
-    </section>
+      </section>}
+    </div>
   );
 }

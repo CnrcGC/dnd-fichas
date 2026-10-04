@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+:where(p, li, dd, td, th, label, button, a) {
+  overflow-wrap: anywhere;
+}
+
 html,
 body,
 #root {
@@ -109,5 +113,29 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid Highlight;
+  }
+
+  :where(
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [aria-current],
+    .is-ativa,
+    .is-selecionado,
+    .state-danger,
+    .state-success,
+    .state-warning
+  ) {
+    border: 2px solid CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  :where(button, input, select, textarea, a[href]) {
+    forced-color-adjust: auto;
   }
 }

@@ -3,7 +3,7 @@ import { normalizarPoolsDadosVida, totalDadosVidaUsados } from "./dadosVida";
 import { reconciliarProficienciasCriacao } from "./proficienciasCriacao";
 import { normalizarNiveisFicha } from "./niveis";
 import { normalizarInventario } from "./itensMagicos";
-import { normalizarCondicoes } from "./efeitos";
+import { concentracaoTerminaPorStatus, normalizarCondicoes } from "./efeitos";
 import { normalizarMoedas } from "./moedas";
 
 export function criarFichaVazia(nome) {
@@ -19,6 +19,7 @@ export function criarFichaVazia(nome) {
     historico: "",
     objetivo: "",
     racaId: null,
+    subracaId: null,
     classeId: null,
     antecedenteId: null,
     nivel: 1,
@@ -63,6 +64,11 @@ export function criarFichaVazia(nome) {
     recursos: [],
     subclasseId: null,
     bonusRacialEscolhido: [], // atributos escolhidos livremente (ex: Meio-Elfo)
+    escolhasRaciais: {}, // escolhas próprias da raça, como ancestralidade dracônica
+    escolhasClasse: {}, // escolhas por classe e nível, preservadas por ID estável
+    perfilEscolhasClasse: "me-02b",
+    escolhasSubclasse: {}, // escolhas internas da subclasse, preservadas por ID estável
+    perfilEscolhasSubclasse: "me-02c",
     periciasDoAntecedente: [], // rastreia quais perícias vieram do antecedente atual
     idiomas: ["comum"],
     proficienciasFerramentas: [], // ids de FERRAMENTAS (data/equipamentos.js) em que é proficiente
@@ -95,6 +101,7 @@ export function normalizarFicha(ficha) {
     ...fichaComNiveisValidos,
     versaoFicha: Math.max(Number(fichaComNiveisValidos.versaoFicha) || 1, 8),
     subclasseId: fichaComNiveisValidos.subclasseId ?? null,
+    subracaId: fichaComNiveisValidos.subracaId ?? null,
     classesSecundarias: Array.isArray(fichaComNiveisValidos.classesSecundarias)
       ? fichaComNiveisValidos.classesSecundarias.map((classe) => ({
           ...classe,
@@ -157,11 +164,17 @@ export function normalizarFicha(ficha) {
   const normalizada = {
     ...base,
     status,
+    concentracao: concentracaoTerminaPorStatus(status) ? null : base.concentracao,
     espacosMagia,
     espacosMagiaPacto,
     recursos,
     estadoFicha: base.estadoFicha === "pronta" ? "pronta" : "rascunho",
     escolhasCriacao: base.escolhasCriacao && typeof base.escolhasCriacao === "object" ? base.escolhasCriacao : {},
+    escolhasRaciais: base.escolhasRaciais && typeof base.escolhasRaciais === "object" ? base.escolhasRaciais : {},
+    escolhasClasse: base.escolhasClasse && typeof base.escolhasClasse === "object" ? base.escolhasClasse : {},
+    perfilEscolhasClasse: base.perfilEscolhasClasse ?? null,
+    escolhasSubclasse: base.escolhasSubclasse && typeof base.escolhasSubclasse === "object" ? base.escolhasSubclasse : {},
+    perfilEscolhasSubclasse: base.perfilEscolhasSubclasse ?? null,
     origensProficiencias: base.origensProficiencias && typeof base.origensProficiencias === "object" ? base.origensProficiencias : {},
     trocasMagiasAplicadas: base.trocasMagiasAplicadas && typeof base.trocasMagiasAplicadas === "object" ? base.trocasMagiasAplicadas : {},
     origemClassePvPorNivel,

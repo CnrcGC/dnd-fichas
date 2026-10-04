@@ -119,10 +119,10 @@ export default function ModalCatalogoMagias({
         className="modal-catalogo"
         role="dialog"
         aria-modal="true"
-        aria-label="Adicionar magias"
+        aria-labelledby="modal-catalogo-magias-titulo"
       >
         <div className="modal-catalogo-cabecalho">
-          <h2>Adicionar Magias</h2>
+          <h2 id="modal-catalogo-magias-titulo">Adicionar Magias</h2>
           <button
             type="button"
             className="modal-catalogo-fechar"
@@ -195,6 +195,9 @@ export default function ModalCatalogoMagias({
           value={busca}
           onChange={(evento) => setBusca(evento.target.value)}
         />
+        <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+          {magiasFiltradas.length} {magiasFiltradas.length === 1 ? "magia encontrada" : "magias encontradas"}.
+        </p>
 
         <div className="modal-catalogo-lista">
           {niveisDisponiveis.length === 0 ? (

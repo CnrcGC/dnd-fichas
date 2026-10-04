@@ -8,6 +8,7 @@ import { defineMigration, defineMigrationChain, runMigrationChain } from "../../
 import {
   YUSONG_ATTRIBUTES,
   YUSONG_BODY_PARTS,
+  buildYusongAttributeNotation,
   buildYusongDiceNotation,
   buildYusongSkillNotation,
   calculateMemberArmor,
@@ -278,6 +279,7 @@ export const yusongEngine = assertSystemEngine({
   listValidationIssues: listYusongValidationIssues,
   commands: yusongCommands,
   diceRequests: Object.freeze({
+    buildAttributeNotation: buildYusongAttributeNotation,
     buildNotation: buildYusongDiceNotation,
     roll: rollYusongDice,
     buildSkillNotation: buildYusongSkillNotation,

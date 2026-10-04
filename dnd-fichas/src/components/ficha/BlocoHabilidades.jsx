@@ -135,7 +135,7 @@ export default function BlocoHabilidades({
                         onClick={() => alternarExpandida(habilidade.id)}
                         aria-expanded={aberta}
                         aria-label={
-                          aberta ? "Recolher detalhes" : "Expandir detalhes"
+                          `${aberta ? "Recolher" : "Expandir"} detalhes de ${habilidade.nome}`
                         }
                       >
                         <span
@@ -155,6 +155,7 @@ export default function BlocoHabilidades({
                           type="text"
                           value={habilidade.nome}
                           placeholder="Nome da habilidade"
+                          aria-label="Nome da habilidade personalizada"
                           onChange={(evento) =>
                             handleAlterar(habilidade.id, "nome", evento.target.value)
                           }
@@ -181,6 +182,7 @@ export default function BlocoHabilidades({
                           className="habilidades-nivel-input"
                           value={habilidade.nivel ?? ""}
                           placeholder="—"
+                          aria-label={`Nível de ${habilidade.nome || "habilidade personalizada"}`}
                           onChange={(evento) =>
                             handleAlterar(
                               habilidade.id,
@@ -220,6 +222,7 @@ export default function BlocoHabilidades({
                           <textarea
                             className="habilidades-descricao-textarea"
                             placeholder="Descreva o efeito dessa habilidade..."
+                            aria-label={`Descrição de ${habilidade.nome || "habilidade personalizada"}`}
                             value={habilidade.descricao ?? ""}
                             onChange={(evento) =>
                               handleAlterar(

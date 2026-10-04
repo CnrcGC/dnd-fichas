@@ -37,6 +37,7 @@ export const EQUIPAMENTOS_GERAIS = [
 export const FERRAMENTAS = [
   { id: "ferramentas-ladino", nome: "Ferramentas de ladino", peso: 0.5, custo: 25 },
   { id: "ferramentas-disfarce", nome: "Kit de disfarce", peso: 1.5, custo: 25 },
+  { id: "kit-venenos", nome: "Kit de venenos", peso: 1, custo: 50 },
   { id: "ferramentas-falsificacao", nome: "Kit de falsificação", peso: 2.5, custo: 15 },
   { id: "ferramentas-navegador", nome: "Ferramentas de navegador", peso: 1, custo: 25 },
   { id: "kit-alquimista", nome: "Ferramentas de alquimista", peso: 4, custo: 50 },

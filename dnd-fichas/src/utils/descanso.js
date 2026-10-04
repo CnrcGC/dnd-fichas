@@ -7,6 +7,7 @@ import {
 } from "./dadosVida";
 import { calcularNivelTotal } from "./niveis";
 import { restaurarRecursos } from "./recurso";
+import { estadoTestesMorte } from "./status";
 
 export function restaurarTodosEspacos(espacosMagia) {
   const resultado = {};
@@ -33,10 +34,17 @@ export function aplicarDescansoCurto(ficha) {
   };
 }
 
-export function aplicarDescansoLongo(ficha) {
+// RULEBOOK FACT: Livro do Jogador (2014), p. 188, "Descanso Longo".
+export function podeBeneficiarDescansoLongo(status = {}) {
+  return Number(status.pvAtual) >= 1 && !estadoTestesMorte(status).morto;
+}
+
+export function aplicarDescansoLongo(ficha, { prioridadeDadosVida = "maiores" } = {}) {
+  if (!podeBeneficiarDescansoLongo(ficha.status)) return {};
   const dadosVidaPorClasse = restaurarDadosVidaLongo(
     ficha.dadosVidaPorClasse,
-    calcularNivelTotal(ficha)
+    calcularNivelTotal(ficha),
+    prioridadeDadosVida
   );
   return {
     status: {
@@ -51,5 +59,6 @@ export function aplicarDescansoLongo(ficha) {
     espacosMagia: restaurarTodosEspacos(ficha.espacosMagia ?? {}),
     espacosMagiaPacto: restaurarMagiaPacto(ficha.espacosMagiaPacto),
     recursos: restaurarRecursos(ficha.recursos ?? [], "longo"),
+    concentracao: null,
   };
 }

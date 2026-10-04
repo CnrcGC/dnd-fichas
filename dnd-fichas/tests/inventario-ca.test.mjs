@@ -81,14 +81,14 @@ test("escudo mágico soma bônus somente quando está ativo", () => {
   );
 });
 
-test("peso considera quantidade e capacidade usa Força total", () => {
+test("ME-01 peso considera quantidade e capacidade em kg usa Força total", () => {
   const itens = [
     { quantidade: 2, peso: 5 },
     { quantidade: 3, peso: 0.5 },
     { quantidade: -1, peso: 100 },
   ];
   assert.equal(carga.calcularPesoInventario(itens), 11.5);
-  assert.equal(carga.calcularCapacidadeCarga(10), 150);
+  assert.equal(carga.calcularCapacidadeCarga(10), 75);
   assert.equal(carga.calcularPesoInventario(itens) > carga.calcularCapacidadeCarga(10), false);
 });
 

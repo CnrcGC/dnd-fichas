@@ -42,9 +42,16 @@ export default function ModalCatalogoItens({ aberto, onFechar, onAdicionarItem }
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
-      <div ref={dialogRef} tabIndex="-1" className="modal-catalogo" role="dialog" aria-modal="true" aria-label="Adicionar itens">
+      <div
+        ref={dialogRef}
+        tabIndex="-1"
+        className="modal-catalogo"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-catalogo-itens-titulo"
+      >
         <div className="modal-catalogo-cabecalho">
-          <h2>Adicionar Itens</h2>
+          <h2 id="modal-catalogo-itens-titulo">Adicionar Itens</h2>
           <button
             type="button"
             className="modal-catalogo-fechar"
@@ -80,6 +87,9 @@ export default function ModalCatalogoItens({ aberto, onFechar, onAdicionarItem }
           value={busca}
           onChange={(evento) => setBusca(evento.target.value)}
         />
+        <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+          {itensFiltrados.length} {itensFiltrados.length === 1 ? "item encontrado" : "itens encontrados"}.
+        </p>
 
         <div className="modal-catalogo-lista">
           {itensFiltrados.length === 0 ? (

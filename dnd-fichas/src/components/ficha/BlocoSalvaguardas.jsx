@@ -44,7 +44,10 @@ export default function BlocoSalvaguardas({
                 }
                 aria-hidden="true"
               />
-              <span className="salvaguarda-label">{atributo.label}</span>
+              <span className="salvaguarda-label">
+                {atributo.label}
+                {proficiente && <span className="visually-hidden"> (proficiente)</span>}
+              </span>
               <button
                 type="button"
                 className="salvaguarda-modificador-botao"

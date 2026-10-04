@@ -25,6 +25,16 @@ import "./ModalLevelUp.css";
 
 const NIVEIS_ASI = [4, 8, 12, 16, 19];
 
+const ROTULOS_ETAPAS = {
+  "escolha-classe": "Escolha da classe",
+  pv: "Pontos de vida",
+  subclasse: "Escolha da subclasse",
+  asi: "Melhoria de atributo",
+  habilidades: "Novas habilidades",
+  "troca-magia": "Troca de magia",
+  resumo: "Resumo",
+};
+
 export default function ModalLevelUp({
   aberto,
   onFechar,
@@ -417,9 +427,17 @@ export default function ModalLevelUp({
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
-      <div ref={dialogRef} tabIndex="-1" className="modal-catalogo levelup-modal" role="dialog" aria-modal="true" aria-label="Subir de nível">
+      <div
+        ref={dialogRef}
+        tabIndex="-1"
+        className="modal-catalogo levelup-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-levelup-titulo"
+        aria-describedby="modal-levelup-etapa"
+      >
         <div className="modal-catalogo-cabecalho">
-          <h2>
+          <h2 id="modal-levelup-titulo">
             Subir de Nível — {classeEscolhida.nome} {classeEscolhida.nivelAtual} → {novoNivelDaEscolhida}
           </h2>
           <button type="button" className="modal-catalogo-fechar" onClick={fecharEResetar} aria-label="Fechar">
@@ -427,7 +445,10 @@ export default function ModalLevelUp({
           </button>
         </div>
 
-        <div className="levelup-passos">
+        <p id="modal-levelup-etapa" className="visually-hidden" role="status" aria-live="polite">
+          Etapa {etapa + 1} de {etapas.length}: {ROTULOS_ETAPAS[etapaAtual] ?? etapaAtual}
+        </p>
+        <div className="levelup-passos" aria-hidden="true">
           {etapas.map((passo, indice) => (
             <span
               key={passo}
@@ -459,6 +480,7 @@ export default function ModalLevelUp({
                       setTrocasMagias([]);
                     }}
                     disabled={opcao.pendenteMulticlasse}
+                    aria-pressed={classeEscolhidaId === opcao.id}
                   >
                     {opcao.nome}
                     <span className="levelup-opcao-detalhe">
@@ -495,6 +517,7 @@ export default function ModalLevelUp({
                         : "levelup-opcao-botao"
                     }
                     onClick={handleUsarMedia}
+                    aria-pressed={metodoPv === "media"}
                   >
                     Usar média
                     <span className="levelup-opcao-detalhe">+{valorMedia} PV</span>
@@ -508,6 +531,7 @@ export default function ModalLevelUp({
                     }
                     onClick={handleRolarPv}
                     disabled={detalheRolagemPv !== null}
+                    aria-pressed={metodoPv === "rolado"}
                   >
                     <Icon name="dice" /> Rolar o dado
                     <span className="levelup-opcao-detalhe">
@@ -539,6 +563,7 @@ export default function ModalLevelUp({
                         : "levelup-opcao-botao"
                     }
                     onClick={() => setSubclasseEscolhidaId(subclasse.id)}
+                    aria-pressed={subclasseEscolhidaId === subclasse.id}
                   >
                     {subclasse.nome}
                     <span className="levelup-opcao-detalhe">{subclasse.descricao}</span>
@@ -565,6 +590,7 @@ export default function ModalLevelUp({
                       : "levelup-opcao-botao"
                   }
                   onClick={() => setModoAsi("duplo")}
+                  aria-pressed={modoAsi === "duplo"}
                 >
                   +1 em dois atributos
                 </button>
@@ -576,6 +602,7 @@ export default function ModalLevelUp({
                       : "levelup-opcao-botao"
                   }
                   onClick={() => setModoAsi("unico")}
+                  aria-pressed={modoAsi === "unico"}
                 >
                   +2 em um atributo
                 </button>
@@ -587,6 +614,7 @@ export default function ModalLevelUp({
                       : "levelup-opcao-botao"
                   }
                   onClick={() => setModoAsi("pular")}
+                  aria-pressed={modoAsi === "pular"}
                 >
                   Pular (vou pegar um talento)
                 </button>
@@ -595,6 +623,7 @@ export default function ModalLevelUp({
               {modoAsi === "unico" && (
                 <select
                   className="levelup-select"
+                  aria-label="Atributo para receber mais dois"
                   value={atributoAsiUnico}
                   onChange={(evento) => setAtributoAsiUnico(evento.target.value)}
                 >
@@ -610,6 +639,7 @@ export default function ModalLevelUp({
                 <div className="levelup-select-dupla">
                   <select
                     className="levelup-select"
+                    aria-label="Primeiro atributo para receber mais um"
                     value={atributosAsiDuplo[0]}
                     onChange={(evento) =>
                       setAtributosAsiDuplo([evento.target.value, atributosAsiDuplo[1]])
@@ -623,6 +653,7 @@ export default function ModalLevelUp({
                   </select>
                   <select
                     className="levelup-select"
+                    aria-label="Segundo atributo para receber mais um"
                     value={atributosAsiDuplo[1]}
                     onChange={(evento) =>
                       setAtributosAsiDuplo([atributosAsiDuplo[0], evento.target.value])
@@ -684,6 +715,7 @@ export default function ModalLevelUp({
                     <strong>Troca {indice + 1}</strong>
                     <select
                       className="levelup-select"
+                      aria-label={`Magia removida na troca ${indice + 1}`}
                       value={troca.removidaId}
                       onChange={(evento) => alterarTrocaMagia(indice, "removidaId", evento.target.value)}
                     >
@@ -699,6 +731,7 @@ export default function ModalLevelUp({
                     {troca.removidaId && (
                       <select
                         className="levelup-select"
+                        aria-label={`Nova magia da troca ${indice + 1}`}
                         value={troca.novaMagiaId}
                         onChange={(evento) => alterarTrocaMagia(indice, "novaMagiaId", evento.target.value)}
                       >

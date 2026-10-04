@@ -6,7 +6,7 @@ export default function PlatformRouteState({ title, description, status = "error
       <h1 id="platform-state-title">{title}</h1>
       <p className="platform-page-copy">{description}</p>
       {children}
-      {status !== "loading" && <p><Link to="/">Escolher outro sistema</Link></p>}
+      {status !== "loading" && <p><Link to="/dnd5e">Voltar aos personagens D&amp;D</Link></p>}
     </section>
   );
 }

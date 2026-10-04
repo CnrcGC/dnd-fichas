@@ -27,7 +27,13 @@ export function createDnd5eCharacterStore({
   let writeQueue = Promise.resolve();
 
   function getRepository() {
-    repositoryPromise ??= Promise.resolve(repository ?? openRepository()).then(assertCharacterRepository);
+    repositoryPromise ??= Promise.resolve()
+      .then(() => repository ?? openRepository())
+      .then(assertCharacterRepository)
+      .catch((error) => {
+        repositoryPromise = null;
+        throw error;
+      });
     return repositoryPromise;
   }
 

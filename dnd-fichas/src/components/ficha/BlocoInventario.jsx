@@ -12,6 +12,8 @@ import {
   itemMagicoAtivo,
   itemPossuiCargas,
   recuperarCargasItem,
+  restaurarDadosCatalogoAnteriores,
+  usarDadosCatalogoAtuais,
 } from "../../utils/itensMagicos";
 import { rolarFormula } from "../../utils/dados";
 import { useRolagem } from "../../context/useRolagem";
@@ -85,8 +87,12 @@ export default function BlocoInventario({
     if (!efeito?.formula || !onAplicarEfeitoPv) return;
     const resultado = rolarFormula(efeito.formula);
     registrarRolagem(`${item.nome} (${efeito.tipo})`, resultado, "formula");
-    onAplicarEfeitoPv(efeito.tipo, resultado.total, item.nome);
-    setAvisoItem(`${item.nome}: ${resultado.total} PV de ${efeito.tipo} aplicados.`);
+    const aplicacao = onAplicarEfeitoPv(efeito.tipo, resultado.total, item.nome);
+    if (aplicacao?.erro) {
+      setAvisoItem(aplicacao.erro);
+      return;
+    }
+    setAvisoItem(`${item.nome}: ${aplicacao?.valorAplicado ?? resultado.total} PV de ${efeito.tipo} aplicados.`);
     if (efeito.consumivel) {
       onChangeInventario(
         (item.quantidade ?? 1) <= 1
@@ -98,6 +104,16 @@ export default function BlocoInventario({
             )
       );
     }
+  }
+
+  function handleVersaoCatalogo(item, usarAnterior) {
+    const resultado = usarAnterior
+      ? restaurarDadosCatalogoAnteriores(inventario, item.id)
+      : usarDadosCatalogoAtuais(inventario, item.id);
+    setAvisoItem(resultado.erro ?? (usarAnterior
+      ? `${item.nome}: versão anterior restaurada.`
+      : `${item.nome}: versão atual do catálogo aplicada.`));
+    if (!resultado.erro) onChangeInventario(resultado.inventario);
   }
 
   return (
@@ -114,6 +130,18 @@ export default function BlocoInventario({
           </span>
         </div>
       </div>
+
+      {itensSintonizados > LIMITE_SINTONIZACAO && (
+        <p className="inventario-aviso" role="alert">
+          Há {itensSintonizados} itens marcados como sintonizados. Somente os três primeiros estão
+          ativos; desative uma sintonia para regularizar a ficha sem perder os dados importados.
+        </p>
+      )}
+      {itensSintonizados === LIMITE_SINTONIZACAO && (
+        <p id="inventario-limite-sintonia" className="inventario-aviso" role="status">
+          Limite de três sintonizações atingido. Desative uma para sintonizar outro item.
+        </p>
+      )}
 
       <button
         type="button"
@@ -168,6 +196,7 @@ export default function BlocoInventario({
                       type="text"
                       value={item.nome}
                       placeholder="Nome do item"
+                      aria-label="Nome do item"
                       onChange={(evento) =>
                         handleAlterarItem(item.id, "nome", evento.target.value)
                       }
@@ -179,6 +208,7 @@ export default function BlocoInventario({
                       min="0"
                       className="inventario-input-numero"
                       value={item.quantidade}
+                      aria-label={`Quantidade de ${item.nome || "item"}`}
                       onChange={(evento) =>
                         handleAlterarItem(item.id, "quantidade", Number(evento.target.value) || 0)
                       }
@@ -191,6 +221,7 @@ export default function BlocoInventario({
                       step="0.1"
                       className="inventario-input-numero"
                       value={item.peso}
+                      aria-label={`Peso unitário de ${item.nome || "item"} em quilogramas`}
                       onChange={(evento) =>
                         handleAlterarItem(item.id, "peso", Number(evento.target.value) || 0)
                       }
@@ -214,6 +245,7 @@ export default function BlocoInventario({
                     {item.tipoItem === "arma" ? (
                       <select
                         value={item.atributoAtaque ?? "auto"}
+                        aria-label={`Atributo de ataque de ${item.nome || "arma"}`}
                         onChange={(evento) =>
                           handleAlterarItem(item.id, "atributoAtaque", evento.target.value)
                         }
@@ -276,10 +308,27 @@ export default function BlocoInventario({
                           type="checkbox"
                           checked={Boolean(item.sintonizado)}
                           disabled={limiteSintonizacaoAtingido}
+                          aria-label={`Sintonizar ${item.nome || "item"}`}
+                          aria-describedby={limiteSintonizacaoAtingido ? "inventario-limite-sintonia" : undefined}
                           onChange={(evento) => handleSintonizacao(item, evento.target.checked)}
                         />
                         Sintonizado
+                        {item.sintonizacaoExcedente && " (excedente e inativo)"}
                       </label>
+                    )}
+
+                    {item.dadosCatalogoAnteriores && (
+                      <div className="inventario-revisao-catalogo" role="status">
+                        <p>{item.avisoCatalogo ?? "Uma versão anterior deste item foi preservada."}</p>
+                        <button
+                          type="button"
+                          onClick={() => handleVersaoCatalogo(item, !item.preferirDadosCatalogoAnteriores)}
+                        >
+                          {item.preferirDadosCatalogoAnteriores
+                            ? "Usar versão atual do catálogo"
+                            : "Restaurar versão anterior"}
+                        </button>
+                      </div>
                     )}
 
                     {possuiCargas && (

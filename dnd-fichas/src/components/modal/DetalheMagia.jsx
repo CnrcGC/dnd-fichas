@@ -22,6 +22,7 @@ export default function DetalheMagia({
 }) {
   const { registrarRolagem } = useRolagem();
   const [ultimoEfeitoPv, setUltimoEfeitoPv] = useState(null);
+  const [avisoAplicacao, setAvisoAplicacao] = useState("");
   const temEfeitoMecanico = Boolean(magia.dano || magia.cura || magia.condicao);
   const formulaDano = extrairDadosDoDano(magia.dano);
 
@@ -29,6 +30,7 @@ export default function DetalheMagia({
     if (!formulaDano) return;
     const resultado = rolarFormula(formulaDano);
     registrarRolagem(`${magia.nome} (dano)`, resultado, "formula");
+    setAvisoAplicacao("");
     setUltimoEfeitoPv({ tipo: "dano", resultado });
   }
 
@@ -46,16 +48,22 @@ export default function DetalheMagia({
         }
       : base;
     registrarRolagem(`${magia.nome} (cura)`, resultado, "formula");
+    setAvisoAplicacao("");
     setUltimoEfeitoPv({ tipo: "cura", resultado });
   }
 
   function handleAplicarUltimoEfeito() {
     if (!ultimoEfeitoPv || !onAplicarEfeitoPv) return;
-    onAplicarEfeitoPv(
+    const aplicacao = onAplicarEfeitoPv(
       ultimoEfeitoPv.tipo,
       ultimoEfeitoPv.resultado.total,
       magia.nome
     );
+    if (aplicacao?.erro) {
+      setAvisoAplicacao(aplicacao.erro);
+      return;
+    }
+    setAvisoAplicacao(`${aplicacao?.valorAplicado ?? ultimoEfeitoPv.resultado.total} PV aplicados à ficha.`);
     setUltimoEfeitoPv(null);
   }
 
@@ -136,6 +144,12 @@ export default function DetalheMagia({
               Aplicar à ficha
             </button>
           </dd>
+        </div>
+      )}
+      {avisoAplicacao && (
+        <div className="item-catalogo-detalhe-full">
+          <dt>Aplicação</dt>
+          <dd role={avisoAplicacao.includes("morta") ? "alert" : "status"}>{avisoAplicacao}</dd>
         </div>
       )}
       {magia.condicao && (

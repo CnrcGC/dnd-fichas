@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RACAS } from "../../data/racas";
+import { RACAS, obterSubraca, obterSubracasPorRaca } from "../../data/racas";
 import { CLASSES, obterClasse } from "../../data/classes";
 import {
   obterSubclassesPorClasse,
@@ -23,6 +23,19 @@ import {
 import { obterRegraMulticlasse } from "../../data/proficienciasMulticlasse";
 import "./BlocoRacaClasse.css";
 import Icon from "../icons/Icon";
+import { obterEscolhasPorClasse } from "../../data/escolhasClasses";
+import {
+  classesDaFichaParaEscolhas,
+  escolhaAtiva,
+  opcoesDaEscolha,
+  quantidadeDaEscolha,
+  valoresDaEscolha,
+} from "../../utils/escolhasClasses";
+import {
+  escolhasAtivasSubclasses,
+  opcoesDaEscolhaSubclasse,
+  valoresDaEscolhaSubclasse,
+} from "../../utils/escolhasSubclasses";
 
 function CampoNivel({ nivel, nivelMaximo, onChangeNivel }) {
   const [nivelRascunho, setNivelRascunho] = useState(String(nivel));
@@ -55,6 +68,8 @@ function CampoNivel({ nivel, nivelMaximo, onChangeNivel }) {
 
 export default function BlocoRacaClasse({
   racaId,
+  subracaId,
+  escolhasRaciais = {},
   classeId,
   antecedenteId,
   nivel,
@@ -67,6 +82,8 @@ export default function BlocoRacaClasse({
   proficienciasMulticlasse = {},
   bonusRacialEscolhido,
   onChangeRaca,
+  onChangeSubraca,
+  onChangeEscolhaRacial,
   onChangeClasse,
   onChangeAntecedente,
   onChangeNivel,
@@ -78,8 +95,13 @@ export default function BlocoRacaClasse({
   onChangeBonusRacialEscolhido,
   escolhasCriacao = {},
   onChangeEscolhasCriacao,
+  ficha,
+  onChangeEscolhaClasse,
+  onChangeEscolhaSubclasse,
 }) {
   const racaSelecionada = RACAS.find((r) => r.id === racaId);
+  const subracasDisponiveis = obterSubracasPorRaca(racaId);
+  const subracaSelecionada = obterSubraca(subracaId);
   const subclassesDisponiveis = obterSubclassesPorClasse(classeId);
   const nivelEscolhaSubclasse = obterNivelEscolhaSubclasse(classeId);
   const podeEscolherSubclasse = nivel >= (nivelEscolhaSubclasse ?? Infinity);
@@ -108,6 +130,36 @@ export default function BlocoRacaClasse({
           </select>
         </label>
 
+        {subracasDisponiveis.length > 0 && (
+          <label className="raca-classe-campo">
+            <span className="raca-classe-label">Sub-raça</span>
+            <select
+              value={subracaId ?? ""}
+              onChange={(evento) => onChangeSubraca(evento.target.value || null)}
+            >
+              <option value="">Selecione...</option>
+              {subracasDisponiveis.map((subraca) => (
+                <option key={subraca.id} value={subraca.id}>{subraca.nome}</option>
+              ))}
+            </select>
+          </label>
+        )}
+
+        {racaSelecionada?.ancestralidadesDraconicas?.length > 0 && (
+          <label className="raca-classe-campo">
+            <span className="raca-classe-label">Ancestralidade dracônica</span>
+            <select
+              value={escolhasRaciais.ancestralidadeDraconicaId ?? ""}
+              onChange={(evento) => onChangeEscolhaRacial("ancestralidadeDraconicaId", evento.target.value)}
+            >
+              <option value="">Selecione...</option>
+              {racaSelecionada.ancestralidadesDraconicas.map((item) => (
+                <option key={item.id} value={item.id}>{item.nome} — {item.dano}, {item.forma}</option>
+              ))}
+            </select>
+          </label>
+        )}
+
         {racaSelecionada?.atributosEscolhaLivre && (
           <div className="raca-classe-campo raca-classe-campo--largo">
             <span className="raca-classe-label">
@@ -122,6 +174,7 @@ export default function BlocoRacaClasse({
                   return (
                     <select
                       key={indice}
+                      aria-label={`Atributo para bônus racial, escolha ${indice + 1} de ${racaSelecionada.atributosEscolhaLivre}`}
                       value={bonusRacialEscolhido?.[indice] ?? ""}
                       onChange={(evento) =>
                         onChangeBonusRacialEscolhido(indice, evento.target.value)
@@ -229,6 +282,7 @@ export default function BlocoRacaClasse({
             return <div key={indice} className="multiclasse-linha">
               <select
                 value={c.classeId ?? ""}
+                aria-label={`Classe secundária ${indice + 1}`}
                 onChange={(evento) =>
                   onAlterarClasseSecundaria(indice, "classeId", evento.target.value)
                 }
@@ -257,6 +311,7 @@ export default function BlocoRacaClasse({
                 max={Math.max(1, 20 - (nivelTotal - (Number(c.nivel) || 1)))}
                 className="multiclasse-nivel"
                 value={c.nivel}
+                aria-label={`Nível da classe secundária ${CLASSES.find((classeItem) => classeItem.id === c.classeId)?.nome ?? indice + 1}`}
                 onChange={(evento) =>
                   onAlterarClasseSecundaria(
                     indice,
@@ -299,6 +354,7 @@ export default function BlocoRacaClasse({
                 type="button"
                 className="multiclasse-remover"
                 onClick={() => onRemoverClasseSecundaria(indice)}
+                aria-label={`Remover classe secundária ${CLASSES.find((classeItem) => classeItem.id === c.classeId)?.nome ?? indice + 1}`}
               >
                 <Icon name="remove" />
               </button>
@@ -342,10 +398,16 @@ export default function BlocoRacaClasse({
             className="multiclasse-adicionar"
             onClick={onAdicionarClasseSecundaria}
             disabled={nivelTotal >= 20}
+            aria-describedby={nivelTotal >= 20 ? "multiclasse-limite" : undefined}
             title={nivelTotal >= 20 ? "O personagem já atingiu o nível máximo (20)" : undefined}
           >
             + Adicionar classe
           </button>
+          {nivelTotal >= 20 && (
+            <p id="multiclasse-limite" className="raca-classe-info" role="status">
+              Não é possível adicionar outra classe: o personagem já atingiu o nível máximo (20).
+            </p>
+          )}
         </div>
       )}
 
@@ -354,36 +416,141 @@ export default function BlocoRacaClasse({
           Dado de vida: d{classe.dadoVida} — Atributo principal: {labelAtributoPrincipal}
         </p>
       )}
+      {racaSelecionada && (
+        <p className="raca-classe-info">
+          Traços raciais: {[...(racaSelecionada.tracos ?? []), ...(subracaSelecionada?.tracos ?? [])].map((traco) => traco.nome).join(", ") || "sem traços adicionais"}.
+        </p>
+      )}
       {antecedente && (
         <p className="raca-classe-info">
           {antecedente.caracteristica.nome}: {antecedente.caracteristica.descricao}
         </p>
       )}
-      <EscolhasCriacao classe={classe} raca={racaSelecionada} antecedente={antecedente} escolhas={escolhasCriacao} onChange={onChangeEscolhasCriacao} />
+      <EscolhasCriacao classe={classe} raca={racaSelecionada} subraca={subracaSelecionada} antecedente={antecedente} escolhas={escolhasCriacao} onChange={onChangeEscolhasCriacao} />
+      <EscolhasClasse ficha={ficha} onChange={onChangeEscolhaClasse} />
+      <EscolhasSubclasse ficha={ficha} onChange={onChangeEscolhaSubclasse} />
       
     </section>
   );
 }
 
-function EscolhasCriacao({ classe, raca, antecedente, escolhas, onChange }) {
+function EscolhasSubclasse({ ficha, onChange }) {
+  if (!ficha || !onChange) return null;
+  const escolhas = escolhasAtivasSubclasses(ficha);
+  if (!escolhas.length) return null;
+
+  return <div className="multiclasse-bloco">
+    <span className="raca-classe-label">Escolhas de subclasse</span>
+    <div className="raca-classe-grid">
+      {escolhas.map(({ classe, escolha }) => {
+        const quantidade = quantidadeDaEscolha(escolha, classe.nivel);
+        const valores = valoresDaEscolhaSubclasse(ficha, classe.subclasseId, escolha.id);
+        const opcoes = opcoesDaEscolhaSubclasse(escolha, ficha, classe);
+        return <div key={`${classe.subclasseId}:${escolha.id}`} className="raca-classe-campo raca-classe-campo--largo">
+          <span className="raca-classe-label">{escolha.nome} ({classe.subclasseId}) — escolha {quantidade}</span>
+          <div className="raca-escolha-livre-selects">
+            {Array.from({ length: quantidade }, (_, indice) => escolha.tipo === "texto" ? (
+              <input key={indice} type="text" value={valores[indice] ?? ""} aria-label={`${escolha.nome}, escolha ${indice + 1} de ${quantidade}`} onChange={(evento) => { const proximos = [...valores]; proximos[indice] = evento.target.value; onChange(classe.subclasseId, escolha.id, proximos); }} />
+            ) : (
+              <select key={indice} value={valores[indice] ?? ""} aria-label={`${escolha.nome}, escolha ${indice + 1} de ${quantidade}`} onChange={(evento) => { const proximos = [...valores]; proximos[indice] = evento.target.value || null; onChange(classe.subclasseId, escolha.id, proximos); }}>
+                <option value="">Selecione...</option>
+                {valores[indice] && !opcoes.some((opcao) => opcao.id === valores[indice]) && <option value={valores[indice]}>Indisponível: {valores[indice]}</option>}
+                {opcoes.filter((opcao) => !valores.includes(opcao.id) || valores[indice] === opcao.id).map((opcao) => <option key={opcao.id} value={opcao.id}>{opcao.nome}</option>)}
+              </select>
+            ))}
+          </div>
+        </div>;
+      })}
+    </div>
+  </div>;
+}
+
+function EscolhasClasse({ ficha, onChange }) {
+  if (!ficha || !onChange) return null;
+  const classes = classesDaFichaParaEscolhas(ficha);
+  const grupos = classes.map((classe) => ({
+    classe,
+    escolhas: obterEscolhasPorClasse(classe.classeId, classe.nivel)
+      .filter((escolha) => escolhaAtiva(escolha, ficha, classe.classeId)),
+  })).filter((grupo) => grupo.escolhas.length);
+  if (!grupos.length) return null;
+
+  return <div className="multiclasse-bloco">
+    <span className="raca-classe-label">Escolhas de classe</span>
+    {grupos.map(({ classe: classeAtual, escolhas }) => (
+      <div key={classeAtual.classeId} className="raca-classe-grid">
+        {escolhas.map((escolha) => {
+          const quantidade = quantidadeDaEscolha(escolha, classeAtual.nivel);
+          const valores = valoresDaEscolha(ficha, classeAtual.classeId, escolha.id);
+          const opcoes = opcoesDaEscolha(escolha, ficha, classeAtual);
+          return <div key={escolha.id} className="raca-classe-campo raca-classe-campo--largo">
+            <span className="raca-classe-label">
+              {escolha.nome} ({classeAtual.classeId}) — {escolha.opcional ? "opcional" : `escolha ${quantidade}`}
+            </span>
+            <div className="raca-escolha-livre-selects">
+              {Array.from({ length: quantidade }, (_, indice) => escolha.tipo === "texto" ? (
+                <input
+                  key={indice}
+                  type="text"
+                  value={valores[indice] ?? ""}
+                  aria-label={`${escolha.nome}, escolha ${indice + 1} de ${quantidade}`}
+                  onChange={(evento) => {
+                    const proximos = [...valores];
+                    proximos[indice] = evento.target.value;
+                    onChange(classeAtual.classeId, escolha.id, proximos);
+                  }}
+                />
+              ) : (
+                <select
+                  key={indice}
+                  value={valores[indice] ?? ""}
+                  aria-label={`${escolha.nome}, escolha ${indice + 1} de ${quantidade}`}
+                  onChange={(evento) => {
+                    const proximos = [...valores];
+                    proximos[indice] = evento.target.value || null;
+                    onChange(classeAtual.classeId, escolha.id, proximos);
+                  }}
+                >
+                  <option value="">Selecione...</option>
+                  {valores[indice] && !opcoes.some((opcao) => opcao.id === valores[indice]) && (
+                    <option value={valores[indice]}>Indisponível: {valores[indice]}</option>
+                  )}
+                  {opcoes.filter((opcao) => !valores.includes(opcao.id) || valores[indice] === opcao.id).map((opcao) => (
+                    <option key={opcao.id} value={opcao.id}>{opcao.nome}</option>
+                  ))}
+                </select>
+              ))}
+            </div>
+          </div>;
+        })}
+      </div>
+    ))}
+  </div>;
+}
+
+function EscolhasCriacao({ classe, raca, subraca, antecedente, escolhas, onChange }) {
   if (!onChange) return null;
   const nomesPericias = Object.fromEntries(PERICIAS.map((item) => [item.chave, item.label]));
   const nomesIdiomas = Object.fromEntries(IDIOMAS.map((item) => [item.id, item.nome]));
   const nomesFerramentas = Object.fromEntries(FERRAMENTAS.map((item) => [item.id, item.nome]));
+  const idiomasEscolhiveis = IDIOMAS.filter((item) => item.tipo !== "secreto").map((item) => item.id);
   const classePericias = classe?.proficienciasIniciais?.pericias;
   const ferramentasFixas = [
     ...(classe?.proficienciasIniciais?.ferramentas ?? []),
     ...(raca?.ferramentasFixas ?? []),
+    ...(subraca?.ferramentasFixas ?? []),
     ...(antecedente?.ferramentasFixas ?? []),
   ];
-  const substituicoes = quantidadeSubstituicoesFerramentas(classe, raca, antecedente);
+  const substituicoes = quantidadeSubstituicoesFerramentas(classe, raca, antecedente, subraca);
   return <div className="raca-classe-grid">
     <CampoEscolhaCriacao titulo="Perícias da classe" chave="periciasClasse" quantidade={classePericias?.quantidade} opcoes={opcoesPericias(classePericias)} nomes={nomesPericias} escolhas={escolhas} onChange={onChange} />
     <CampoEscolhaCriacao titulo="Ferramentas da classe" chave="ferramentasClasse" quantidade={classe?.proficienciasIniciais?.ferramentasEscolha?.quantidade} opcoes={opcoesFerramentas(classe?.proficienciasIniciais?.ferramentasEscolha)} bloqueadas={[...ferramentasFixas, ...(escolhas.ferramentasRaca ?? []), ...(escolhas.ferramentasAntecedente ?? [])]} nomes={nomesFerramentas} escolhas={escolhas} onChange={onChange} />
     <CampoEscolhaCriacao titulo="Perícias da raça" chave="periciasRaca" quantidade={raca?.periciasEscolha?.quantidade} opcoes={opcoesPericias(raca?.periciasEscolha)} nomes={nomesPericias} escolhas={escolhas} onChange={onChange} />
-    <CampoEscolhaCriacao titulo="Idiomas da raça" chave="idiomasRaca" quantidade={raca?.idiomasEscolha} opcoes={IDIOMAS.map((item) => item.id).filter((id) => !raca?.idiomasFixos?.includes(id))} nomes={nomesIdiomas} escolhas={escolhas} onChange={onChange} />
+    <CampoEscolhaCriacao titulo="Idiomas da raça" chave="idiomasRaca" quantidade={raca?.idiomasEscolha} opcoes={idiomasEscolhiveis.filter((id) => !raca?.idiomasFixos?.includes(id))} nomes={nomesIdiomas} escolhas={escolhas} onChange={onChange} />
     <CampoEscolhaCriacao titulo="Ferramentas da raça" chave="ferramentasRaca" quantidade={raca?.ferramentasEscolha?.quantidade} opcoes={opcoesFerramentas(raca?.ferramentasEscolha)} bloqueadas={[...ferramentasFixas, ...(escolhas.ferramentasClasse ?? []), ...(escolhas.ferramentasAntecedente ?? [])]} nomes={nomesFerramentas} escolhas={escolhas} onChange={onChange} />
-    <CampoEscolhaCriacao titulo="Idiomas do antecedente" chave="idiomasAntecedente" quantidade={antecedente?.idiomasEscolha} opcoes={IDIOMAS.map((item) => item.id)} nomes={nomesIdiomas} escolhas={escolhas} onChange={onChange} />
+    <CampoEscolhaCriacao titulo="Idiomas da sub-raça" chave="idiomasSubraca" quantidade={subraca?.idiomasEscolha} opcoes={idiomasEscolhiveis} nomes={nomesIdiomas} escolhas={escolhas} onChange={onChange} />
+    <CampoEscolhaCriacao titulo="Ferramentas da sub-raça" chave="ferramentasSubraca" quantidade={subraca?.ferramentasEscolha?.quantidade} opcoes={opcoesFerramentas(subraca?.ferramentasEscolha)} bloqueadas={[...ferramentasFixas, ...(escolhas.ferramentasClasse ?? []), ...(escolhas.ferramentasRaca ?? []), ...(escolhas.ferramentasAntecedente ?? [])]} nomes={nomesFerramentas} escolhas={escolhas} onChange={onChange} />
+    <CampoEscolhaCriacao titulo="Idiomas do antecedente" chave="idiomasAntecedente" quantidade={antecedente?.idiomasEscolha} opcoes={idiomasEscolhiveis} nomes={nomesIdiomas} escolhas={escolhas} onChange={onChange} />
     <CampoEscolhaCriacao titulo="Ferramentas do antecedente" chave="ferramentasAntecedente" quantidade={antecedente?.ferramentasEscolha?.quantidade} opcoes={opcoesFerramentas(antecedente?.ferramentasEscolha)} bloqueadas={[...ferramentasFixas, ...(escolhas.ferramentasClasse ?? []), ...(escolhas.ferramentasRaca ?? [])]} nomes={nomesFerramentas} escolhas={escolhas} onChange={onChange} />
     <CampoEscolhaCriacao titulo="Substituições por proficiências repetidas" chave="ferramentasSubstitutas" quantidade={substituicoes} opcoes={FERRAMENTAS.map((item) => item.id)} bloqueadas={[...new Set([...ferramentasFixas, ...(escolhas.ferramentasClasse ?? []), ...(escolhas.ferramentasRaca ?? []), ...(escolhas.ferramentasAntecedente ?? [])])]} nomes={nomesFerramentas} escolhas={escolhas} onChange={onChange} />
   </div>;

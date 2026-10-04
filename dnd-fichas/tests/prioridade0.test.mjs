@@ -7,7 +7,7 @@ const atributos = { forca: 13, destreza: 14, constituicao: 14, inteligencia: 14,
 
 function fichaBase(extra = {}) {
   return {
-    nome: "Aria", racaId: "elfo", classeId: "bardo", antecedenteId: "acolito", nivel: 1,
+    nome: "Aria", racaId: "elfo", subracaId: "elfo-floresta", classeId: "bardo", antecedenteId: "acolito", nivel: 1,
     atributos, status: { pvMax: 10, pvAtual: 10, pvTemp: 0 }, espacosMagia: {},
     pvPorNivel: { 1: 10 }, origemClassePvPorNivel: { 1: "bardo" },
     escolhasCriacao: { periciasClasse: ["acrobacia", "atuacao", "arcanismo"], ferramentasClasse: ["alaude", "flauta", "tambor"], idiomasAntecedente: ["anao", "gnomico"] },

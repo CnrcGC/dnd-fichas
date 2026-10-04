@@ -292,7 +292,7 @@ export default function BlocoMagias({
                           onClick={() => alternarExpandida(magia.id)}
                           aria-expanded={aberta}
                           aria-label={
-                            aberta ? "Recolher detalhes" : "Expandir detalhes"
+                            `${aberta ? "Recolher" : "Expandir"} detalhes de ${magia.nome || "magia sem nome"}`
                           }
                         >
                           <span
@@ -309,6 +309,7 @@ export default function BlocoMagias({
                           type="text"
                           value={magia.nome}
                           placeholder="Nome da magia"
+                          aria-label="Nome da magia"
                           disabled={Boolean(magia.origemSubclasseAutomatica)}
                           onChange={(evento) =>
                             handleAlterarMagia(magia.id, "nome", evento.target.value)
@@ -318,6 +319,7 @@ export default function BlocoMagias({
                       <td>
                         <select
                           value={magia.nivel}
+                          aria-label={`Nível de ${magia.nome || "magia"}`}
                           disabled={Boolean(magia.origemSubclasseAutomatica)}
                           onChange={(evento) =>
                             handleAlterarMagia(

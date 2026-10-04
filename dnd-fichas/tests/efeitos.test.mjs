@@ -70,6 +70,48 @@ test("cura respeita o máximo e reinicia testes de morte", () => {
   assert.equal(resultado.status.testesMorteFalhas, 0);
 });
 
+test("ME-01 cura comum não recupera PV de personagem morto", () => {
+  const resultado = efeitos.aplicarEfeitoPv(
+    { pvAtual: 0, pvMax: 12, pvTemp: 0, testesMorteSucessos: 0, testesMorteFalhas: 3 },
+    "cura",
+    8
+  );
+
+  assert.equal(resultado.status.pvAtual, 0);
+  assert.equal(resultado.status.testesMorteFalhas, 3);
+  assert.equal(resultado.valorAplicado, 0);
+  assert.match(resultado.erro, /morta não recupera PV/i);
+});
+
+test("ME-01 dano em 0 PV registra falhas, crítico registra duas e dano maciço mata", () => {
+  const base = { pvAtual: 0, pvMax: 12, pvTemp: 0, testesMorteSucessos: 3, testesMorteFalhas: 0 };
+  const comum = efeitos.aplicarEfeitoPv(base, "dano", 3);
+  const critico = efeitos.aplicarEfeitoPv(base, "dano", 3, { critico: true });
+  const macico = efeitos.aplicarEfeitoPv(base, "dano", 12);
+
+  assert.equal(comum.status.testesMorteSucessos, 0);
+  assert.equal(comum.status.testesMorteFalhas, 1);
+  assert.equal(critico.status.testesMorteFalhas, 2);
+  assert.equal(macico.status.testesMorteFalhas, 3);
+  assert.equal(macico.morteInstantanea, true);
+});
+
+test("ME-01 cair inconsciente ou morrer encerra concentração", () => {
+  assert.equal(efeitos.concentracaoTerminaPorStatus({ pvAtual: 0, testesMorteFalhas: 0 }), true);
+  assert.equal(efeitos.concentracaoTerminaPorStatus({ pvAtual: 1, testesMorteFalhas: 3 }), true);
+  assert.equal(efeitos.concentracaoTerminaPorStatus({ pvAtual: 1, testesMorteFalhas: 0 }), false);
+
+  const normalizada = fichaUtils.normalizarFicha({
+    id: "inconsciente",
+    classeId: "mago",
+    nivel: 1,
+    atributos: {},
+    status: { pvAtual: 0, pvMax: 6, testesMorteFalhas: 0 },
+    concentracao: { magiaId: "voo", nome: "Voo" },
+  });
+  assert.equal(normalizada.concentracao, null);
+});
+
 test("condições convertem duração em rodadas e terminam ao chegar a zero", () => {
   const condicao = efeitos.criarCondicaoAtiva(
     { nome: "Paralisado", fonte: "Imobilizar Pessoa", fonteId: "imobilizar-pessoa", duracao: "Concentração, 1 minuto" },

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFichas } from "../context/useFichas";
 import { obterClasse } from "../data/classes";
@@ -10,8 +10,14 @@ import "./Home.css";
 export default function Home() {
   const { fichas, fichasExcluidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
   const [busca, setBusca] = useState("");
+  const [erroImportacao, setErroImportacao] = useState("");
   const navigate = useNavigate();
   const inputArquivoRef = useRef(null);
+  const erroImportacaoRef = useRef(null);
+
+  useEffect(() => {
+    if (erroImportacao) erroImportacaoRef.current?.focus();
+  }, [erroImportacao]);
 
   function handleClickImportar() {
     inputArquivoRef.current?.click();
@@ -22,6 +28,7 @@ export default function Home() {
     evento.target.value = ""; // permite escolher o mesmo arquivo de novo depois
 
     if (!arquivo) return;
+    setErroImportacao("");
 
     try {
       const dados = await lerArquivoFicha(arquivo);
@@ -34,8 +41,8 @@ export default function Home() {
       }
       navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`);
     } catch {
-      window.alert(
-        "Não foi possível importar esse arquivo. Confirma que é um .json exportado daqui."
+      setErroImportacao(
+        "Não foi possível importar esse arquivo. Confirme que é um arquivo JSON exportado pelo aplicativo e tente novamente."
       );
     }
   }
@@ -70,6 +77,7 @@ export default function Home() {
               <input
                 type="file"
                 accept="application/json"
+                aria-label="Selecionar arquivo JSON para importar"
                 ref={inputArquivoRef}
                 onChange={handleArquivoSelecionado}
                 className="home-input-arquivo-escondido"
@@ -80,6 +88,17 @@ export default function Home() {
             </div>
           </div>
 
+      {erroImportacao && (
+        <p
+          className="home-importacao-erro state-danger"
+          role="alert"
+          tabIndex={-1}
+          ref={erroImportacaoRef}
+        >
+          {erroImportacao}
+        </p>
+      )}
+
       <input
         type="text"
         className="home-busca"
@@ -88,6 +107,9 @@ export default function Home() {
         value={busca}
         onChange={(evento) => setBusca(evento.target.value)}
       />
+      <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+        {fichasFiltradas.length} {fichasFiltradas.length === 1 ? "ficha encontrada" : "fichas encontradas"}.
+      </p>
 
       {fichas.length === 0 ? (
         <p className="home-vazio">

@@ -100,6 +100,7 @@ test("MECH-03A preserva a escolha de redistribuição dos dados entre membros", 
 });
 
 test("MECH-03A preserva parser composto, modificadores de condição e piso de dano", () => {
+  assert.equal(rules.buildYusongAttributeNotation(5), "1d20+5");
   assert.equal(rules.getConditionRollModifier({ amedrontado: true, motivado: true, caido: true }), 0);
   assert.equal(rules.buildYusongDiceNotation("1d6+1d4", { desesperado: true }), "1d6+1d4-10");
   const sequence = [0, 0.5];

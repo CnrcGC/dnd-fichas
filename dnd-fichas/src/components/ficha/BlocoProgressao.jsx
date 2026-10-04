@@ -24,6 +24,7 @@ export default function BlocoProgressao({ progressao, nivelTotal, onChangeModo, 
           type="button"
           className={modo === "marco" ? "progressao-modo-botao is-ativo" : "progressao-modo-botao"}
           onClick={() => onChangeModo("marco")}
+          aria-pressed={modo === "marco"}
         >
           Marco
         </button>
@@ -31,6 +32,7 @@ export default function BlocoProgressao({ progressao, nivelTotal, onChangeModo, 
           type="button"
           className={modo === "xp" ? "progressao-modo-botao is-ativo" : "progressao-modo-botao"}
           onClick={() => onChangeModo("xp")}
+          aria-pressed={modo === "xp"}
         >
           XP
         </button>
@@ -56,7 +58,14 @@ export default function BlocoProgressao({ progressao, nivelTotal, onChangeModo, 
 
           {limiarProximo != null ? (
             <>
-              <div className="progressao-xp-barra">
+              <div
+                className="progressao-xp-barra"
+                role="progressbar"
+                aria-label="Progresso para o próximo nível"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow={Math.round(percentual)}
+              >
                 <div className="progressao-xp-barra-preenchida" style={{ width: `${percentual}%` }} />
               </div>
               <p className="progressao-texto">

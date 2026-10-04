@@ -1,6 +1,9 @@
 .pilares-library {
   display: grid;
   gap: var(--space-5);
+  padding: clamp(var(--space-3), 3vw, var(--space-5));
+  border: 1px solid var(--color-line);
+  background: radial-gradient(circle at 80% 0, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 35%), var(--color-bg-inset);
 }
 
 .pilares-library__header,
@@ -81,13 +84,26 @@
 }
 
 .pilares-library__card {
+  position: relative;
   display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
   gap: var(--space-3);
   padding: var(--space-4);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
   background: var(--color-bg-raised);
+  overflow: hidden;
 }
+
+.pilares-library__fighter-mark { position: relative; display: grid; grid-row: 1 / span 3; min-height: 112px; place-items: center; border: 1px solid var(--pilares-school-accent); background: radial-gradient(circle, color-mix(in srgb, var(--pilares-school-accent) 25%, transparent), transparent 64%); color: var(--pilares-school-accent); font-weight: 900; }
+.pilares-library__fighter-mark::before,
+.pilares-library__fighter-mark::after { content: ""; position: absolute; inset-inline: 12px; top: 50%; height: 1px; background: var(--pilares-school-accent); opacity: .45; }
+.pilares-library__fighter-mark::after { transform: rotate(90deg); }
+.pilares-library__fighter-mark span { position: relative; z-index: 1; display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid currentColor; border-radius: 50%; background: var(--color-bg-raised); }
+.pilares-library__card-heading,
+.pilares-library__meta,
+.pilares-library__actions { grid-column: 2; }
+.pilares-library__meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
 
 .pilares-library__card p,
 .pilares-library__trash p {
@@ -147,6 +163,7 @@
   .pilares-library__count { align-self: flex-start; }
   .pilares-library__create { justify-content: center; }
   .pilares-library__grid { grid-template-columns: 1fr; }
+  .pilares-library__card { grid-template-columns: 58px minmax(0, 1fr); padding: var(--space-3); }
   .pilares-library__actions { flex-direction: column; }
   .pilares-library__actions a { justify-content: center; }
 }

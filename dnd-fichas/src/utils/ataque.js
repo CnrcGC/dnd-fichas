@@ -2,24 +2,53 @@ import { formatarModificador } from "./dnd";
 import { obterItemCatalogo } from "../data/catalogoItens";
 import { itemMagicoAtivo } from "./itensMagicos";
 
-export function criarAtaqueApartirDeItemEquipado(itemInventario) {
+// RULEBOOK FACT: Livro do Jogador (2014), p. 148,
+// "Proficiência em Arma" e "Propriedades das Armas — Acuidade".
+const ALIASES_PROFICIENCIA_ARMA = Object.freeze({
+  bordao: ["bordoes"],
+  maca: ["macas"],
+  lanca: ["lancas"],
+  "besta-leve": ["bestas-leves"],
+  "besta-de-mao": ["bestas-de-mao"],
+  "espada-longa": ["espadas-longas"],
+  "espada-curta": ["espadas-curtas"],
+});
+
+export function atributosElegiveisParaArma(arma) {
+  if (arma?.propriedades?.includes("acuidade")) return ["forca", "destreza"];
+  return arma?.tipo === "distancia" ? ["destreza"] : ["forca"];
+}
+
+export function armaEhProficiente(arma, proficienciasArmas = []) {
+  if (!arma) return false;
+  const proficiencias = new Set(proficienciasArmas);
+  const categoria = arma.categoria === "marcial" ? "marciais" : arma.categoria;
+  const idsEspecificos = [arma.id, `${arma.id}s`, ...(ALIASES_PROFICIENCIA_ARMA[arma.id] ?? [])];
+  return proficiencias.has(categoria) || idsEspecificos.some((id) => proficiencias.has(id));
+}
+
+function escolherAtributoAtaque(arma, override, modificadoresAtributos) {
+  const elegiveis = atributosElegiveisParaArma(arma);
+  if (override && override !== "auto" && elegiveis.includes(override)) return override;
+  return elegiveis.reduce((melhor, atributo) =>
+    (modificadoresAtributos?.[atributo] ?? 0) > (modificadoresAtributos?.[melhor] ?? 0)
+      ? atributo
+      : melhor
+  );
+}
+
+export function criarAtaqueApartirDeItemEquipado(
+  itemInventario,
+  { modificadoresAtributos = {}, proficienciasArmas = [] } = {},
+) {
   const catalogo = obterItemCatalogo(itemInventario.origemId);
   const arma = catalogo?.original;
   if (!arma) return null;
 
-  
-
-  const usaDestrezaAuto =
-    arma.tipo === "distancia" || arma.propriedades.includes("acuidade");
   const override = itemInventario.atributoAtaque;
-  const atributo =
-    override && override !== "auto"
-      ? override
-      : usaDestrezaAuto
-      ? "destreza"
-      : "forca";
+  const atributo = escolherAtributoAtaque(arma, override, modificadoresAtributos);
 
-    const bonusMagico = itemMagicoAtivo(itemInventario) ? itemInventario.bonusMagico ?? 0 : 0;
+  const bonusMagico = itemMagicoAtivo(itemInventario) ? itemInventario.bonusMagico ?? 0 : 0;
 
   return {
     id: itemInventario.id,
@@ -28,7 +57,8 @@ export function criarAtaqueApartirDeItemEquipado(itemInventario) {
     dano: arma.dano,
     tipoDano: arma.tipoDano ?? "",
     bonusManual: 0,
-    bonusMagico,          // NOVO
+    bonusMagico,
+    proficiente: armaEhProficiente(arma, proficienciasArmas),
     origemId: arma.id,
   };
 }
@@ -41,6 +71,7 @@ export function criarAtaqueVazio() {
     dano: "",
     tipoDano: "",
     bonusManual: 0,
+    proficiente: true,
     origemId: null,
   };
 }
@@ -49,7 +80,7 @@ export function calcularBonusAcerto(ataque, modificadoresAtributos, bonusProfici
   if (ataque.atributo === "manual") return ataque.bonusManual ?? 0;
   return (
     (modificadoresAtributos[ataque.atributo] ?? 0) +
-    bonusProficiencia +
+    (ataque.proficiente !== false ? bonusProficiencia : 0) +
     (ataque.bonusMagico ?? 0)
   );
 }

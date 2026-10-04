@@ -86,6 +86,20 @@ function origemDaDefinicao(definicao) {
   return { tipo: "geral" };
 }
 
+function valorPorNivel(faixas, nivel, padrao) {
+  return [...(faixas ?? [])]
+    .filter(([nivelMinimo]) => numeroSeguro(nivel) >= numeroSeguro(nivelMinimo))
+    .at(-1)?.[1] ?? padrao;
+}
+
+function nomeDoRecurso(definicao, contexto) {
+  return valorPorNivel(definicao.nomePorNivel, contexto.nivel, definicao.nome);
+}
+
+function restauracaoDoRecurso(definicao, contexto, padrao) {
+  return valorPorNivel(definicao.restauraEmPorNivel, contexto.nivel, definicao.restauraEm ?? padrao);
+}
+
 function classesDaFicha(ficha) {
   return [
     { classeId: ficha.classeId, subclasseId: ficha.subclasseId, nivel: ficha.nivel ?? 1 },
@@ -151,12 +165,13 @@ export function listarSugestoesRecursos(definicoes, ficha, contexto = {}) {
 
 export function criarRecursoDoCatalogo(definicao, ficha, contexto = {}, criarId = () => crypto.randomUUID()) {
   const origem = origemDaDefinicao(definicao);
+  const contextoRecurso = contextoDoRecurso(definicao, ficha, contexto);
   return {
     id: criarId(),
-    nome: definicao.nome,
-    usosMax: resolverUsosMax(definicao, contextoDoRecurso(definicao, ficha, contexto)),
+    nome: nomeDoRecurso(definicao, contextoRecurso),
+    usosMax: resolverUsosMax(definicao, contextoRecurso),
     usosGastos: 0,
-    restauraEm: definicao.restauraEm ?? "longo",
+    restauraEm: restauracaoDoRecurso(definicao, contextoRecurso, "longo"),
     origemId: definicao.id,
     origemTipo: origem.tipo,
     origemClasseId: origem.classeId ?? null,
@@ -172,16 +187,14 @@ export function sincronizarRecursosCatalogo(recursos, definicoes, ficha, context
     const definicao = catalogo.get(recurso.origemId);
     if (!definicao) return [recurso];
     if (!recursoDisponivel(definicao, ficha)) return [];
-    const usosMax = resolverUsosMax(
-      definicao,
-      contextoDoRecurso(definicao, ficha, contexto)
-    );
+    const contextoRecurso = contextoDoRecurso(definicao, ficha, contexto);
+    const usosMax = resolverUsosMax(definicao, contextoRecurso);
     return [{
       ...recurso,
-      nome: definicao.nome,
+      nome: nomeDoRecurso(definicao, contextoRecurso),
       usosMax,
       usosGastos: Math.min(Math.max(0, numeroSeguro(recurso.usosGastos)), usosMax),
-      restauraEm: definicao.restauraEm ?? recurso.restauraEm,
+      restauraEm: restauracaoDoRecurso(definicao, contextoRecurso, recurso.restauraEm),
     }];
   });
 }

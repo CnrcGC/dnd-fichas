@@ -2,7 +2,7 @@
 // palavras. Cada um concede 2 perícias treinadas automaticamente,
 // equipamento inicial (texto, não vira itens de verdade ainda) e uma
 // característica narrativa.
-export const ANTECEDENTES = [
+const ANTECEDENTES_BASE = [
   {
     id: "acolito",
     nome: "Acólito",
@@ -171,6 +171,46 @@ export const ANTECEDENTES = [
     },
   },
 ];
+
+const PAGINAS_ANTECEDENTES = {
+  acolito: 127,
+  charlatao: 128,
+  criminoso: 129,
+  artista: 130,
+  "heroi-do-povo": 131,
+  "artesao-guildado": 132,
+  eremita: 134,
+  nobre: 135,
+  forasteiro: 136,
+  sabio: 137,
+  marinheiro: 139,
+  soldado: 140,
+  orfao: 141,
+};
+
+export const REGRA_PERSONALIZACAO_ANTECEDENTE = {
+  pericias: 2,
+  combinacaoIdiomasFerramentas: 2,
+  descricao: "Permite trocar a característica, escolher duas perícias e uma combinação total de duas proficiências em ferramentas ou idiomas.",
+  sourceRefs: [{ ruleId: "R-BACKGROUND-CUSTOM", bookId: "LJ", edition: "dnd5e-books-2014", printedPage: 125, section: "Personalizando um Antecedente" }],
+};
+
+export const ANTECEDENTES = ANTECEDENTES_BASE.map((antecedente) => ({
+  ...antecedente,
+  equipamentoInicial: { descricao: antecedente.equipamento },
+  personalizacaoPermitida: true,
+  catalogVersion: 1,
+  rulesProfile: "dnd5e-books-2014",
+  verificationStatus: "verified",
+  automationLevel: "assisted",
+  sourceRefs: [{
+    ruleId: `R-BACKGROUND-${antecedente.id.toUpperCase()}`,
+    bookId: "LJ",
+    edition: "dnd5e-books-2014",
+    printedPage: PAGINAS_ANTECEDENTES[antecedente.id],
+    section: antecedente.nome,
+  }],
+}));
 
 export function obterAntecedente(id) {
   return ANTECEDENTES.find((antecedente) => antecedente.id === id) ?? null;

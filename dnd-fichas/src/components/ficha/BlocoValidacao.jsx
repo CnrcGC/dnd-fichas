@@ -31,13 +31,15 @@ export default function BlocoValidacao({
   const prontaConfirmada = ficha.estadoFicha === "pronta" && resultado.pronta;
 
   return (
-    <section
-      className={prontaConfirmada ? "validacao-ficha is-pronta" : "validacao-ficha"}
-      aria-live="polite"
-    >
+    <section className={prontaConfirmada ? "validacao-ficha is-pronta" : "validacao-ficha"}>
       <div className="validacao-cabecalho">
         <h3 className="bloco-titulo">Prontidão para a mesa</h3>
-        <span className="validacao-status">
+        <span
+          className="validacao-status"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {prontaConfirmada ? "Ficha pronta" : resultado.pronta ? "Pode confirmar" : "Rascunho"}
         </span>
       </div>

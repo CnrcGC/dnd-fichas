@@ -84,14 +84,14 @@ test("descanso curto restaura recursos curtos e Magia de Pacto", () => {
   assert.equal(resultado.espacosMagiaPacto.usados, 0);
 });
 
-test("descanso longo recupera PV, espaços, recursos e maiores dados de vida", () => {
+test("descanso longo recupera PV, espaços, recursos e aplica a preferência por dados maiores", () => {
   const ficha = {
     classeId: "barbaro",
     nivel: 2,
     classesSecundarias: [{ classeId: "mago", nivel: 2 }],
     status: {
       pvMax: 30,
-      pvAtual: 0,
+      pvAtual: 1,
       pvTemp: 2,
       testesMorteSucessos: 1,
       testesMorteFalhas: 2,
@@ -121,7 +121,21 @@ test("descanso longo recupera PV, espaços, recursos e maiores dados de vida", (
   assert.equal(resultado.recursos[0].usosGastos, 0);
   assert.equal(resultado.recursos[1].usosGastos, 0);
   assert.equal(resultado.recursos[2].usosGastos, 1);
+  assert.equal(resultado.concentracao, null);
   assert.equal(resultado.dadosVidaPorClasse.barbaro.usados, 0);
   assert.equal(resultado.dadosVidaPorClasse.mago.usados, 1);
   assert.equal(resultado.dadosDeVidaUsados, 1);
+});
+
+test("ME-01 descanso longo exige pelo menos 1 PV e não ressuscita morto", () => {
+  const morto = {
+    classeId: "guerreiro",
+    nivel: 1,
+    classesSecundarias: [],
+    status: { pvMax: 12, pvAtual: 0, testesMorteSucessos: 0, testesMorteFalhas: 3 },
+    recursos: [{ id: "recurso", usosMax: 1, usosGastos: 1, restauraEm: "longo" }],
+  };
+
+  assert.equal(descanso.podeBeneficiarDescansoLongo(morto.status), false);
+  assert.deepEqual(descanso.aplicarDescansoLongo(morto), {});
 });

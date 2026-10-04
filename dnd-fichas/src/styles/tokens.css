@@ -144,6 +144,12 @@
     --color-accent: #795b19;
     --color-accent-hover: #654a10;
     --color-accent-ink: #fffaf0;
+    --color-danger: #9d2d31;
+    --color-danger-soft: #7d2024;
+    --color-success: #27683a;
+    --color-success-soft: #1f552f;
+    --color-warning: #84540d;
+    --color-warning-soft: #6d4409;
     --color-focus-ring: #245fc2;
     --color-interactive-hover: #e9e2d4;
     --color-interactive-selected: rgba(67, 86, 136, 0.13);

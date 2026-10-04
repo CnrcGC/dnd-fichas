@@ -18,4 +18,6 @@ export const IDIOMAS = [
   { id: "silvestre", nome: "Silvestre", tipo: "exotico" },
   { id: "aquan", nome: "Aquan", tipo: "exotico" },
   { id: "gnoll", nome: "Gnoll", tipo: "exotico" },
+  { id: "druidico", nome: "Druídico", tipo: "secreto" },
+  { id: "giria-ladrao", nome: "Gíria de Ladrão", tipo: "secreto" },
 ];

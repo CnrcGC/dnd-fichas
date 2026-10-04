@@ -22,6 +22,49 @@ after(async () => { await server?.close(); });
 
 const NOW = "2026-09-26T12:00:00.000Z";
 
+function controlledIndexedDbWrite() {
+  let activeTransaction;
+  let written;
+
+  function successfulRequest(result) {
+    const request = { result, error: null };
+    queueMicrotask(() => request.onsuccess?.());
+    return request;
+  }
+
+  const database = {
+    transaction() {
+      activeTransaction = {
+        error: null,
+        objectStore() {
+          return {
+            get: () => successfulRequest(undefined),
+            put(value) {
+              written = structuredClone(value);
+              return successfulRequest(value.id);
+            },
+          };
+        },
+      };
+      return activeTransaction;
+    },
+  };
+
+  return {
+    database,
+    get written() { return written; },
+    complete() { activeTransaction.oncomplete?.(); },
+    abort(error) {
+      activeTransaction.error = error;
+      activeTransaction.onabort?.();
+    },
+  };
+}
+
+async function waitForIndexedDbRequests() {
+  await new Promise((resolve) => setImmediate(resolve));
+}
+
 test("FE-02 cria envelope D&D estável sem alterar o payload legado", async () => {
   const input = structuredClone(dndV8Fixture);
   const snapshot = structuredClone(input);
@@ -47,6 +90,38 @@ test("FE-02 repositório detecta conflito e nunca sobrescreve revisão superior"
   await assert.rejects(repo.put(initial, { expectedRevision: 0 }), (error) => error.code === "revision-conflict");
   await assert.rejects(repo.put({ ...updated, revision: 3 }, { expectedRevision: 1 }), (error) => error.code === "invalid-revision-advance");
   assert.deepEqual(await repo.get("one"), updated);
+});
+
+test("ME-00 IndexedDB só confirma put depois do commit da transação", async () => {
+  const controlled = controlledIndexedDbWrite();
+  const repo = new repository.IndexedDbCharacterRepository(controlled.database);
+  const initial = envelope.createEnvelope({ id: "commit-one", systemId: "dnd5e", schemaVersion: 8, displayName: "Commit", data: { id: "commit-one" } }, { now: () => NOW });
+  let settled = false;
+
+  const pending = repo.put(initial, { createMutationId: () => "mutation-commit" })
+    .finally(() => { settled = true; });
+  await waitForIndexedDbRequests();
+
+  assert.equal(controlled.written.id, initial.id);
+  assert.equal(settled, false, "request.onsuccess não equivale ao commit da transação");
+
+  controlled.complete();
+  const stored = await pending;
+  assert.equal(settled, true);
+  assert.equal(stored.mutationId, "mutation-commit");
+});
+
+test("ME-00 IndexedDB rejeita put abortado depois do sucesso da request", async () => {
+  const controlled = controlledIndexedDbWrite();
+  const repo = new repository.IndexedDbCharacterRepository(controlled.database);
+  const initial = envelope.createEnvelope({ id: "abort-one", systemId: "dnd5e", schemaVersion: 8, displayName: "Abort", data: { id: "abort-one" } }, { now: () => NOW });
+  const abortError = Object.assign(new Error("Quota excedida após a request."), { name: "QuotaExceededError" });
+
+  const pending = repo.put(initial, { createMutationId: () => "mutation-abort" });
+  await waitForIndexedDbRequests();
+  controlled.abort(abortError);
+
+  await assert.rejects(pending, (error) => error === abortError);
 });
 
 test("MECH-04 rejeita envelope corrompido e versão futura sem descarte silencioso", async () => {

@@ -1,7 +1,7 @@
 // Classes do manual básico (PHB): dado de vida, atributo principal e as
 // duas salvaguardas em que a classe é proficiente (fixas pela regra, o
 // jogador não escolhe).
-export const CLASSES = [
+const CLASSES_BASE = [
   {
     id: "barbaro",
     nome: "Bárbaro",
@@ -45,7 +45,7 @@ export const CLASSES = [
     dadoVida: 8,
     atributoPrincipal: "sabedoria",
     salvaguardasProficientes: ["inteligencia", "sabedoria"],
-    proficienciasIniciais: { armaduras: ["leves", "medias"], escudos: true, armas: ["clavas", "adagas", "dardos", "azagaias", "macas", "bordoes", "cimitarras", "foices", "fundas", "lancas"], ferramentas: ["kit-ervanario"], pericias: { quantidade: 2, opcoes: ["arcanismo", "adestrarAnimais", "intuicao", "medicina", "natureza", "percepcao", "religiao", "sobrevivencia"] } },
+    proficienciasIniciais: { armaduras: ["leves", "medias"], escudos: true, armas: ["clavas", "adagas", "dardos", "azagaias", "macas", "bordoes", "cimitarras", "foices", "fundas", "lancas"], ferramentas: ["kit-ervanario"], idiomas: ["druidico"], pericias: { quantidade: 2, opcoes: ["arcanismo", "adestrarAnimais", "intuicao", "medicina", "natureza", "percepcao", "religiao", "sobrevivencia"] } },
   },
   {
     id: "feiticeiro",
@@ -72,7 +72,7 @@ export const CLASSES = [
     dadoVida: 8,
     atributoPrincipal: "destreza",
     salvaguardasProficientes: ["destreza", "inteligencia"],
-    proficienciasIniciais: { armaduras: ["leves"], armas: ["simples", "bestas-de-mao", "espadas-longas", "rapieiras", "espadas-curtas"], ferramentas: ["ferramentas-ladino"], pericias: { quantidade: 4, opcoes: ["acrobacia", "atletismo", "enganacao", "intuicao", "intimidacao", "investigacao", "percepcao", "atuacao", "persuasao", "prestidigitacao", "furtividade"] } },
+    proficienciasIniciais: { armaduras: ["leves"], armas: ["simples", "bestas-de-mao", "espadas-longas", "rapieiras", "espadas-curtas"], ferramentas: ["ferramentas-ladino"], idiomas: ["giria-ladrao"], pericias: { quantidade: 4, opcoes: ["acrobacia", "atletismo", "enganacao", "intuicao", "intimidacao", "investigacao", "percepcao", "atuacao", "persuasao", "prestidigitacao", "furtividade"] } },
   },
   {
     id: "mago",
@@ -111,6 +111,31 @@ export const CLASSES = [
     proficienciasIniciais: { armaduras: ["leves", "medias"], escudos: true, armas: ["simples", "marciais"], pericias: { quantidade: 3, opcoes: ["adestrarAnimais", "atletismo", "intuicao", "investigacao", "natureza", "percepcao", "furtividade", "sobrevivencia"] } },
   },
 ];
+
+const PAGINAS_CLASSES = {
+  barbaro: [46, 50], bardo: [51, 55], bruxo: [56, 61], clerigo: [62, 70],
+  druida: [71, 76], feiticeiro: [77, 82], guerreiro: [83, 88], ladino: [89, 93],
+  mago: [94, 101], monge: [102, 107], paladino: [108, 114], patrulheiro: [115, 121],
+};
+
+export const CLASSES = CLASSES_BASE.map((classe) => {
+  const [printedPage, endPrintedPage] = PAGINAS_CLASSES[classe.id];
+  return {
+    ...classe,
+    catalogVersion: 1,
+    rulesProfile: "dnd5e-books-2014",
+    verificationStatus: "verified",
+    automationLevel: "assisted",
+    sourceRefs: [{
+      ruleId: `R-CLASS-${classe.id.toUpperCase()}`,
+      bookId: "LJ",
+      edition: "dnd5e-books-2014",
+      printedPage,
+      endPrintedPage,
+      section: classe.nome,
+    }],
+  };
+});
 
 export function obterClasse(id) {
   return CLASSES.find((classe) => classe.id === id) ?? null;

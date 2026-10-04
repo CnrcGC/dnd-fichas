@@ -19,7 +19,7 @@ import { classesComDadosVida } from "./dadosVida";
 import { pendenciasProficienciasMulticlasse } from "./proficienciasMulticlasse";
 import { obterRegraMulticlasse } from "../data/proficienciasMulticlasse";
 import { escolhasObrigatoriasCriacao } from "./proficienciasCriacao";
-import { obterRaca } from "../data/racas";
+import { obterRaca, obterSubraca, subracaValidaParaRaca } from "../data/racas";
 import { obterAntecedente } from "../data/antecedentes";
 import {
   validarOrigemEspecial,
@@ -27,6 +27,9 @@ import {
   limiteSegredosMagicosAdicionais,
 } from "./regrasMagias";
 import { NIVEL_MAXIMO_PERSONAGEM } from "./niveis";
+import { contarItensSintonizados, LIMITE_SINTONIZACAO } from "./itensMagicos";
+import { pendenciasEscolhasClasses } from "./escolhasClasses";
+import { pendenciasEscolhasSubclasses } from "./escolhasSubclasses";
 
 const PRE_REQUISITOS_MULTICLASSE = {
   barbaro: {
@@ -125,12 +128,38 @@ export function validarFicha(ficha, atributosTotais) {
   if (!ficha.antecedenteId) adicionar(pendencias, "Identidade: escolha um antecedente.");
   else if (!obterAntecedente(ficha.antecedenteId)) adicionar(erros, "Identidade: antecedente desconhecido.");
   for (const pendencia of escolhasObrigatoriasCriacao(ficha)) adicionar(pendencias, pendencia.mensagem);
+  const escolhasClassePendentes = pendenciasEscolhasClasses(ficha);
+  if (ficha.perfilEscolhasClasse === "me-02b") {
+    for (const pendencia of escolhasClassePendentes) adicionar(pendencias, pendencia);
+  } else if (escolhasClassePendentes.length) {
+    adicionar(avisos, "Classes: ficha anterior ao perfil ME-02B; confira as escolhas de classe dos níveis 1–5.");
+  }
+  const escolhasSubclassePendentes = pendenciasEscolhasSubclasses(ficha);
+  if (ficha.perfilEscolhasSubclasse === "me-02c") {
+    for (const pendencia of escolhasSubclassePendentes) adicionar(pendencias, pendencia);
+  } else if (escolhasSubclassePendentes.length) {
+    adicionar(avisos, "Subclasses: ficha anterior ao perfil ME-02C; confira as escolhas de subclasse até o nível 10.");
+  }
   const atributosBase = Object.values(ficha.atributos ?? {}).map(Number);
   if (ficha.metodoAtributos === "arranjo-padrao") {
     const esperado = [15, 14, 13, 12, 10, 8].sort((a, b) => a - b).join(",");
     if (atributosBase.sort((a, b) => a - b).join(",") !== esperado) adicionar(erros, "Atributos: o arranjo padrão deve usar 15, 14, 13, 12, 10 e 8 uma vez cada.");
   }
   const racaAtual = obterRaca(ficha.racaId);
+  if (racaAtual?.requerSubraca && !ficha.subracaId) {
+    adicionar(pendencias, "Raça: escolha uma sub-raça.");
+  } else if (ficha.subracaId && !obterSubraca(ficha.subracaId)) {
+    adicionar(erros, "Raça: sub-raça desconhecida.");
+  } else if (ficha.subracaId && !subracaValidaParaRaca(ficha.racaId, ficha.subracaId)) {
+    adicionar(erros, "Raça: a sub-raça escolhida pertence a outra raça.");
+  }
+  if (racaAtual?.ancestralidadesDraconicas?.length) {
+    const ancestralidadeId = ficha.escolhasRaciais?.ancestralidadeDraconicaId;
+    if (!ancestralidadeId) adicionar(pendencias, "Raça: escolha a ancestralidade dracônica.");
+    else if (!racaAtual.ancestralidadesDraconicas.some((item) => item.id === ancestralidadeId)) {
+      adicionar(erros, "Raça: ancestralidade dracônica desconhecida.");
+    }
+  }
   if (racaAtual?.atributosEscolhaLivre) {
     const escolhidos = (ficha.bonusRacialEscolhido ?? []).filter(Boolean);
     if (new Set(escolhidos).size !== escolhidos.length || escolhidos.length !== racaAtual.atributosEscolhaLivre) adicionar(pendencias, `Raça: escolha ${racaAtual.atributosEscolhaLivre} atributos raciais diferentes.`);
@@ -516,6 +545,22 @@ const excecao =
     adicionar(erros, "PV atual não pode ser maior que o PV máximo.");
   }
   if (!Number.isFinite(Number(status.pvTemp)) || Number(status.pvTemp) < 0) adicionar(erros, "PV temporário não pode ser negativo.");
+
+  const itensSintonizados = contarItensSintonizados(ficha.inventario);
+  if (itensSintonizados > LIMITE_SINTONIZACAO) {
+    adicionar(
+      avisos,
+      `Inventário: ${itensSintonizados} itens estão marcados como sintonizados; apenas ${LIMITE_SINTONIZACAO} podem ficar ativos.`
+    );
+  }
+  for (const item of ficha.inventario ?? []) {
+    if (item.dadosCatalogoAnteriores) {
+      adicionar(
+        avisos,
+        `Inventário: ${item.nome || "item sem nome"} possui uma versão anterior do catálogo disponível para recuperação.`
+      );
+    }
+  }
 
   for (const recurso of ficha.recursos ?? []) {
     if (!Number.isFinite(Number(recurso.usosGastos)) || !Number.isFinite(Number(recurso.usosMax)) || Number(recurso.usosGastos) < 0 || Number(recurso.usosGastos) > Number(recurso.usosMax)) {
