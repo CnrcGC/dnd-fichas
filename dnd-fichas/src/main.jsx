@@ -1,19 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App.jsx";
-import { FichasProvider } from "./context/FichasContext.jsx";
-import { RolagemProvider } from "./context/RolagemProvider.jsx";
+import AppBootstrap from "./AppBootstrap.jsx";
 import "./styles/index.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <FichasProvider>
-        <RolagemProvider>
-          <App />
-        </RolagemProvider>
-      </FichasProvider>
+      <AppBootstrap />
     </BrowserRouter>
   </StrictMode>
 );
