@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { Buffer } from "node:buffer";
 
 async function escolherCardCriacao(page, nome) {
   const card = page.getByRole("heading", { name: nome, exact: true }).locator("..").locator("..");

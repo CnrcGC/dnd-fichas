@@ -160,9 +160,10 @@ export function normalizarInventario(inventario) {
   let sintonizados = 0;
   return (inventario ?? []).map(normalizarItemInventario).filter(Boolean).map((item) => {
     if (!item.sintonizado) {
-      const { sintonizacaoExcedente: _ignorar, ...semExcedente } = item;
-      return semExcedente;
-    }
+  const semExcedente = { ...item };
+  delete semExcedente.sintonizacaoExcedente;
+  return semExcedente;
+}
     sintonizados += 1;
     return { ...item, sintonizacaoExcedente: sintonizados > LIMITE_SINTONIZACAO };
   });
