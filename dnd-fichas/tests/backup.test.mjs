@@ -114,7 +114,39 @@ test("importação legada acrescenta campos, limita níveis e preserva dados pes
 });
 
 test("importação rejeita JSON inválido e valores que não são ficha", () => {
-  assert.throws(() => backup.importarFichaDeJson("{incompleto"), SyntaxError);
-  assert.throws(() => backup.importarFichaDeJson("[]"), /Arquivo inválido/);
-  assert.throws(() => backup.importarFichaDeJson("null"), /Arquivo inválido/);
+  assert.throws(
+    () => backup.importarFichaDeJson("{incompleto"),
+    SyntaxError
+  );
+
+  assert.throws(
+    () => backup.importarFichaDeJson("[]"),
+    /Arquivo inválido/
+  );
+
+  assert.throws(
+    () => backup.importarFichaDeJson("null"),
+    /Arquivo inválido/
+  );
+
+  assert.throws(
+    () =>
+      backup.importarFichaDeJson(
+        JSON.stringify({
+          teste: "isto não é uma ficha D&D",
+          numero: 123,
+        })
+      ),
+    /Arquivo inválido/
+  );
+
+  assert.throws(
+    () =>
+      backup.importarFichaDeJson(
+        JSON.stringify({
+          nome: "Objeto qualquer",
+        })
+      ),
+    /Arquivo inválido/
+  );
 });
