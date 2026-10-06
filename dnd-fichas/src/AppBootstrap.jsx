@@ -10,18 +10,28 @@ const FichasProvider = lazy(() =>
 
 export default function AppBootstrap() {
   return (
-    <Suspense
-      fallback={
-        <main className="app-main" id="conteudo-principal">
-          <p role="status">Carregando aplicação...</p>
-        </main>
-      }
-    >
-      <FichasProvider>
-        <RolagemProvider>
-          <App />
-        </RolagemProvider>
-      </FichasProvider>
-    </Suspense>
+    <>
+      <a className="skip-link" href="#conteudo-principal">
+        Pular para o conteúdo principal
+      </a>
+
+      <Suspense
+        fallback={
+          <main
+            className="app-main"
+            id="conteudo-principal"
+            tabIndex="-1"
+          >
+            <p role="status">Carregando aplicação...</p>
+          </main>
+        }
+      >
+        <FichasProvider>
+          <RolagemProvider>
+            <App />
+          </RolagemProvider>
+        </FichasProvider>
+      </Suspense>
+    </>
   );
 }

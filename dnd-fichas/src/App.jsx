@@ -28,7 +28,6 @@ export default function App() {
 
   return (
     <div className="app-shell" data-system={activeSystem ?? undefined}>
-      <a className="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
       <RouteAccessibility />
       <Topbar />
       <AvisoPersistencia />

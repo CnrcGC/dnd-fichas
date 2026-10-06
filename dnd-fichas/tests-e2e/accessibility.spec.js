@@ -17,7 +17,7 @@ for (const path of ["/", "/characters/new", "/dnd5e", "/yusong", "/feiticeiros-m
 }
 
 test("skip link e seletor de tema funcionam por teclado", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dnd5e");
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: "Pular para o conteúdo principal" });
   await expect(skip).toBeFocused();
