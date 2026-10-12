@@ -8,8 +8,9 @@ import { exportarFicha, lerArquivoFicha } from "../utils/backup";
 import "./Home.css";
 
 export default function Home() {
-  const { fichas, fichasExcluidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
+  const { fichas, fichasExcluidas, fichasProtegidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
   const [busca, setBusca] = useState("");
+  const [erroImportacao, setErroImportacao] = useState("");
   const navigate = useNavigate();
   const inputArquivoRef = useRef(null);
 
@@ -22,6 +23,7 @@ export default function Home() {
     evento.target.value = ""; // permite escolher o mesmo arquivo de novo depois
 
     if (!arquivo) return;
+    setErroImportacao("");
 
     try {
       const dados = await lerArquivoFicha(arquivo);
@@ -33,10 +35,8 @@ export default function Home() {
         );
       }
       navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`);
-    } catch {
-      window.alert(
-        "Não foi possível importar esse arquivo. Confirma que é um .json exportado daqui."
-      );
+    } catch (error) {
+      setErroImportacao(`Não foi possível importar: ${error instanceof SyntaxError ? "JSON inválido. Escolha um arquivo .json exportado pelo D&D Fichas." : error.message}`);
     }
   }
 
@@ -47,7 +47,7 @@ export default function Home() {
   }, [fichas, busca]);
 
   function handleRemover(ficha) {
-    if (window.confirm(`Excluir a ficha de ${ficha.nome}?`)) {
+    if (window.confirm(`Mover a ficha de ${ficha.nome} para a lixeira? Você poderá restaurá-la depois.`)) {
       removerFicha(ficha.id);
     }
   }
@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <div>
       <div className="home-marca">
-        <img src="/logo-dd-fichas.png" alt="D&D Fichas" className="home-logo" />
+        <img src={`${import.meta.env.BASE_URL}logo-dd-fichas.png`} alt="D&D Fichas" className="home-logo" />
       </div>
             <div className="home-cabecalho">
             <h1 className="home-titulo">Personagens D&D: {fichas.length}</h1>
@@ -73,12 +73,15 @@ export default function Home() {
                 ref={inputArquivoRef}
                 onChange={handleArquivoSelecionado}
                 className="home-input-arquivo-escondido"
+                aria-label="Arquivo JSON da ficha"
+                aria-describedby={erroImportacao ? "home-erro-importacao" : undefined}
               />
               <Link to="/dnd5e/characters/new" className="home-nova-ficha">
                 + Novo personagem
               </Link>
             </div>
           </div>
+      {erroImportacao && <p id="home-erro-importacao" role="alert">{erroImportacao}</p>}
 
       <input
         type="text"
@@ -130,7 +133,7 @@ export default function Home() {
                       : "Ficha antiga"}
                   </span>
                 </div>
-                <Link to={`/dnd5e/characters/${encodeURIComponent(ficha.id)}`} className="ficha-card-acessar">
+                <Link to={`/dnd5e/characters/${encodeURIComponent(ficha.id)}`} className="ficha-card-acessar" aria-label={`Acessar ficha de ${ficha.nome}`}>
                   Acessar ficha
                 </Link>
               </div>
@@ -139,6 +142,13 @@ export default function Home() {
         </div>
       )}
 
+      {fichasProtegidas.length > 0 && (
+        <section aria-labelledby="home-protegidas-titulo">
+          <h2 id="home-protegidas-titulo">Registros preservados</h2>
+          <p>Estas fichas precisam de uma versão compatível ou de recuperação. Seus dados originais não foram alterados.</p>
+          <ul>{fichasProtegidas.map((ficha) => <li key={ficha.id}><Link to={`/characters/${encodeURIComponent(ficha.id)}`}>{ficha.nome} — verificar registro</Link></li>)}</ul>
+        </section>
+      )}
       {fichasExcluidas.length > 0 && (
         <section className="home-lixeira" aria-labelledby="home-lixeira-titulo">
           <h2 id="home-lixeira-titulo">Lixeira</h2>
@@ -147,7 +157,7 @@ export default function Home() {
             {fichasExcluidas.map((ficha) => (
               <li key={ficha.id}>
                 <span>{ficha.nome}</span>
-                <button type="button" onClick={() => restaurarFicha(ficha.id)}>
+                <button type="button" onClick={() => restaurarFicha(ficha.id)} aria-label={`Restaurar ${ficha.nome}`}>
                   Restaurar
                 </button>
               </li>

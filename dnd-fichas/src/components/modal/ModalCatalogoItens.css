@@ -35,6 +35,8 @@
 
 .modal-catalogo-cabecalho h2 {
   font-size: var(--text-xl);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .modal-catalogo-fechar {

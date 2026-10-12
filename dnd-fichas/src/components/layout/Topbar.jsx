@@ -4,6 +4,7 @@ import { getSystemIdFromPath, systemPath } from "../../platform/routing/routes";
 import { getSystem } from "../../platform/systems/registry";
 import "./Topbar.css";
 import ThemeControl from "./ThemeControl";
+import TextSizeControl from "./TextSizeControl";
 import SystemSwitcher from "./SystemSwitcher";
 
 export default function Topbar() {
@@ -34,14 +35,15 @@ export default function Topbar() {
         </NavLink>
         {activeSystem && <>
           <NavLink to={systemPath(activeSystem.id, "characters/new")} className={({ isActive }) => isActive ? "topbar-link is-active" : "topbar-link"}>Novo personagem</NavLink>
-          <NavLink to={systemPath(activeSystem.id, "creatures")} className={({ isActive }) => isActive ? "topbar-link is-active" : "topbar-link"}>Criaturas</NavLink>
-          <NavLink to={systemPath(activeSystem.id, "encounters")} className={({ isActive }) => isActive ? "topbar-link is-active" : "topbar-link"}>Encontros</NavLink>
+          {activeSystem.creatures && <NavLink to={systemPath(activeSystem.id, "creatures")} className={({ isActive }) => isActive ? "topbar-link is-active" : "topbar-link"}>Criaturas</NavLink>}
+          {activeSystem.encounters && <NavLink to={systemPath(activeSystem.id, "encounters")} className={({ isActive }) => isActive ? "topbar-link is-active" : "topbar-link"}>Encontros</NavLink>}
         </>}
         {fichaAtual && (
           <span className="topbar-ficha-atual">{fichaAtual.nome}</span>
         )}
       </nav>
       <ThemeControl />
+      <TextSizeControl />
     </header>
   );
 }

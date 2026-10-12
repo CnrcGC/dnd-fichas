@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useFichas } from "../context/useFichas";
 import { obterRaca } from "../data/racas";
@@ -90,7 +90,7 @@ function CarregandoSecao({ nome }) {
 }
 
 function calcularBonusRacialFicha(ficha) {
-  const bonus = { ...(obterRaca(ficha?.racaId)?.bonusAtributos ?? {}) };
+  const bonus = { ...(obterRaca(ficha?.racaId, ficha?.subracaId)?.bonusAtributos ?? {}) };
   for (const chave of ficha?.bonusRacialEscolhido ?? []) {
     if (chave) bonus[chave] = (bonus[chave] ?? 0) + 1;
   }
@@ -126,6 +126,7 @@ export default function Ficha() {
   const ficha = obterFicha(id);
   const [abaAtiva, setAbaAtiva] = useState("combate");
   const [modalLevelUpAberto, setModalLevelUpAberto] = useState(false);
+  const levelUpTriggerRef = useRef(null);
   const [avisoConcentracao, setAvisoConcentracao] = useState(null); // { cd } | null   NOVO
 
   const bonusRacial = calcularBonusRacialFicha(ficha);
@@ -144,7 +145,7 @@ export default function Ficha() {
     : 0;
 
   useEffect(() => {
-    if (!ficha || caCalculada === null || ficha.status.ca === caCalculada) return;
+    if (!ficha || ficha.status.caManual || caCalculada === null || ficha.status.ca === caCalculada) return;
     atualizarFicha(id, (fichaAtual) => ({
       status: { ...fichaAtual.status, ca: caCalculada },
     }));
@@ -277,11 +278,15 @@ function avisarTesteConcentracao(danoRecebido) {
   if (chave === "pvAtual" && ficha.concentracao) {
     const statusAtualizado = atualizarStatus(ficha.status, chave, novoValor);
     const danoRecebido = (ficha.status.pvAtual ?? 0) - statusAtualizado.pvAtual;
-    avisarTesteConcentracao(danoRecebido);
+    if (statusAtualizado.pvAtual <= 0) setAvisoConcentracao(null);
+    else avisarTesteConcentracao(danoRecebido);
   }
 
   atualizarFicha(id, (fichaAtual) => ({
-    status: atualizarStatus(fichaAtual.status, chave, novoValor),
+    status: {
+      ...atualizarStatus(fichaAtual.status, chave, novoValor),
+      caManual: chave === "ca" ? true : chave === "caManual" ? Boolean(novoValor) : fichaAtual.status.caManual,
+    },
   }));
   }
 
@@ -342,7 +347,7 @@ function handleDescansoCurto() {
 function handleChangeRaca(novoRacaId) {
   atualizarFicha(id, (fichaAtual) => {
     const fichaComRaca = reconciliarProficienciasCriacao({
-      ...fichaAtual, racaId: novoRacaId, bonusRacialEscolhido: [],
+      ...fichaAtual, racaId: novoRacaId, subracaId: null, bonusRacialEscolhido: [],
       escolhasCriacao: { ...(fichaAtual.escolhasCriacao ?? {}), idiomasRaca: [], periciasRaca: [], ferramentasRaca: [], ferramentasSubstitutas: [] },
     });
     const modificadores = calcularModificadoresAtributos(
@@ -351,6 +356,7 @@ function handleChangeRaca(novoRacaId) {
     );
     return {
       ...fichaComRaca,
+      ...((obterRaca(fichaAtual.racaId, fichaAtual.subracaId)?.pvPorNivel ?? 0) > 0 ? recalcularPv(fichaComRaca, obterClasse(fichaComRaca.classeId), modificadores.constituicao, calcularNivelTotal(fichaComRaca)) : {}),
       recursos: sincronizarRecursosDaFicha(fichaComRaca, modificadores),
     };
   });
@@ -785,7 +791,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         document.getElementById(`ficha-secao-${secao}`)?.scrollIntoView({
-          behavior: "smooth",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
           block: "start",
         });
       });
@@ -794,7 +800,8 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 
   function handleAplicarEfeitoPv(tipo, valor) {
     const resultado = aplicarEfeitoPv(ficha.status, tipo, valor);
-    avisarTesteConcentracao(resultado.danoRecebido);
+    if (resultado.status.pvAtual <= 0) setAvisoConcentracao(null);
+    else avisarTesteConcentracao(resultado.danoRecebido);
     atualizarFicha(id, () => ({ status: resultado.status }));
   }
 
@@ -844,7 +851,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 
   return (
     <>
-      <h1>Ficha de {ficha.nome || "personagem sem nome"}</h1>
+      <h1 className="ficha-titulo">Ficha de {ficha.nome || "personagem sem nome"}</h1>
       <button type="button" className="ficha-imprimir-botao" onClick={handleImprimirFicha}>
         Imprimir / Salvar em PDF
       </button>
@@ -860,6 +867,12 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 
        <BlocoRacaClasse
   racaId={ficha.racaId}
+  subracaId={ficha.subracaId}
+  onChangeSubraca={(subracaId) => atualizarFicha(id, (atual) => {
+    const proxima = { ...atual, subracaId };
+    const mods = calcularModificadoresAtributos(proxima.atributos, calcularBonusRacialFicha(proxima));
+    return { ...proxima, ...recalcularPv(proxima, obterClasse(proxima.classeId), mods.constituicao, calcularNivelTotal(proxima)) };
+  })}
   classeId={ficha.classeId}
   antecedenteId={ficha.antecedenteId}
   nivel={ficha.nivel ?? 1}
@@ -902,6 +915,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 <button
   type="button"
   className="ficha-levelup-botao"
+  ref={levelUpTriggerRef}
   onClick={() => setModalLevelUpAberto(true)}
   disabled={!classe || !podeSubirPorXp}
   title={
@@ -923,6 +937,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
             <ModalLevelUp
               key={`${ficha.id}-${nivelTotal}`}
               aberto
+              returnFocusRef={levelUpTriggerRef}
               onFechar={() => setModalLevelUpAberto(false)}
               ficha={ficha}
               classe={classe}
@@ -1099,7 +1114,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           {abaAtiva === "notas" && (
             <>
               <section>
-                <h3 className="bloco-titulo">Personagem</h3>
+                <h2 className="bloco-titulo">Personagem</h2>
                 <label className="ficha-campo-texto">
                   <span className="ficha-campo-texto-label">Jogador</span>
                   <input
@@ -1158,10 +1173,11 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
               </section>
 
               <section>
-                <h3 className="bloco-titulo">Anotações livres</h3>
+                <h2 className="bloco-titulo">Anotações livres</h2>
                 <textarea
                   className="ficha-notas-textarea"
                   placeholder="Qualquer outra coisa: contatos, pistas, itens especiais..."
+                  aria-label="Anotações livres"
                   value={ficha.notas ?? ""}
                   onChange={(evento) =>
                     handleChangeCampoTexto("notas", evento.target.value)

@@ -55,6 +55,8 @@ function CampoNivel({ nivel, nivelMaximo, onChangeNivel }) {
 
 export default function BlocoRacaClasse({
   racaId,
+  subracaId,
+  onChangeSubraca,
   classeId,
   antecedenteId,
   nivel,
@@ -91,7 +93,7 @@ export default function BlocoRacaClasse({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Raça e classe</h3>
+      <h2 className="bloco-titulo">Raça e classe</h2>
       <div className="raca-classe-grid">
                 <label className="raca-classe-campo">
           <span className="raca-classe-label">Raça</span>
@@ -108,6 +110,15 @@ export default function BlocoRacaClasse({
           </select>
         </label>
 
+        {racaSelecionada?.subracas && (
+          <label className="raca-classe-campo">
+            <span className="raca-classe-label">Sub-raça</span>
+            <select aria-label="Sub-raça" value={subracaId ?? ""} onChange={(event) => onChangeSubraca(event.target.value || null)}>
+              <option value="">Selecione...</option>
+              {racaSelecionada.subracas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}
+            </select>
+          </label>
+        )}
         {racaSelecionada?.atributosEscolhaLivre && (
           <div className="raca-classe-campo raca-classe-campo--largo">
             <span className="raca-classe-label">
@@ -122,6 +133,7 @@ export default function BlocoRacaClasse({
                   return (
                     <select
                       key={indice}
+                      aria-label={`Bônus racial +1 — atributo ${indice + 1}`}
                       value={bonusRacialEscolhido?.[indice] ?? ""}
                       onChange={(evento) =>
                         onChangeBonusRacialEscolhido(indice, evento.target.value)

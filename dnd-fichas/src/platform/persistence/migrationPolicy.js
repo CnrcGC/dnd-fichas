@@ -75,6 +75,9 @@ export async function migrateEnvelopeRecord(input, { now = () => new Date().toIS
   if (platformSourceVersion > PLATFORM_SCHEMA_VERSION) {
     return createReadOnlyMigrationResult({ engine, systemId: input.systemId, sourceVersion: platformSourceVersion, original, summarySource: input.data, code: "future-platform-version" });
   }
+  if (Number(input.schemaVersion) > engine.currentSchemaVersion) {
+    return createReadOnlyMigrationResult({ engine, systemId: input.systemId, sourceVersion: Number(input.schemaVersion), original, summarySource: input.data });
+  }
   const platform = runMigrationChain(input, platformSourceVersion, PLATFORM_MIGRATIONS, {
     validate: (candidate) => Boolean(candidate?.id && candidate?.systemId && candidate?.data && typeof candidate.data === "object"),
   });

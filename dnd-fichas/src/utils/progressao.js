@@ -1,4 +1,5 @@
 import { obterClasse } from "../data/classes";
+import { obterRaca } from "../data/racas";
 
 // PV por nível, com histórico banked (ficha.pvPorNivel = { 1: valor, 2:
 // valor, ... }) e origemClassePvPorNivel. Isso existe pra resolver um
@@ -53,6 +54,7 @@ export function recalcularPv(fichaAtual, classe, modCon, novoNivel, override) {
   for (let n = 1; n <= novoNivel; n += 1) {
     novoPvMax += pvPorNivel[n] ?? 0;
   }
+  novoPvMax += (obterRaca(fichaAtual.racaId, fichaAtual.subracaId)?.pvPorNivel ?? 0) * novoNivel;
 
   const danoAtual = Math.max(
     0,

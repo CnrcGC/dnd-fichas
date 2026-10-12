@@ -1,12 +1,13 @@
 .topbar {
-  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  flex-wrap: wrap;
   flex-shrink: 0;
   background: var(--color-bg-raised);
   border-bottom: 1px solid var(--color-line);
   display: flex;
   align-items: center;
-  gap: var(--space-5);
-  padding: 0 var(--space-4);
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-4);
 }
 
 .topbar-brand {
@@ -28,6 +29,8 @@
   align-items: center;
   gap: var(--space-4);
   flex: 1;
+  flex-wrap: wrap;
+  min-width: min(100%, 16rem);
 }
 
 .topbar-link {
@@ -51,6 +54,7 @@
 .topbar-ficha-atual {
   color: var(--color-ink-soft);
   font-size: var(--text-sm);
+  overflow-wrap: anywhere;
 }
 
 .topbar-ficha-atual::before {

@@ -7,21 +7,26 @@ export default function AvisoPersistencia() {
     falhaPersistencia,
     tentarSalvarNovamente,
     dispensarFalhaPersistencia,
+    estadoSalvamento,
+    avisoDispensado,
+    hidratacao,
   } = useFichas();
 
-  if (!falhaPersistencia) return null;
+  const textoEstado = estadoSalvamento === "salvando" ? "Salvando alterações…" : estadoSalvamento === "salvo" ? "Alterações salvas neste dispositivo." : estadoSalvamento === "falhou" ? "Há alterações não salvas." : "";
 
   return (
+    <>
+    <p className="persistencia-status" role="status" aria-live="polite" aria-atomic="true">{textoEstado}</p>
+    {falhaPersistencia && !avisoDispensado && (
     <div className="aviso-persistencia" role="alert" aria-live="assertive">
       <div className="aviso-persistencia-texto">
-        <strong>Suas alterações não foram salvas.</strong>
+        <strong>{hidratacao === "pronto" ? "Suas alterações não foram salvas." : "Não foi possível carregar suas fichas."}</strong>
         <span>
-          {falhaPersistencia.mensagem} Mantenha esta página aberta e exporte sua
-          ficha como backup para não perder os dados.
+          {falhaPersistencia.mensagem} {hidratacao === "pronto" ? "Mantenha esta página aberta e exporte sua ficha como backup para não perder os dados." : "Os registros existentes não foram alterados. Tente novamente para abrir suas fichas."}
         </span>
       </div>
       <div className="aviso-persistencia-acoes">
-        <button type="button" onClick={tentarSalvarNovamente}>
+        <button type="button" onClick={tentarSalvarNovamente} disabled={estadoSalvamento === "salvando" || hidratacao === "carregando"}>
           Tentar novamente
         </button>
         <button
@@ -33,6 +38,7 @@ export default function AvisoPersistencia() {
           <Icon name="remove" />
         </button>
       </div>
-    </div>
+    </div>)}
+    </>
   );
 }

@@ -117,4 +117,12 @@ test("importação rejeita JSON inválido e valores que não são ficha", () => 
   assert.throws(() => backup.importarFichaDeJson("{incompleto"), SyntaxError);
   assert.throws(() => backup.importarFichaDeJson("[]"), /Arquivo inválido/);
   assert.throws(() => backup.importarFichaDeJson("null"), /Arquivo inválido/);
+  assert.throws(() => backup.importarFichaDeJson("{}"), /não contém o nome/);
+});
+
+test("MVP-02 importação futura ou de outro sistema preserva o arquivo sem normalizar", () => {
+  const future = JSON.stringify({ nome: "Futura", versaoFicha: 99, notas: "Não converter" });
+  assert.throws(() => backup.importarFichaDeJson(future), /versão mais recente/);
+  assert.equal(JSON.parse(future).versaoFicha, 99);
+  assert.throws(() => backup.importarFichaDeJson(JSON.stringify({ nome: "Outro", systemId: "yusong" })), /outro sistema/);
 });

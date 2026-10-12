@@ -16,7 +16,7 @@ export default function BlocoMoedas({ moedas, onChangeMoedas }) {
 
   return (
     <section>
-      <h3 className="bloco-titulo">Moedas</h3>
+      <h2 className="bloco-titulo">Moedas</h2>
       <div className="moedas-grid">
         {TIPOS_MOEDA.map((tipo) => (
           <label

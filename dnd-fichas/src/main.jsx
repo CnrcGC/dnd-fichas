@@ -4,11 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { FichasProvider } from "./context/FichasContext.jsx";
 import { RolagemProvider } from "./context/RolagemProvider.jsx";
+import { restorePagesRoute } from "./platform/routing/pages.js";
 import "./styles/index.css";
+
+restorePagesRoute(window, import.meta.env.BASE_URL);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <FichasProvider>
         <RolagemProvider>
           <App />

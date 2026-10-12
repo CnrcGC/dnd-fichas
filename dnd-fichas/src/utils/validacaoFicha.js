@@ -120,7 +120,7 @@ export function validarFicha(ficha, atributosTotais) {
 
   if (!ficha.nome?.trim() || ficha.nome === "Sem nome") adicionar(pendencias, "Identidade: informe o nome do personagem.");
   if (!ficha.racaId) adicionar(pendencias, "Identidade: escolha uma raça.");
-  else if (!obterRaca(ficha.racaId)) adicionar(erros, "Identidade: raça desconhecida.");
+  else if (!obterRaca(ficha.racaId, ficha.subracaId)) adicionar(erros, "Identidade: raça desconhecida.");
   if (!ficha.classeId) adicionar(pendencias, "Identidade: escolha uma classe principal.");
   if (!ficha.antecedenteId) adicionar(pendencias, "Identidade: escolha um antecedente.");
   else if (!obterAntecedente(ficha.antecedenteId)) adicionar(erros, "Identidade: antecedente desconhecido.");
@@ -130,7 +130,8 @@ export function validarFicha(ficha, atributosTotais) {
     const esperado = [15, 14, 13, 12, 10, 8].sort((a, b) => a - b).join(",");
     if (atributosBase.sort((a, b) => a - b).join(",") !== esperado) adicionar(erros, "Atributos: o arranjo padrão deve usar 15, 14, 13, 12, 10 e 8 uma vez cada.");
   }
-  const racaAtual = obterRaca(ficha.racaId);
+  const racaAtual = obterRaca(ficha.racaId, ficha.subracaId);
+  if (ficha.subracaId && !racaAtual?.subracas?.some((item) => item.id === ficha.subracaId)) adicionar(erros, "Sub-raça: escolha uma opção compatível com a raça.");
   if (racaAtual?.atributosEscolhaLivre) {
     const escolhidos = (ficha.bonusRacialEscolhido ?? []).filter(Boolean);
     if (new Set(escolhidos).size !== escolhidos.length || escolhidos.length !== racaAtual.atributosEscolhaLivre) adicionar(pendencias, `Raça: escolha ${racaAtual.atributosEscolhaLivre} atributos raciais diferentes.`);

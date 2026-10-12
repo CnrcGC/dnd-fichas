@@ -86,7 +86,7 @@ export default function BlocoHabilidades({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Habilidades e Talentos</h3>
+      <h2 className="bloco-titulo">Habilidades e Talentos</h2>
 
       <button
         type="button"
@@ -112,11 +112,11 @@ export default function BlocoHabilidades({
         <table className="habilidades-tabela">
           <thead>
             <tr>
-              <th aria-label="Expandir"></th>
+              <th scope="col"><span className="visually-hidden">Expandir</span></th>
               <th>Nome</th>
               <th>Tipo</th>
               <th>Nível</th>
-              <th aria-label="Remover"></th>
+              <th scope="col"><span className="visually-hidden">Remover</span></th>
             </tr>
           </thead>
           <tbody>
@@ -154,6 +154,7 @@ export default function BlocoHabilidades({
                         <input
                           type="text"
                           value={habilidade.nome}
+                          aria-label="Nome da habilidade"
                           placeholder="Nome da habilidade"
                           onChange={(evento) =>
                             handleAlterar(habilidade.id, "nome", evento.target.value)
@@ -180,6 +181,7 @@ export default function BlocoHabilidades({
                           max="20"
                           className="habilidades-nivel-input"
                           value={habilidade.nivel ?? ""}
+                          aria-label={`Nível de ${habilidade.nome || "habilidade"}`}
                           placeholder="—"
                           onChange={(evento) =>
                             handleAlterar(

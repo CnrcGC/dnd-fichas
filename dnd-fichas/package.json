@@ -6,11 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/check-bundle-budget.mjs",
+    "build:pages": "node scripts/build-pages.mjs && node scripts/check-bundle-budget.mjs dist-pages",
     "lint": "eslint .",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",
     "test:e2e": "playwright test",
-    "test:a11y": "playwright test tests-e2e/accessibility.spec.js",
-    "preview": "vite preview"
+    "test:a11y": "playwright test tests-e2e/accessibility.spec.js tests-e2e/sheet-accessibility.spec.js tests-e2e/keyboard.spec.js tests-e2e/text-reflow.spec.js",
+    "test:production": "playwright test --config playwright.production.config.js",
+    "test:pages": "playwright test --config playwright.pages.config.js",
+    "test:hosted": "playwright test --config playwright.hosted.config.js",
+    "demo:prepare": "node scripts/prepare-demo.mjs",
+    "preview": "vite preview",
+    "preview:pages": "node scripts/serve-pages.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",

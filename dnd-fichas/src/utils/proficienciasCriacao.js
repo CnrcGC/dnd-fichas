@@ -50,8 +50,11 @@ export function escolhasObrigatoriasCriacao(ficha) {
   const escolhas = ficha.escolhasCriacao ?? {};
   const pendencias = [];
   const classe = obterClasse(ficha.classeId);
-  const raca = obterRaca(ficha.racaId);
+  const raca = obterRaca(ficha.racaId, ficha.subracaId);
   const antecedente = obterAntecedente(ficha.antecedenteId);
+  if (raca?.subracas && !raca.subracas.some((item) => item.id === ficha.subracaId)) {
+    pendencias.push({ secao: "identidade", mensagem: "Sub-raça: escolha uma opção para Anão." });
+  }
   const verificar = (titulo, regra, valores) => {
     const quantidade = Number(regra?.quantidade ?? regra ?? 0);
     if (quantidade && [...new Set((valores ?? []).filter(Boolean))].length !== quantidade) {
@@ -137,7 +140,7 @@ export function reconciliarProficienciasCriacao(ficha) {
   removerOrigensAutomaticas(origens);
   const escolhas = ficha.escolhasCriacao ?? {};
   const classe = obterClasse(ficha.classeId);
-  const raca = obterRaca(ficha.racaId);
+  const raca = obterRaca(ficha.racaId, ficha.subracaId);
   const antecedente = obterAntecedente(ficha.antecedenteId);
 
   if (classe?.proficienciasIniciais) {
@@ -151,6 +154,7 @@ export function reconciliarProficienciasCriacao(ficha) {
     concederLista(origens, "pericias", escolhas.periciasClasse, `classe-inicial:${classe.id}`);
   }
   if (raca) {
+    concederLista(origens, "armaduras", raca.armaduras, `raca:${raca.id}`);
     concederLista(origens, "idiomas", raca.idiomasFixos, `raca:${raca.id}`);
     concederLista(origens, "idiomas", escolhas.idiomasRaca, `raca:${raca.id}`);
     concederLista(origens, "pericias", raca.periciasConcedidas, `raca:${raca.id}`);

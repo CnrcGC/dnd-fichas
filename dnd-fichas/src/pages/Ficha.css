@@ -6,6 +6,7 @@
 }
 
 .ficha-coluna-fixa {
+  min-width: 0;
   position: sticky;
   top: var(--space-4);
   display: flex;
@@ -197,9 +198,9 @@
   .ficha-nome-input { font-size: var(--text-lg); }
   .ficha-abas {
     width: 100%;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     margin-bottom: var(--space-3);
-    overflow-x: auto;
+    overflow-x: visible;
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
     scrollbar-width: thin;

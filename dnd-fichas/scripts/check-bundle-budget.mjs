@@ -1,12 +1,13 @@
 import { readFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
+import process from "node:process";
 
 const budgets = Object.freeze({
   main: 425 * 1024,
   dnd5eAdapter: 100 * 1024,
 });
 
-const outputRoot = resolve("dist");
+const outputRoot = resolve(process.argv[2] ?? "dist");
 const manifest = JSON.parse(await readFile(resolve(outputRoot, ".vite/manifest.json"), "utf8"));
 const mainEntry = manifest["index.html"];
 const dndEntry = Object.entries(manifest).find(([key]) => key.endsWith("src/systems/dnd5e/adapter.jsx"))?.[1];

@@ -103,7 +103,7 @@ export default function BlocoInventario({
   return (
     <section>
       <div className="inventario-cabecalho">
-        <h3 className="bloco-titulo">Inventário</h3>
+        <h2 className="bloco-titulo">Inventário</h2>
         <div className="inventario-resumos">
           <span className={sobrecarregado ? "inventario-peso is-sobrecarregado" : "inventario-peso"}>
             Peso total: {pesoTotal} / {capacidadeCarga} kg
@@ -143,7 +143,7 @@ export default function BlocoInventario({
               <th>Equipado</th>
               <th>Ataca com</th>
               <th>Mágico</th>
-              <th aria-label="Remover"></th>
+              <th scope="col"><span className="visually-hidden">Remover</span></th>
             </tr>
           </thead>
           <tbody>
@@ -167,6 +167,7 @@ export default function BlocoInventario({
                     <input
                       type="text"
                       value={item.nome}
+                      aria-label="Nome do item"
                       placeholder="Nome do item"
                       onChange={(evento) =>
                         handleAlterarItem(item.id, "nome", evento.target.value)
@@ -179,6 +180,7 @@ export default function BlocoInventario({
                       min="0"
                       className="inventario-input-numero"
                       value={item.quantidade}
+                      aria-label={`Quantidade de ${item.nome || "item"}`}
                       onChange={(evento) =>
                         handleAlterarItem(item.id, "quantidade", Number(evento.target.value) || 0)
                       }
@@ -191,6 +193,7 @@ export default function BlocoInventario({
                       step="0.1"
                       className="inventario-input-numero"
                       value={item.peso}
+                      aria-label={`Peso de ${item.nome || "item"}`}
                       onChange={(evento) =>
                         handleAlterarItem(item.id, "peso", Number(evento.target.value) || 0)
                       }
@@ -214,6 +217,7 @@ export default function BlocoInventario({
                     {item.tipoItem === "arma" ? (
                       <select
                         value={item.atributoAtaque ?? "auto"}
+                        aria-label={`Atributo de ataque de ${item.nome || "item"}`}
                         onChange={(evento) =>
                           handleAlterarItem(item.id, "atributoAtaque", evento.target.value)
                         }

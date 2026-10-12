@@ -91,10 +91,16 @@ export default function PainelRolagens() {
     : "Normal";
 
   return (
+    <>
+    <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+      {ultima ? <span key={ultima.id}>{`${ultima.titulo}. Resultado ${ultima.resultado.total}.${ultima.tipo === "d20" && ultima.resultado.d20 === 20 ? " Crítico." : ultima.tipo === "d20" && ultima.resultado.d20 === 1 ? " Falha crítica." : ""}`}</span> : ""}
+    </p>
     <div className={expandido ? "painel-rolagens is-expandido" : "painel-rolagens"}>
       <button
         type="button"
         className="painel-rolagens-toggle"
+        aria-expanded={expandido}
+        aria-controls="historico-rolagens"
         onClick={() => setExpandido((atual) => !atual)}
       >
         <span className="painel-rolagens-icone" aria-hidden="true">
@@ -109,7 +115,7 @@ export default function PainelRolagens() {
       </button>
 
       {expandido && (
-        <div className="painel-rolagens-lista">
+        <div className="painel-rolagens-lista" id="historico-rolagens">
           <fieldset className="painel-rolagens-modo">
             <legend>Modo das próximas rolagens d20</legend>
             <label>
@@ -142,5 +148,6 @@ export default function PainelRolagens() {
         </div>
       )}
     </div>
+    </>
   );
 }

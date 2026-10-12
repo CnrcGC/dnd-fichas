@@ -44,6 +44,7 @@ export default function AtributoCard({
               type="button"
               className="atributo-modificador"
               onClick={handleRolar}
+              aria-label={`Rolar teste de ${label} (${formatarModificador(modificador)})`}
               title={`Rolar teste de ${label} (d20${formatarModificador(modificador)})`}
             >
               {formatarModificador(modificador)}

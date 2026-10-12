@@ -18,6 +18,19 @@ before(async () => {
 
 after(async () => { await servidor?.close(); });
 
+test("MVP-06 encerra concentração por zero PV ou condições de incapacidade", () => {
+  const ficha = fichaUtils.criarFichaVazia("Conjurador");
+  const concentracao = { magiaId: "detect", nome: "Detectar Magia" };
+  const ativa = { ...ficha, status: { ...ficha.status, pvAtual: 10, pvMax: 10 }, concentracao };
+  assert.deepEqual(fichaUtils.normalizarFicha(ativa).concentracao, concentracao);
+  assert.equal(fichaUtils.normalizarFicha({ ...ativa, status: { ...ativa.status, pvAtual: 0 } }).concentracao, null);
+  for (const nome of ["Incapacitado", "Inconsciente", "Paralisado enquanto durar", "Petrificado", "Atordoada"]) {
+    assert.equal(fichaUtils.normalizarFicha({ ...ativa, condicoesAtivas: [{ id: nome, nome, rodadasRestantes: null }] }).concentracao, null, nome);
+  }
+  assert.deepEqual(fichaUtils.normalizarFicha({ ...ativa, condicoesAtivas: [{ id: "blind", nome: "Cego", rodadasRestantes: null }] }).concentracao, concentracao);
+  assert.deepEqual(ativa.concentracao, concentracao);
+});
+
 function rolagemSequencial(valores) {
   let indice = 0;
   return () => valores[indice++];

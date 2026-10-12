@@ -23,6 +23,57 @@ before(async () => {
 
 after(async () => { await server?.close(); });
 
+test("MVP-02 recupera abertura do banco após uma falha transitória", async () => {
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  let attempts = 0;
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage: memoryStorage(), openRepository: async () => {
+    if (++attempts === 1) throw new Error("banco temporariamente indisponível");
+    return repository;
+  } });
+  await assert.rejects(store.initialize(), /temporariamente/);
+  assert.equal((await store.initialize())[0].nome, fixture.nome);
+  assert.equal(attempts, 2);
+});
+
+test("MVP-02 captura o snapshot na chamada, antes de entrar na fila", async () => {
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage: memoryStorage(), repository });
+  const fichas = await store.initialize();
+  fichas[0].notas = "Conteúdo enviado";
+  const saved = store.save(fichas).durable;
+  fichas[0].notas = "Mutação posterior";
+  await saved;
+  assert.equal((await repository.get(fixture.id)).data.notas, "Conteúdo enviado");
+});
+
+test("MVP-02 separa registros futuros/corrompidos e impede sua sobrescrita", async () => {
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const migrated = await legacyModule.migrateLegacyRecord("dnd5e", fixture, { now: () => NOW });
+  const future = { ...migrated.envelope, schemaVersion: 99 };
+  const corrupt = { ...migrated.envelope, id: "corrupt", data: null };
+  repository.characters.set(future.id, structuredClone(future));
+  repository.characters.set(corrupt.id, structuredClone(corrupt));
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage: memoryStorage([]), repository });
+  assert.deepEqual(await store.initialize(), []);
+  assert.equal((await store.listProtected()).length, 2);
+  await assert.rejects(store.save([fixture]).durable, (error) => error.code === "future-version");
+  assert.deepEqual(await repository.get(future.id), future);
+  assert.deepEqual(await repository.get(corrupt.id), corrupt);
+});
+
+test("MVP-02 snapshot antigo não restaura tombstone nem ocupa ID de outro sistema", async () => {
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage: memoryStorage(), repository });
+  const fichas = await store.initialize();
+  await store.remove(fixture.id).durable;
+  const deleted = await repository.get(fixture.id);
+  await assert.rejects(store.save(fichas).durable, (error) => error.code === "reserved-character-id");
+  assert.deepEqual(await repository.get(fixture.id), deleted);
+  repository.characters.set(fixture.id, { ...deleted, systemId: "yusong", deletedAt: null });
+  await assert.rejects(store.save(fichas).durable, (error) => error.code === "reserved-character-id");
+  assert.equal((await repository.get(fixture.id)).systemId, "yusong");
+});
+
 function memoryStorage(records = [fixture]) {
   const values = new Map([["pilares-de-atlas:fichas", JSON.stringify(records)]]);
   return {

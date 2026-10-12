@@ -32,7 +32,7 @@ export default function CharacterRoute({ destination = "character" }) {
       })
       .then(async (record) => {
         if (!active) return;
-        if (!record) {
+        if (!record || record.deletedAt) {
           setState({ status: "not-found" });
           return;
         }

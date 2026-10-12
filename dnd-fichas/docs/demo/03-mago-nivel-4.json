@@ -1,0 +1,481 @@
+{
+  "versaoFicha": 8,
+  "id": "demo-03-mago-nivel-4",
+  "nome": "Celeste - Guardiã do grimório",
+  "criadoEm": 1791590400000,
+  "notas": "Backup de demonstração. Reimporte para reiniciar o roteiro.",
+  "jogador": "Apresentação",
+  "aparencia": "",
+  "personalidade": "",
+  "historico": "Guardiã(o) da biblioteca local.",
+  "objetivo": "Recuperar o grimório perdido.",
+  "racaId": "humano",
+  "classeId": "mago",
+  "antecedenteId": "sabio",
+  "nivel": 4,
+  "atributos": {
+    "forca": 8,
+    "destreza": 14,
+    "constituicao": 13,
+    "inteligencia": 17,
+    "sabedoria": 12,
+    "carisma": 10
+  },
+  "metodoAtributos": "manual",
+  "pericias": {
+    "acrobacia": false,
+    "adestrarAnimais": false,
+    "arcanismo": true,
+    "atletismo": false,
+    "atuacao": false,
+    "enganacao": false,
+    "furtividade": false,
+    "historia": true,
+    "intimidacao": false,
+    "intuicao": true,
+    "investigacao": true,
+    "medicina": false,
+    "natureza": false,
+    "percepcao": false,
+    "persuasao": false,
+    "prestidigitacao": false,
+    "religiao": false,
+    "sobrevivencia": false
+  },
+  "escolhasCriacao": {
+    "periciasClasse": [
+      "intuicao",
+      "investigacao"
+    ],
+    "idiomasRaca": [
+      "anao"
+    ],
+    "idiomasAntecedente": [
+      "elfico",
+      "gigante"
+    ],
+    "ferramentasAntecedente": []
+  },
+  "origensProficiencias": {
+    "idiomas": {
+      "comum": [
+        "manual:legado",
+        "raca:humano"
+      ],
+      "anao": [
+        "raca:humano"
+      ],
+      "elfico": [
+        "antecedente:sabio"
+      ],
+      "gigante": [
+        "antecedente:sabio"
+      ]
+    },
+    "salvaguardas": {
+      "inteligencia": [
+        "classe-inicial:mago"
+      ],
+      "sabedoria": [
+        "classe-inicial:mago"
+      ]
+    },
+    "armas": {
+      "adagas": [
+        "classe-inicial:mago"
+      ],
+      "dardos": [
+        "classe-inicial:mago"
+      ],
+      "fundas": [
+        "classe-inicial:mago"
+      ],
+      "bordoes": [
+        "classe-inicial:mago"
+      ],
+      "bestas-leves": [
+        "classe-inicial:mago"
+      ]
+    },
+    "pericias": {
+      "intuicao": [
+        "classe-inicial:mago"
+      ],
+      "investigacao": [
+        "classe-inicial:mago"
+      ],
+      "arcanismo": [
+        "antecedente:sabio"
+      ],
+      "historia": [
+        "antecedente:sabio"
+      ]
+    }
+  },
+  "estadoFicha": "pronta",
+  "trocasMagiasAplicadas": {},
+  "inventario": [
+    {
+      "id": "demo-corda",
+      "nome": "Corda de viagem",
+      "quantidade": 1,
+      "peso": 1,
+      "tipoItem": "equipamento",
+      "equipado": false,
+      "sintonizado": false
+    }
+  ],
+  "moedas": {
+    "cobre": 0,
+    "prata": 0,
+    "electro": 0,
+    "ouro": 25,
+    "platina": 0
+  },
+  "status": {
+    "pvAtual": 20,
+    "pvMax": 26,
+    "pvTemp": 0,
+    "ca": 12,
+    "iniciativa": 0,
+    "deslocamento": 9,
+    "testesMorteSucessos": 0,
+    "testesMorteFalhas": 0
+  },
+  "pvPorNivel": {
+    "1": 8,
+    "2": 6,
+    "3": 6,
+    "4": 6
+  },
+  "origemClassePvPorNivel": {
+    "1": "mago",
+    "2": "mago",
+    "3": "mago",
+    "4": "mago"
+  },
+  "progressao": {
+    "modo": "marco",
+    "xpAtual": 0
+  },
+  "recursos": [],
+  "subclasseId": "escola-evocacao",
+  "bonusRacialEscolhido": [],
+  "periciasDoAntecedente": [],
+  "idiomas": [
+    "comum",
+    "anao",
+    "elfico",
+    "gigante"
+  ],
+  "proficienciasFerramentas": [],
+  "atributoFerramentas": {},
+  "classesSecundarias": [],
+  "dadosDeVidaUsados": 0,
+  "dadosVidaPorClasse": {
+    "mago": {
+      "classeId": "mago",
+      "nome": "Mago",
+      "dadoVida": 6,
+      "maximo": 4,
+      "usados": 0
+    }
+  },
+  "proficienciasArmas": [
+    "adagas",
+    "dardos",
+    "fundas",
+    "bordoes",
+    "bestas-leves"
+  ],
+  "proficienciasArmaduras": [],
+  "proficienciasEscudos": false,
+  "proficienciasMulticlasse": {},
+  "niveisAsiAplicados": [
+    "mago-4"
+  ],
+  "magias": [
+    {
+      "id": "demo-faisca",
+      "nome": "Faísca",
+      "nivel": 0,
+      "escola": "evocacao",
+      "tempo": "1 ação",
+      "alcance": "36m",
+      "componentes": "V, S",
+      "duracao": "Instantânea",
+      "descricao": "Dispara um raio de fogo contra um alvo, causando dano de fogo.",
+      "ataque": true,
+      "dano": "2d10 fogo",
+      "origemId": "faisca",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-maos-magicas",
+      "nome": "Mãos Mágicas",
+      "nivel": 0,
+      "escola": "conjuracao",
+      "tempo": "1 ação",
+      "alcance": "9m",
+      "componentes": "V, S",
+      "duracao": "1 minuto",
+      "descricao": "Cria uma mão espectral que manipula objetos leves à distância.",
+      "origemId": "maos-magicas",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-prestidigitacao",
+      "nome": "Prestidigitação",
+      "nivel": 0,
+      "escola": "transmutacao",
+      "tempo": "1 ação",
+      "alcance": "3m",
+      "componentes": "V, S",
+      "duracao": "Até 1 hora",
+      "descricao": "Truque versátil: pequenos efeitos sensoriais, limpar/sujar algo, acender vela etc.",
+      "origemId": "prestidigitacao",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-luz",
+      "nome": "Luz",
+      "nivel": 0,
+      "escola": "evocacao",
+      "tempo": "1 ação",
+      "alcance": "Toque",
+      "componentes": "V, M",
+      "duracao": "1 hora",
+      "descricao": "Faz um objeto emitir luz forte num raio de 6m.",
+      "origemId": "luz",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-misseis-magicos",
+      "nome": "Mísseis Mágicos",
+      "nivel": 1,
+      "escola": "evocacao",
+      "tempo": "1 ação",
+      "alcance": "36m",
+      "componentes": "V, S",
+      "duracao": "Instantânea",
+      "descricao": "3 dardos de força que acertam automaticamente, causando dano cada um.",
+      "dano": "1d4+1 força por dardo (3 dardos, sempre acertam)",
+      "origemId": "misseis-magicos",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-escudo",
+      "nome": "Escudo",
+      "nivel": 1,
+      "escola": "abjuracao",
+      "tempo": "1 reação",
+      "alcance": "Pessoal",
+      "componentes": "V, S",
+      "duracao": "1 rodada",
+      "descricao": "+5 na CA até o início do próximo turno, inclusive contra o ataque que a ativou.",
+      "origemId": "escudo",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-detectar-magia",
+      "nome": "Detectar Magia",
+      "nivel": 1,
+      "escola": "adivinhacao",
+      "tempo": "1 ação",
+      "alcance": "Pessoal",
+      "componentes": "V, S",
+      "duracao": "Concentração, 10 minutos",
+      "concentracao": true,
+      "ritual": true,
+      "descricao": "Sente a presença de magia num raio de 9m.",
+      "origemId": "detectar-magia",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-armadura-arcana",
+      "nome": "Armadura Arcana",
+      "nivel": 1,
+      "escola": "abjuracao",
+      "tempo": "1 ação",
+      "alcance": "Toque",
+      "componentes": "V, S, M",
+      "duracao": "8 horas",
+      "descricao": "CA do alvo passa a 13 + mod. DES enquanto sem armadura.",
+      "origemId": "armadura-arcana",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-sono",
+      "nome": "Sono",
+      "nivel": 1,
+      "escola": "encantamento",
+      "tempo": "1 ação",
+      "alcance": "18m",
+      "componentes": "V, S, M",
+      "duracao": "1 minuto",
+      "descricao": "Adormece criaturas numa área, começando pelas com menos PV.",
+      "condicao": "Criaturas afetadas ficam adormecidas (não há salvaguarda; dano acorda o alvo)",
+      "origemId": "sono",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-enfeiticar-pessoa",
+      "nome": "Enfeitiçar Pessoa",
+      "nivel": 1,
+      "escola": "encantamento",
+      "tempo": "1 ação",
+      "alcance": "9m",
+      "componentes": "V, S",
+      "duracao": "1 hora",
+      "descricao": "Humanoide vê você como amigo (teste de SAB para resistir).",
+      "resistencia": "sabedoria",
+      "condicao": "Alvo humanoide fica enfeitiçado e trata você como amigo, se falhar",
+      "origemId": "enfeiticar-pessoa",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-identificar",
+      "nome": "Identificar",
+      "nivel": 1,
+      "escola": "adivinhacao",
+      "tempo": "1 minuto",
+      "alcance": "Toque",
+      "componentes": "V, S, M",
+      "duracao": "Instantânea",
+      "ritual": true,
+      "descricao": "Revela as propriedades mágicas de um objeto tocado.",
+      "origemId": "identificar",
+      "classeId": "mago",
+      "preparada": true
+    },
+    {
+      "id": "demo-alarme",
+      "nome": "Alarme",
+      "nivel": 1,
+      "escola": "abjuracao",
+      "tempo": "1 minuto",
+      "alcance": "9m",
+      "componentes": "V, S, M",
+      "duracao": "8 horas",
+      "ritual": true,
+      "descricao": "Cria um alarme mágico ou mental quando algo entra na área protegida.",
+      "origemId": "alarme",
+      "classeId": "mago",
+      "preparada": true
+    }
+  ],
+  "espacosMagia": {
+    "1": {
+      "total": 4,
+      "usados": 0
+    },
+    "2": {
+      "total": 3,
+      "usados": 0
+    },
+    "3": {
+      "total": 0,
+      "usados": 0
+    },
+    "4": {
+      "total": 0,
+      "usados": 0
+    },
+    "5": {
+      "total": 0,
+      "usados": 0
+    },
+    "6": {
+      "total": 0,
+      "usados": 0
+    },
+    "7": {
+      "total": 0,
+      "usados": 0
+    },
+    "8": {
+      "total": 0,
+      "usados": 0
+    },
+    "9": {
+      "total": 0,
+      "usados": 0
+    }
+  },
+  "espacosMagiaPacto": null,
+  "concentracao": null,
+  "condicoesAtivas": [],
+  "habilidades": [
+    {
+      "id": "demo-mago-recuperacao",
+      "classeId": "mago",
+      "nivel": 1,
+      "nome": "Recuperação Arcana",
+      "descricao": "Recupera alguns espaços de magia ao terminar um descanso curto, uma vez por dia.",
+      "origemId": "mago-recuperacao",
+      "tipo": "classe"
+    },
+    {
+      "id": "demo-mago-conjuracao",
+      "classeId": "mago",
+      "nivel": 1,
+      "nome": "Conjuração",
+      "descricao": "Conjura magias arcanas anotadas num grimório, usando Inteligência.",
+      "origemId": "mago-conjuracao",
+      "tipo": "classe"
+    },
+    {
+      "id": "demo-mago-tradicao",
+      "classeId": "mago",
+      "nivel": 2,
+      "nome": "Tradição Arcana",
+      "descricao": "Escolhe uma escola de magia como especialização.",
+      "origemId": "mago-tradicao",
+      "tipo": "classe"
+    },
+    {
+      "id": "8ecb2ce5-a28f-4fba-97a8-abf97029219d",
+      "nome": "Sábio em Evocação",
+      "tipo": "subclasse",
+      "nivel": 2,
+      "origemId": "escola-evocacao-1",
+      "origemSubclasseId": "escola-evocacao",
+      "origemClasseId": "mago"
+    },
+    {
+      "id": "0773f514-ac1b-4783-8b31-d7bc5ba32643",
+      "nome": "Esculpir Magias",
+      "tipo": "subclasse",
+      "nivel": 2,
+      "origemId": "escola-evocacao-2",
+      "origemSubclasseId": "escola-evocacao",
+      "origemClasseId": "mago"
+    }
+  ],
+  "ataques": [
+    {
+      "id": "demo-ataque",
+      "nome": "Cajado",
+      "atributo": "forca",
+      "dano": "1d6",
+      "tipoDano": "concussão",
+      "proficiente": true,
+      "bonusManual": 0
+    }
+  ],
+  "slug": "03-mago-nivel-4",
+  "salvaguardasProficientes": [
+    "inteligencia",
+    "sabedoria"
+  ]
+}

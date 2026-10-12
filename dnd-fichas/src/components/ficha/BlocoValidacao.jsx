@@ -36,7 +36,7 @@ export default function BlocoValidacao({
       aria-live="polite"
     >
       <div className="validacao-cabecalho">
-        <h3 className="bloco-titulo">Prontidão para a mesa</h3>
+        <h2 className="bloco-titulo">Prontidão para a mesa</h2>
         <span className="validacao-status">
           {prontaConfirmada ? "Ficha pronta" : resultado.pronta ? "Pode confirmar" : "Rascunho"}
         </span>

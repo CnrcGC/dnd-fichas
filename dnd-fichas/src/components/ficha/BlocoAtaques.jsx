@@ -93,6 +93,7 @@ export default function BlocoAtaques({
             <input
               type="text"
               value={ataque.nome}
+              aria-label="Nome do ataque"
               placeholder="Nome do ataque"
               onChange={(evento) =>
                 handleAlterar(ataque.id, "nome", evento.target.value)
@@ -106,6 +107,7 @@ export default function BlocoAtaques({
           ) : (
             <select
               value={ataque.atributo}
+              aria-label={`Atributo de ${ataque.nome || "ataque"}`}
               onChange={(evento) =>
                 handleAlterar(ataque.id, "atributo", evento.target.value)
               }
@@ -125,6 +127,7 @@ export default function BlocoAtaques({
                 type="number"
                 className="ataques-bonus-input"
                 value={ataque.bonusManual ?? 0}
+                aria-label={`Bônus de ${ataque.nome || "ataque"}`}
                 onChange={(evento) =>
                   handleAlterar(ataque.id, "bonusManual", Number(evento.target.value))
                 }
@@ -134,6 +137,7 @@ export default function BlocoAtaques({
               type="button"
               className="ataques-rolar-botao"
               onClick={() => handleRolarAcerto(ataque, bonusAcerto)}
+              aria-label={`Rolar acerto de ${ataque.nome || "ataque"}`}
               title={`Rolar ataque (d20${formatarModificador(bonusAcerto)})`}
             >
               <Icon name="dice" /> {formatarModificador(bonusAcerto)}
@@ -163,6 +167,7 @@ export default function BlocoAtaques({
                 className="ataques-dano-input"
                 placeholder="1d8"
                 value={ataque.dano}
+                aria-label={`Dano de ${ataque.nome || "ataque"}`}
                 onChange={(evento) =>
                   handleAlterar(ataque.id, "dano", evento.target.value)
                 }
@@ -189,6 +194,7 @@ export default function BlocoAtaques({
               className="ataques-tipo-input"
               placeholder="cortante"
               value={ataque.tipoDano ?? ""}
+              aria-label={`Tipo de dano de ${ataque.nome || "ataque"}`}
               onChange={(evento) =>
                 handleAlterar(ataque.id, "tipoDano", evento.target.value)
               }
@@ -213,7 +219,7 @@ export default function BlocoAtaques({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Ataques</h3>
+      <h2 className="bloco-titulo">Ataques</h2>
 
       {armasEquipadas.length > 0 && (
         <div className="ataques-secao">
@@ -228,7 +234,7 @@ export default function BlocoAtaques({
                 <th>Acerto</th>
                 <th>Dano</th>
                 <th>Tipo</th>
-                <th aria-label="ações"></th>
+                <th scope="col"><span className="visually-hidden">ações</span></th>
               </tr>
             </thead>
             <tbody>
@@ -265,7 +271,7 @@ export default function BlocoAtaques({
                 <th>Acerto</th>
                 <th>Dano</th>
                 <th>Tipo</th>
-                <th aria-label="Remover"></th>
+                <th scope="col"><span className="visually-hidden">Remover</span></th>
               </tr>
             </thead>
             <tbody>

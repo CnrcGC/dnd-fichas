@@ -69,6 +69,7 @@
   background: var(--color-bg-raised);
   border-radius: var(--radius-md);
   padding: var(--space-3);
+  padding-top: calc(2 * var(--space-2) + 2rem);
   border: 1px solid var(--color-line);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
@@ -85,6 +86,8 @@
 }
 
 .ficha-card-remover {
+  min-width: 2rem;
+  min-height: 2rem;
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
@@ -106,10 +109,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding-right: var(--space-4);
+  min-width: 0;
 }
 
 .ficha-card-nome {
+  overflow-wrap: anywhere;
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 600;
@@ -169,9 +173,11 @@
 }
 
 .ficha-card-exportar {
+  min-width: 2rem;
+  min-height: 2rem;
   position: absolute;
   top: var(--space-2);
-  right: calc(var(--space-2) + 28px);
+  right: calc(var(--space-2) + 2rem + var(--space-1));
   background: none;
   border: none;
   color: var(--color-ink-soft);
@@ -202,6 +208,5 @@
   .home-busca { max-width: none; min-height: 44px; margin-bottom: var(--space-4); }
   .home-grid { grid-template-columns: 1fr; gap: var(--space-3); }
   .ficha-card { min-width: 0; }
-  .ficha-card-corpo { padding-right: calc(2 * 38px + var(--space-2)); }
   .ficha-card-acessar { align-self: stretch; min-height: 44px; margin-top: var(--space-4); }
 }

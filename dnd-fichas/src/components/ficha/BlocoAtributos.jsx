@@ -9,7 +9,7 @@ export default function BlocoAtributos({
 }) {
   return (
     <section>
-      <h3 className="bloco-titulo">Atributos</h3>
+      <h2 className="bloco-titulo">Atributos</h2>
       <div className="bloco-atributos-grid">
         {ATRIBUTOS.map((atributo) => (
           <AtributoCard

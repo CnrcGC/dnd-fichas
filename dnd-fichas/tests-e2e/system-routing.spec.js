@@ -27,10 +27,13 @@ async function seedPlatformRecords(page, records) {
   }, records);
 }
 
-test("primeiro acesso escolhe um sistema e a raiz reutiliza a preferência", async ({ page }) => {
+test("MVP-03 primeiro acesso abre D&D e preserva uma preferência explícita", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Escolha um sistema" })).toBeVisible();
-  await page.getByRole("link", { name: "Abrir Pilares de Atlas" }).click();
+  await expect(page).toHaveURL(/\/dnd5e$/);
+  await expect(page.getByRole("heading", { name: /Personagens D&D/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Criaturas", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Encontros", exact: true })).toHaveCount(0);
+  await page.getByLabel("Sistema ativo").selectOption("yusong");
   await expect(page).toHaveURL(/\/yusong$/);
   await expect(page.getByRole("heading", { name: "Personagens de Pilares de Atlas" })).toBeVisible();
   await page.goto("/");

@@ -17,13 +17,14 @@ export default function BlocoProgressao({ progressao, nivelTotal, onChangeModo, 
 
   return (
     <section className="bloco-progressao">
-      <h4 className="bloco-progressao-titulo">Progressão</h4>
+      <h2 className="bloco-progressao-titulo">Progressão</h2>
 
       <div className="progressao-modo-toggle">
         <button
           type="button"
           className={modo === "marco" ? "progressao-modo-botao is-ativo" : "progressao-modo-botao"}
           onClick={() => onChangeModo("marco")}
+          aria-pressed={modo === "marco"}
         >
           Marco
         </button>
@@ -31,6 +32,7 @@ export default function BlocoProgressao({ progressao, nivelTotal, onChangeModo, 
           type="button"
           className={modo === "xp" ? "progressao-modo-botao is-ativo" : "progressao-modo-botao"}
           onClick={() => onChangeModo("xp")}
+          aria-pressed={modo === "xp"}
         >
           XP
         </button>

@@ -1,0 +1,320 @@
+{
+  "versaoFicha": 8,
+  "id": "demo-02-guerreiro-nivel-4",
+  "nome": "Breno - Guardião da biblioteca",
+  "criadoEm": 1791590400000,
+  "notas": "Backup de demonstração. Reimporte para reiniciar o roteiro.",
+  "jogador": "Apresentação",
+  "aparencia": "",
+  "personalidade": "",
+  "historico": "Guardiã(o) da biblioteca local.",
+  "objetivo": "Recuperar o grimório perdido.",
+  "racaId": "humano",
+  "classeId": "guerreiro",
+  "antecedenteId": "soldado",
+  "nivel": 4,
+  "atributos": {
+    "forca": 17,
+    "destreza": 14,
+    "constituicao": 13,
+    "inteligencia": 12,
+    "sabedoria": 10,
+    "carisma": 8
+  },
+  "metodoAtributos": "manual",
+  "pericias": {
+    "acrobacia": true,
+    "adestrarAnimais": true,
+    "arcanismo": false,
+    "atletismo": true,
+    "atuacao": false,
+    "enganacao": false,
+    "furtividade": false,
+    "historia": false,
+    "intimidacao": true,
+    "intuicao": false,
+    "investigacao": false,
+    "medicina": false,
+    "natureza": false,
+    "percepcao": false,
+    "persuasao": false,
+    "prestidigitacao": false,
+    "religiao": false,
+    "sobrevivencia": false
+  },
+  "escolhasCriacao": {
+    "periciasClasse": [
+      "acrobacia",
+      "adestrarAnimais"
+    ],
+    "idiomasRaca": [
+      "anao"
+    ],
+    "idiomasAntecedente": [],
+    "ferramentasAntecedente": [
+      "jogo-de-dados"
+    ]
+  },
+  "origensProficiencias": {
+    "idiomas": {
+      "comum": [
+        "manual:legado",
+        "raca:humano"
+      ],
+      "anao": [
+        "raca:humano"
+      ]
+    },
+    "salvaguardas": {
+      "forca": [
+        "classe-inicial:guerreiro"
+      ],
+      "constituicao": [
+        "classe-inicial:guerreiro"
+      ]
+    },
+    "armas": {
+      "simples": [
+        "classe-inicial:guerreiro"
+      ],
+      "marciais": [
+        "classe-inicial:guerreiro"
+      ]
+    },
+    "armaduras": {
+      "leves": [
+        "classe-inicial:guerreiro"
+      ],
+      "medias": [
+        "classe-inicial:guerreiro"
+      ],
+      "pesadas": [
+        "classe-inicial:guerreiro"
+      ]
+    },
+    "escudos": {
+      "escudos": [
+        "classe-inicial:guerreiro"
+      ]
+    },
+    "pericias": {
+      "acrobacia": [
+        "classe-inicial:guerreiro"
+      ],
+      "adestrarAnimais": [
+        "classe-inicial:guerreiro"
+      ],
+      "atletismo": [
+        "antecedente:soldado"
+      ],
+      "intimidacao": [
+        "antecedente:soldado"
+      ]
+    },
+    "ferramentas": {
+      "veiculos-terrestres": [
+        "antecedente:soldado"
+      ],
+      "jogo-de-dados": [
+        "antecedente:soldado"
+      ]
+    }
+  },
+  "estadoFicha": "pronta",
+  "trocasMagiasAplicadas": {},
+  "inventario": [
+    {
+      "id": "demo-corda",
+      "nome": "Corda de viagem",
+      "quantidade": 1,
+      "peso": 1,
+      "tipoItem": "equipamento",
+      "equipado": false,
+      "sintonizado": false
+    }
+  ],
+  "moedas": {
+    "cobre": 0,
+    "prata": 0,
+    "electro": 0,
+    "ouro": 25,
+    "platina": 0
+  },
+  "status": {
+    "pvAtual": 30,
+    "pvMax": 36,
+    "pvTemp": 0,
+    "ca": 12,
+    "iniciativa": 0,
+    "deslocamento": 9,
+    "testesMorteSucessos": 0,
+    "testesMorteFalhas": 0
+  },
+  "pvPorNivel": {
+    "1": 12,
+    "2": 8,
+    "3": 8,
+    "4": 8
+  },
+  "origemClassePvPorNivel": {
+    "1": "guerreiro",
+    "2": "guerreiro",
+    "3": "guerreiro",
+    "4": "guerreiro"
+  },
+  "progressao": {
+    "modo": "marco",
+    "xpAtual": 0
+  },
+  "recursos": [
+    {
+      "id": "demo-folego",
+      "nome": "Retomar o Fôlego",
+      "usosMax": 1,
+      "usosGastos": 0,
+      "restauraEm": "curto"
+    }
+  ],
+  "subclasseId": "campeao",
+  "bonusRacialEscolhido": [],
+  "periciasDoAntecedente": [],
+  "idiomas": [
+    "comum",
+    "anao"
+  ],
+  "proficienciasFerramentas": [
+    "veiculos-terrestres",
+    "jogo-de-dados"
+  ],
+  "atributoFerramentas": {},
+  "classesSecundarias": [],
+  "dadosDeVidaUsados": 0,
+  "dadosVidaPorClasse": {
+    "guerreiro": {
+      "classeId": "guerreiro",
+      "nome": "Guerreiro",
+      "dadoVida": 10,
+      "maximo": 4,
+      "usados": 0
+    }
+  },
+  "proficienciasArmas": [
+    "simples",
+    "marciais"
+  ],
+  "proficienciasArmaduras": [
+    "leves",
+    "medias",
+    "pesadas"
+  ],
+  "proficienciasEscudos": true,
+  "proficienciasMulticlasse": {},
+  "niveisAsiAplicados": [
+    "guerreiro-4"
+  ],
+  "magias": [],
+  "espacosMagia": {
+    "1": {
+      "total": 0,
+      "usados": 0
+    },
+    "2": {
+      "total": 0,
+      "usados": 0
+    },
+    "3": {
+      "total": 0,
+      "usados": 0
+    },
+    "4": {
+      "total": 0,
+      "usados": 0
+    },
+    "5": {
+      "total": 0,
+      "usados": 0
+    },
+    "6": {
+      "total": 0,
+      "usados": 0
+    },
+    "7": {
+      "total": 0,
+      "usados": 0
+    },
+    "8": {
+      "total": 0,
+      "usados": 0
+    },
+    "9": {
+      "total": 0,
+      "usados": 0
+    }
+  },
+  "espacosMagiaPacto": null,
+  "concentracao": null,
+  "condicoesAtivas": [],
+  "habilidades": [
+    {
+      "id": "demo-guerreiro-estilo",
+      "classeId": "guerreiro",
+      "nivel": 1,
+      "nome": "Estilo de Combate",
+      "descricao": "Escolhe uma especialização de combate que concede um bônus permanente.",
+      "origemId": "guerreiro-estilo",
+      "tipo": "classe"
+    },
+    {
+      "id": "demo-guerreiro-fogo",
+      "classeId": "guerreiro",
+      "nivel": 1,
+      "nome": "Retomar o Fôlego",
+      "descricao": "Uma vez por descanso, recupera pontos de vida como ação bônus.",
+      "origemId": "guerreiro-fogo",
+      "tipo": "classe"
+    },
+    {
+      "id": "demo-guerreiro-surto",
+      "classeId": "guerreiro",
+      "nivel": 2,
+      "nome": "Surto de Ação",
+      "descricao": "Ganha uma ação adicional no seu turno, uma vez por descanso curto.",
+      "origemId": "guerreiro-surto",
+      "tipo": "classe"
+    },
+    {
+      "id": "demo-guerreiro-arquetipo",
+      "classeId": "guerreiro",
+      "nivel": 3,
+      "nome": "Arquétipo Marcial",
+      "descricao": "Escolhe uma subclasse que define sua especialidade de combate.",
+      "origemId": "guerreiro-arquetipo",
+      "tipo": "classe"
+    },
+    {
+      "id": "b70fd4c8-3715-4bdd-941d-da211ac35ef5",
+      "nome": "Crítico Aprimorado",
+      "tipo": "subclasse",
+      "nivel": 3,
+      "origemId": "campeao-1",
+      "origemSubclasseId": "campeao",
+      "origemClasseId": "guerreiro"
+    }
+  ],
+  "ataques": [
+    {
+      "id": "demo-ataque",
+      "nome": "Espada longa",
+      "atributo": "forca",
+      "dano": "1d8",
+      "tipoDano": "cortante",
+      "proficiente": true,
+      "bonusManual": 0
+    }
+  ],
+  "slug": "02-guerreiro-nivel-4",
+  "salvaguardasProficientes": [
+    "forca",
+    "constituicao"
+  ]
+}

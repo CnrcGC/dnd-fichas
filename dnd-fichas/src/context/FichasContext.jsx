@@ -7,19 +7,21 @@ import { FichasContext } from "./fichasContext";
 import { createDnd5eCharacterStore } from "../systems/dnd5e/characterStore";
 
 function falhaDoRepositorio(error) {
+  const quota = error?.name === "QuotaExceededError";
   return {
-    motivo: "indisponivel",
-    mensagem: "O armazenamento durável deste navegador está indisponível.",
+    motivo: quota ? "quota" : "indisponivel",
+    mensagem: quota ? "O espaço de armazenamento deste navegador está cheio." : "Não foi possível confirmar a gravação no armazenamento deste navegador.",
     codigo: error?.code ?? "durable-storage-failed",
   };
 }
 
 export function FichasProvider({ children, characterStore: injectedStore = null }) {
   const [characterStore] = useState(() => injectedStore ?? createDnd5eCharacterStore());
-  const modificadoAntesHidratacaoRef = useRef(false);
+  const operacaoRef = useRef(0);
+  const alteracoesPendentesRef = useRef(false);
   const sincronizarFicha = (ficha) => {
     const normalizada = sincronizarFichaComSubclasses(normalizarFicha(ficha));
-    const raca = obterRaca(normalizada.racaId);
+    const raca = obterRaca(normalizada.racaId, normalizada.subracaId);
     const bonus = { ...(raca?.bonusAtributos ?? {}) };
     for (const atributo of normalizada.bonusRacialEscolhido ?? []) {
       if (atributo) bonus[atributo] = (bonus[atributo] ?? 0) + 1;
@@ -28,68 +30,92 @@ export function FichasProvider({ children, characterStore: injectedStore = null 
     return reconciliarEstadoProntidao(normalizada, atributosTotais);
   };
 
-  const [estadoInicial] = useState(() => {
-    const fichasCarregadas = characterStore.load().map(sincronizarFicha);
-    return {
-      fichas: fichasCarregadas,
-      falhaPersistencia: null,
-    };
-  });
-  const [fichas, setFichas] = useState(estadoInicial.fichas);
-  const fichasRef = useRef(estadoInicial.fichas);
+  const [fichas, setFichas] = useState([]);
+  const fichasRef = useRef([]);
   const [fichasExcluidas, setFichasExcluidas] = useState([]);
-  const [falhaPersistencia, setFalhaPersistencia] = useState(
-    estadoInicial.falhaPersistencia
-  );
+  const [fichasProtegidas, setFichasProtegidas] = useState([]);
+  const [hidratacao, setHidratacao] = useState("carregando");
+  const [tentativaHidratacao, setTentativaHidratacao] = useState(0);
+  const [estadoSalvamento, setEstadoSalvamento] = useState("inicial");
+  const [falhaPersistencia, setFalhaPersistencia] = useState(null);
+  const [avisoDispensado, setAvisoDispensado] = useState(false);
 
   useEffect(() => {
     let active = true;
     characterStore.initialize()
       .then(async (fichasDuraveis) => {
+        const [excluidas, protegidas] = await Promise.all([characterStore.listDeleted(), characterStore.listProtected?.() ?? []]);
         if (!active) return;
-        if (!modificadoAntesHidratacaoRef.current) {
-          const sincronizadas = fichasDuraveis.map(sincronizarFicha);
-          fichasRef.current = sincronizadas;
-          setFichas(sincronizadas);
-        }
-        setFichasExcluidas(await characterStore.listDeleted());
+        const sincronizadas = fichasDuraveis.map(sincronizarFicha);
+        fichasRef.current = sincronizadas;
+        setFichas(sincronizadas);
+        setFichasExcluidas(excluidas);
+        setFichasProtegidas(protegidas);
+        setFalhaPersistencia(null);
+        setHidratacao("pronto");
       })
       .catch((error) => {
-        if (active) setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() });
+        if (active) {
+          setHidratacao("falhou");
+          setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() });
+        }
       });
     return () => { active = false; };
-  }, [characterStore]);
+  }, [characterStore, tentativaHidratacao]);
 
-  function registrarResultadoPersistencia(resultado) {
-    if (resultado.ok) {
-      setFalhaPersistencia(null);
-      return true;
+  useEffect(() => {
+    function protegerAlteracoes(event) {
+      if (!alteracoesPendentesRef.current) return;
+      event.preventDefault();
+      event.returnValue = "";
     }
-    setFalhaPersistencia({
-      ...resultado.erro,
-      ocorridoEm: Date.now(),
+    window.addEventListener("beforeunload", protegerAlteracoes);
+    return () => window.removeEventListener("beforeunload", protegerAlteracoes);
+  }, []);
+
+  function registrarResultadoPersistencia(resultado, { depoisSalvar, aoFalhar } = {}) {
+    const operacao = ++operacaoRef.current;
+    alteracoesPendentesRef.current = true;
+    setEstadoSalvamento("salvando");
+    setAvisoDispensado(false);
+    const confirmado = resultado.ok ? (resultado.durable ?? Promise.resolve()) : Promise.reject(resultado.erro);
+    return confirmado.then(async () => {
+      await depoisSalvar?.();
+      if (operacao !== operacaoRef.current) return true;
+      alteracoesPendentesRef.current = false;
+      setFalhaPersistencia(null);
+      setEstadoSalvamento("salvo");
+      return true;
+    }).catch((error) => {
+      aoFalhar?.();
+      if (operacao === operacaoRef.current) {
+        setEstadoSalvamento("falhou");
+        setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() });
+      }
+      return false;
     });
-    return false;
   }
 
   function substituirFichas(proximasFichas) {
-    modificadoAntesHidratacaoRef.current = true;
+    if (hidratacao !== "pronto") throw new Error("Aguarde o carregamento das fichas antes de editar.");
     fichasRef.current = proximasFichas;
     setFichas(proximasFichas);
     const resultado = characterStore.save(proximasFichas);
     registrarResultadoPersistencia(resultado);
-    resultado.durable?.catch((error) => setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() }));
   }
 
   function tentarSalvarNovamente() {
+    if (hidratacao !== "pronto") {
+      setHidratacao("carregando");
+      setTentativaHidratacao((atual) => atual + 1);
+      return;
+    }
     const resultado = characterStore.save(fichasRef.current);
-    const registrado = registrarResultadoPersistencia(resultado);
-    resultado.durable?.catch((error) => setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() }));
-    return registrado;
+    return registrarResultadoPersistencia(resultado);
   }
 
   function dispensarFalhaPersistencia() {
-    setFalhaPersistencia(null);
+    setAvisoDispensado(true);
   }
 
   function criarFicha(nome, overrides = {}) {
@@ -109,36 +135,34 @@ export function FichasProvider({ children, characterStore: injectedStore = null 
   }
 
   function removerFicha(id) {
-    modificadoAntesHidratacaoRef.current = true;
+    if (hidratacao !== "pronto") return;
     const removida = fichasRef.current.find((ficha) => ficha.id === id);
     const proximas = fichasRef.current.filter((ficha) => ficha.id !== id);
     fichasRef.current = proximas;
     setFichas(proximas);
     const resultado = characterStore.remove(id);
-    registrarResultadoPersistencia(resultado);
     if (removida) setFichasExcluidas((atuais) => [{ id, nome: removida.nome, deletedAt: new Date().toISOString() }, ...atuais.filter((ficha) => ficha.id !== id)]);
-    resultado.durable?.catch((error) => {
+    registrarResultadoPersistencia(resultado, { aoFalhar: () => {
       if (removida) {
         fichasRef.current = [...fichasRef.current, removida];
         setFichas(fichasRef.current);
         setFichasExcluidas((atuais) => atuais.filter((ficha) => ficha.id !== id));
       }
-      setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() });
-    });
+    } });
   }
 
   function restaurarFicha(id) {
+    if (hidratacao !== "pronto") return;
     const resultado = characterStore.restore(id);
-    registrarResultadoPersistencia(resultado);
-    resultado.durable
-      ?.then(async () => {
+    registrarResultadoPersistencia(resultado, { depoisSalvar: async () => {
         const [duraveis, excluidas] = await Promise.all([characterStore.listDurable(), characterStore.listDeleted()]);
-        const sincronizadas = duraveis.map(sincronizarFicha);
-        fichasRef.current = sincronizadas;
-        setFichas(sincronizadas);
+        const restaurada = duraveis.find((ficha) => ficha.id === id);
+        if (restaurada && !fichasRef.current.some((ficha) => ficha.id === id)) {
+          fichasRef.current = [...fichasRef.current, sincronizarFicha(restaurada)];
+          setFichas(fichasRef.current);
+        }
         setFichasExcluidas(excluidas);
-      })
-      .catch((error) => setFalhaPersistencia({ ...falhaDoRepositorio(error), ocorridoEm: Date.now() }));
+    } });
   }
 
   function obterFicha(id) {
@@ -152,6 +176,10 @@ export function FichasProvider({ children, characterStore: injectedStore = null 
     removerFicha,
     restaurarFicha,
     fichasExcluidas,
+    fichasProtegidas,
+    hidratacao,
+    estadoSalvamento,
+    avisoDispensado,
     obterFicha,
     falhaPersistencia,
     tentarSalvarNovamente,

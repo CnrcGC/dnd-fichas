@@ -72,7 +72,7 @@ test("cria e edita a identidade de Pilares de Atlas com persistência após relo
   await page.getByLabel("Nome", { exact: true }).fill("Hana Lee Atualizada");
   await page.getByLabel("Nível").fill("5");
   await page.getByRole("button", { name: "Salvar ficha" }).click();
-  await expect(page.getByRole("status")).toContainText("Ficha salva");
+  await expect(page.getByRole("status").filter({ hasText: "Ficha salva" })).toContainText("Ficha salva");
   await expect(page.getByRole("heading", { name: "Hana Lee Atualizada" })).toBeVisible();
 
   await page.reload();
@@ -92,7 +92,7 @@ test("gera um personagem aleatório acessível e o salva sem buscar avatar exter
 
   const generatedName = await page.getByLabel("Nome").inputValue();
   expect(generatedName).not.toBe("Sem nome");
-  await expect(page.getByRole("status")).toContainText(`Personagem aleatório gerado: ${generatedName}`);
+  await expect(page.getByRole("status").filter({ hasText: "Personagem aleatório gerado:" })).toContainText(`Personagem aleatório gerado: ${generatedName}`);
   await expect(page.getByText("Nenhuma imagem externa é carregada automaticamente.")).toBeVisible();
   await expect(page.getByLabel("Academia")).not.toHaveValue("");
   await expect(page.getByLabel("Classe")).not.toHaveValue("");
@@ -125,7 +125,7 @@ test("edita atributos e recursos enquanto derivados permanecem calculados pelo e
   await page.getByLabel(/Vida atual/).press("Tab");
   await expect(page.getByLabel(/Vida atual/)).toHaveValue("52");
   await page.getByRole("button", { name: "Salvar ficha" }).click();
-  await expect(page.getByRole("status")).toContainText("Ficha salva");
+  await expect(page.getByRole("status").filter({ hasText: "Ficha salva" })).toContainText("Ficha salva");
 
   await page.reload();
   await expect(page.getByLabel("Saúde (SAU)")).toHaveValue("5");
@@ -160,7 +160,7 @@ test("edita as sete regiões, recupera membro inutilizado e redistribui dados", 
   await expect(page.getByLabel("Armadura atual de Cabeça")).toHaveValue("19");
 
   await page.getByRole("button", { name: "Salvar ficha" }).click();
-  await expect(page.getByRole("status")).toContainText("Ficha salva");
+  await expect(page.getByRole("status").filter({ hasText: "Ficha salva" })).toContainText("Ficha salva");
   await page.reload();
   await expect(page.getByLabel("Armadura atual de Abdômen")).toHaveValue("10");
   await expect(page.getByLabel("Dado de Braço Direito")).toHaveValue("1d12");
@@ -316,7 +316,7 @@ test("bloqueia edição no modo de apresentação e persiste a preferência de s
   const soundToggle = page.getByRole("button", { name: "Desligar som das rolagens" });
 
   await presentationToggle.click();
-  await expect(page.getByRole("status")).toContainText("Modo de apresentação ativo");
+  await expect(page.getByRole("status").filter({ hasText: "Modo de apresentação ativo" })).toContainText("Modo de apresentação ativo");
   await expect(page.getByLabel("Nome", { exact: true })).toBeDisabled();
   await expect(page.getByLabel("Saúde (SAU)")).toBeDisabled();
   await expect(page.getByLabel("Armadura atual de Cabeça")).toBeDisabled();
@@ -352,7 +352,7 @@ test("exporta uma carteirinha PNG original, offline e acessível", async ({ page
   const bytes = await readFile(await download.path());
   expect(Array.from(bytes.subarray(0, 8))).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
   expect(bytes.length).toBeGreaterThan(1_000);
-  await expect(page.getByRole("status", { name: "" })).toContainText("Carteirinha PNG exportada");
+  await expect(page.getByRole("status", { name: "" }).filter({ hasText: "Carteirinha PNG exportada" })).toContainText("Carteirinha PNG exportada");
   await expect(page.getByText("A carteirinha é um resumo visual.")).toBeVisible();
   expect(forbiddenAssetRequests).toEqual([]);
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
@@ -382,6 +382,8 @@ test("aplica as seis identidades de academia com rótulo e contraste em claro e 
 });
 
 test("VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operáveis sem som", async ({ page }) => {
+  // Nove navegações, teclado e axe no mesmo cenário; assertions mantêm 5 s.
+  test.setTimeout(60000);
   const routes = [
     ["/yusong", "Personagens de Pilares de Atlas"],
     ["/yusong/characters/new", "Novo personagem de Pilares de Atlas"],
@@ -410,7 +412,7 @@ test("VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operá
   }
   expect(reachedRandomGenerator).toBe(true);
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("status")).toContainText("Personagem aleatório gerado");
+  await expect(page.getByRole("status").filter({ hasText: "Personagem aleatório gerado" })).toContainText("Personagem aleatório gerado");
 
   await page.evaluate(() => localStorage.setItem("pilares-de-atlas:sound-muted", "true"));
   await page.goto("/yusong/characters/pilares-e2e");

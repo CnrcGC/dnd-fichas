@@ -39,7 +39,7 @@ export default function BlocoRecursos({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Recursos rastreáveis</h3>
+      <h2 className="bloco-titulo">Recursos rastreáveis</h2>
 
       {sugestoes && sugestoes.length > 0 && (
         <div className="recursos-sugestoes">
@@ -68,6 +68,7 @@ export default function BlocoRecursos({
                 <input
                   type="text"
                   className="recurso-nome"
+                  aria-label="Nome do recurso"
                   placeholder="Nome do recurso"
                   value={recurso.nome}
                   onChange={(evento) =>
@@ -88,7 +89,8 @@ export default function BlocoRecursos({
                         : "recurso-pip"
                     }
                     onClick={() => handleTogglePip(recurso, indice)}
-                    aria-label={`Uso ${indice + 1}`}
+                    aria-label={`${recurso.nome || "Recurso"} — uso ${indice + 1}`}
+                    aria-pressed={indice < recurso.usosGastos}
                   />
                 ))}
               </div>

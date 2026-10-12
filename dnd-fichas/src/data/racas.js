@@ -1,7 +1,5 @@
 // Raças do manual básico (PHB), com os bônus de atributo padrão.
-// Meio-Elfo simplificado: na regra oficial o jogador escolhe livremente
-// 2 atributos para +1; aqui fixamos Destreza e Sabedoria para manter o
-// formulário simples por enquanto.
+// Meio-Elfo permite escolher dois atributos distintos para +1.
 export const RACAS = [
   {
     id: "humano",
@@ -31,6 +29,10 @@ export const RACAS = [
     nome: "Anão",
     descricao: "Resistentes e teimosos, vêm de uma tradição de mineração e forja.",
     bonusAtributos: { constituicao: 2 },
+    subracas: [
+      { id: "anao-colina", nome: "Anão da Colina", bonusAtributos: { sabedoria: 1 }, pvPorNivel: 1 },
+      { id: "anao-montanha", nome: "Anão da Montanha", bonusAtributos: { forca: 2 }, armaduras: ["leves", "medias"] },
+    ],
     deslocamento: 7,
     idiomasFixos: ["comum", "anao"],
     ferramentasEscolha: {
@@ -89,6 +91,9 @@ export const RACAS = [
   },
 ];
 
-export function obterRaca(id) {
-  return RACAS.find((raca) => raca.id === id) ?? null;
+export function obterRaca(id, subracaId) {
+  const raca = RACAS.find((item) => item.id === id) ?? null;
+  const subraca = raca?.subracas?.find((item) => item.id === subracaId);
+  if (!subraca) return raca;
+  return { ...raca, nome: subraca.nome, bonusAtributos: { ...raca.bonusAtributos, ...subraca.bonusAtributos }, pvPorNivel: subraca.pvPorNivel ?? 0, armaduras: subraca.armaduras ?? [] };
 }
