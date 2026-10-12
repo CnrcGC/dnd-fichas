@@ -17,13 +17,19 @@ import {
   magiaElegivelPorSegredo,
 } from "../../utils/regrasMagias";
 import { calcularNivelTotal, NIVEL_MAXIMO_PERSONAGEM } from "../../utils/niveis";
+import { TALENTOS, niveisAsiDaClasse, obterTalento } from "../../data/talentos";
+import {
+  aplicarIncrementoTalento,
+  escolhasTalentoValidas,
+  opcoesEscolhaTalento,
+  registrosTalentos,
+  talentoDisponivel,
+} from "../../utils/talentos";
 import DetalheHabilidade from "./DetalheHabilidade";
 import { useModalA11y } from "../../hooks/useModalA11y";
 import Icon from "../icons/Icon";
 import "./ModalCatalogoItens.css";
 import "./ModalLevelUp.css";
-
-const NIVEIS_ASI = [4, 8, 12, 16, 19];
 
 const ROTULOS_ETAPAS = {
   "escolha-classe": "Escolha da classe",
@@ -41,6 +47,7 @@ export default function ModalLevelUp({
   ficha,
   classe,
   modificadoresAtributos,
+  atributosTotais,
   onConcluir,
 }) {
   const { registrarRolagem } = useRolagem();
@@ -94,9 +101,11 @@ export default function ModalLevelUp({
   const [ganhoPv, setGanhoPv] = useState(pvBanked ?? null);
   const [detalheRolagemPv, setDetalheRolagemPv] = useState(null);
 
-  const [modoAsi, setModoAsi] = useState(null); // "duplo" | "unico" | "pular"
+  const [modoAsi, setModoAsi] = useState(null); // "duplo" | "unico" | "talento"
   const [atributoAsiUnico, setAtributoAsiUnico] = useState("forca");
   const [atributosAsiDuplo, setAtributosAsiDuplo] = useState(["forca", "destreza"]);
+  const [talentoEscolhidoId, setTalentoEscolhidoId] = useState("");
+  const [escolhasTalento, setEscolhasTalento] = useState({});
 
   const [habilidadesSelecionadas, setHabilidadesSelecionadas] = useState(() => new Set());
   const [subclasseEscolhidaId, setSubclasseEscolhidaId] = useState(null);
@@ -150,8 +159,13 @@ export default function ModalLevelUp({
   }));
   const trocaJaResolvida = Boolean((ficha.trocasMagiasAplicadas ?? {})[chaveTroca]);
   const podeTrocarMagia = quantidadeTrocas > 0 && magiasSubstituiveis.length > 0 && !trocaJaResolvida;
-  const temAsi = NIVEIS_ASI.includes(novoNivelDaEscolhida);
+  const temAsi = niveisAsiDaClasse(classeEscolhida.id).includes(novoNivelDaEscolhida);
   const asiJaAplicado = (ficha.niveisAsiAplicados ?? []).includes(chaveAsi);
+  const talentoEscolhido = obterTalento(talentoEscolhidoId);
+  const talentosDisponiveis = TALENTOS.map((talento) => ({
+    talento,
+    disponibilidade: talentoDisponivel(ficha, talento, atributosTotais ?? ficha.atributos),
+  }));
 
   const habilidadesDoNivel = obterHabilidadesPorClasse(classeEscolhida.id).filter(
     (h) => h.nivel === novoNivelDaEscolhida
@@ -182,6 +196,8 @@ export default function ModalLevelUp({
     setModoAsi(null);
     setAtributoAsiUnico("forca");
     setAtributosAsiDuplo(["forca", "destreza"]);
+    setTalentoEscolhidoId("");
+    setEscolhasTalento({});
     setHabilidadesSelecionadas(new Set());
     setSubclasseEscolhidaId(null);
     setTrocasMagias([]);
@@ -194,6 +210,19 @@ export default function ModalLevelUp({
 
   function irEtapaAnterior() {
     setEtapa((atual) => Math.max(atual - 1, 0));
+  }
+
+  function alterarTalento(talentoId) {
+    setTalentoEscolhidoId(talentoId);
+    setEscolhasTalento({});
+  }
+
+  function alterarEscolhaTalento(escolhaId, indice, valor) {
+    setEscolhasTalento((atual) => {
+      const valores = [...(atual[escolhaId] ?? [])];
+      valores[indice] = valor;
+      return { ...atual, [escolhaId]: valores };
+    });
   }
 
   // ---- PV ----
@@ -331,7 +360,7 @@ export default function ModalLevelUp({
     if (precisaEscolherSubclasse && !subclasseEscolhidaId) return;
     if (trocasAtivas.some((troca, indice) => !trocaMagiaValida(troca, indice))) return;
 
-    const novosAtributos = { ...ficha.atributos };
+    let novosAtributos = { ...ficha.atributos };
     if (!asiJaAplicado) {
       if (modoAsi === "unico") {
         novosAtributos[atributoAsiUnico] = Math.min(
@@ -342,6 +371,14 @@ export default function ModalLevelUp({
         for (const chave of atributosAsiDuplo) {
           novosAtributos[chave] = Math.min(20, novosAtributos[chave] + 1);
         }
+      } else if (modoAsi === "talento" && talentoEscolhido) {
+        novosAtributos = aplicarIncrementoTalento(novosAtributos, talentoEscolhido, escolhasTalento);
+      }
+      for (const atributo of ATRIBUTOS) {
+        const bonusExterno = Number(atributosTotais?.[atributo.chave] ?? ficha.atributos[atributo.chave]) -
+          Number(ficha.atributos[atributo.chave]);
+        const limiteBase = Math.max(Number(ficha.atributos[atributo.chave]), 20 - bonusExterno);
+        novosAtributos[atributo.chave] = Math.min(novosAtributos[atributo.chave], limiteBase);
       }
     }
 
@@ -371,11 +408,35 @@ export default function ModalLevelUp({
     const atualizacoes = {
       pvPorNivel,
       origemClassePvPorNivel,
-      status,
+      status: modoAsi === "talento" && talentoEscolhidoId === "robusto"
+        ? { ...status, pvMax: status.pvMax + (2 * novoNivelTotal), pvAtual: status.pvAtual + (2 * novoNivelTotal) }
+        : status,
       atributos: novosAtributos,
       niveisAsiAplicados,
       habilidades: [...(ficha.habilidades ?? []), ...novasHabilidades],
     };
+    if (novoNivelDaEscolhida > 10) {
+      atualizacoes.perfilProgressaoClasse = "me-02d";
+      atualizacoes.perfilProgressaoSubclasse = "me-02d";
+    }
+    if (temAsi && !asiJaAplicado && modoAsi === "talento" && talentoEscolhido) {
+      atualizacoes.escolhasTalentos = {
+        ...(ficha.escolhasTalentos ?? {}),
+        [chaveAsi]: { talentoId: talentoEscolhido.id, escolhas: escolhasTalento },
+      };
+      atualizacoes.perfilTalentos = "me-02d";
+      atualizacoes.habilidades = [
+        ...atualizacoes.habilidades,
+        {
+          id: crypto.randomUUID(),
+          nome: talentoEscolhido.nome,
+          tipo: "talento",
+          nivel: novoNivelTotal,
+          origemId: talentoEscolhido.id,
+          origemAsi: chaveAsi,
+        },
+      ];
+    }
     const trocasConcluidas = trocasAtivas.filter(
       (troca) => troca.removidaId && troca.novaMagiaId
     );
@@ -421,7 +482,7 @@ export default function ModalLevelUp({
 
   const podeAvancarPv = ganhoPv !== null;
   const podeAvancarAsi =
-    modoAsi === "pular" ||
+    (modoAsi === "talento" && talentoEscolhido && escolhasTalentoValidas(talentoEscolhido, escolhasTalento)) ||
     (modoAsi === "unico" && atributoAsiUnico) ||
     (modoAsi === "duplo" && atributosAsiDuplo[0] !== atributosAsiDuplo[1]);
 
@@ -478,6 +539,9 @@ export default function ModalLevelUp({
                       setClasseEscolhidaId(opcao.id);
                       setSubclasseEscolhidaId(null);
                       setTrocasMagias([]);
+                      setModoAsi(null);
+                      setTalentoEscolhidoId("");
+                      setEscolhasTalento({});
                     }}
                     disabled={opcao.pendenteMulticlasse}
                     aria-pressed={classeEscolhidaId === opcao.id}
@@ -578,7 +642,7 @@ export default function ModalLevelUp({
               <h3>Melhoria de Atributo (ASI)</h3>
               <p className="levelup-texto">
                 {classeEscolhida.nome}, nível {novoNivelDaEscolhida}: você pode aumentar
-                atributos ou pular pra pegar um talento depois.
+                atributos ou substituir esta melhoria por um talento permitido na campanha.
               </p>
 
               <div className="levelup-opcoes-pv">
@@ -609,14 +673,14 @@ export default function ModalLevelUp({
                 <button
                   type="button"
                   className={
-                    modoAsi === "pular"
+                    modoAsi === "talento"
                       ? "levelup-opcao-botao is-selecionado"
                       : "levelup-opcao-botao"
                   }
-                  onClick={() => setModoAsi("pular")}
-                  aria-pressed={modoAsi === "pular"}
+                  onClick={() => setModoAsi("talento")}
+                  aria-pressed={modoAsi === "talento"}
                 >
-                  Pular (vou pegar um talento)
+                  Escolher um talento
                 </button>
               </div>
 
@@ -665,6 +729,76 @@ export default function ModalLevelUp({
                       </option>
                     ))}
                   </select>
+                </div>
+              )}
+              {modoAsi === "talento" && (
+                <div className="levelup-talento-campos">
+                  <label>
+                    Talento
+                    <select
+                      className="levelup-select"
+                      aria-label="Talento que substitui a melhoria de atributo"
+                      value={talentoEscolhidoId}
+                      onChange={(evento) => alterarTalento(evento.target.value)}
+                    >
+                      <option value="">Selecione...</option>
+                      {talentosDisponiveis.map(({ talento, disponibilidade }) => (
+                        <option key={talento.id} value={talento.id} disabled={!disponibilidade.atendido}>
+                          {talento.nome}{disponibilidade.atendido ? "" : ` — ${disponibilidade.texto}`}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {talentoEscolhido?.escolhas?.map((regra) => (
+                    <fieldset key={regra.id} className="levelup-escolha-grupo">
+                      <legend>{regra.nome}</legend>
+                      {Array.from({ length: regra.quantidade }, (_, indice) => {
+                        const valorAtual = escolhasTalento[regra.id]?.[indice] ?? "";
+                        if (regra.tipo === "texto") {
+                          return (
+                            <input
+                              key={indice}
+                              type="text"
+                              className="levelup-select"
+                              aria-label={`${regra.nome} ${indice + 1}`}
+                              value={valorAtual}
+                              onChange={(evento) => alterarEscolhaTalento(regra.id, indice, evento.target.value)}
+                            />
+                          );
+                        }
+                        const tiposElementaisUsados = talentoEscolhido.id === "adepto-elemental"
+                          ? new Set(registrosTalentos(ficha)
+                            .filter((registro) => registro.talentoId === "adepto-elemental")
+                            .map((registro) => registro.escolhas?.["tipo-dano"]?.[0])
+                            .filter(Boolean))
+                          : new Set();
+                        return (
+                          <select
+                            key={indice}
+                            className="levelup-select"
+                            aria-label={`${regra.nome} ${indice + 1}`}
+                            value={valorAtual}
+                            onChange={(evento) => alterarEscolhaTalento(regra.id, indice, evento.target.value)}
+                          >
+                            <option value="">Selecione...</option>
+                            {opcoesEscolhaTalento(regra).map((opcao) => (
+                              <option
+                                key={opcao.id}
+                                value={opcao.id}
+                                disabled={
+                                  tiposElementaisUsados.has(opcao.id) ||
+                                  (escolhasTalento[regra.id] ?? []).some((valor, posicao) => posicao !== indice && valor === opcao.id)
+                                }
+                              >
+                                {opcao.nome}
+                              </option>
+                            ))}
+                          </select>
+                        );
+                      })}
+                    </fieldset>
+                  ))}
+                  {talentoEscolhido && <DetalheHabilidade item={talentoEscolhido} tipo="talento" />}
                 </div>
               )}
             </div>
@@ -782,7 +916,9 @@ export default function ModalLevelUp({
                     : +1 cada
                   </li>
                 )}
-                {modoAsi === "pular" && <li>Sem ASI (lembre de anotar o talento)</li>}
+                {modoAsi === "talento" && talentoEscolhido && (
+                  <li>Talento: <strong>{talentoEscolhido.nome}</strong></li>
+                )}
                 {temHabilidades && (
                   <li>
                     Habilidades novas: {habilidadesSelecionadas.size} de{" "}

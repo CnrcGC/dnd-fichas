@@ -4,6 +4,7 @@ import { TALENTOS } from "../../data/talentos";
 import DetalheHabilidade from "./DetalheHabilidade";
 import { useModalA11y } from "../../hooks/useModalA11y";
 import Icon from "../icons/Icon";
+import { talentoDisponivel } from "../../utils/talentos";
 import "./ModalCatalogoItens.css";
 
 export default function ModalCatalogoHabilidades({
@@ -14,6 +15,7 @@ export default function ModalCatalogoHabilidades({
   classeNome,
   atributosTotais,
   ehConjurador,
+  ficha,
 }) {
   const [abaAtiva, setAbaAtiva] = useState("classe");
   const [busca, setBusca] = useState("");
@@ -52,26 +54,12 @@ export default function ModalCatalogoHabilidades({
   }
 
   function verificarPreRequisito(item) {
-  const preRequisito = item.preRequisito;
-  if (!preRequisito) return { atendido: true, texto: null };
-
-  if (preRequisito.conjurador) {
-    return {
-      atendido: Boolean(ehConjurador),
-      texto: "Precisa conseguir conjurar pelo menos uma magia",
-    };
+    return talentoDisponivel(
+      ficha ?? { atributos: atributosTotais, magias: ehConjurador ? [{}] : [] },
+      item,
+      atributosTotais
+    );
   }
-
-  if (preRequisito.atributo) {
-    const valorAtual = atributosTotais?.[preRequisito.atributo] ?? 0;
-    return {
-      atendido: valorAtual >= preRequisito.valorMinimo,
-      texto: `Requer ${preRequisito.atributo} ${preRequisito.valorMinimo}+ (você tem ${valorAtual})`,
-    };
-  }
-
-  return { atendido: true, texto: null };
-}
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>

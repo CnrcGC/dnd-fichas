@@ -60,9 +60,10 @@ export function opcoesDaEscolha(escolha, ficha, classe) {
   return escolha.opcoes ?? [];
 }
 
-export function pendenciasEscolhasClasses(ficha) {
+export function pendenciasEscolhasClasses(ficha, nivelMaximo = 20) {
   const pendencias = [];
-  for (const classe of classesDaFichaParaEscolhas(ficha)) {
+  for (const classeOriginal of classesDaFichaParaEscolhas(ficha)) {
+    const classe = { ...classeOriginal, nivel: Math.min(Number(classeOriginal.nivel), nivelMaximo) };
     for (const escolha of obterEscolhasPorClasse(classe.classeId, classe.nivel)) {
       if (!escolhaAtiva(escolha, ficha, classe.classeId)) continue;
       const valores = valoresDaEscolha(ficha, classe.classeId, escolha.id)

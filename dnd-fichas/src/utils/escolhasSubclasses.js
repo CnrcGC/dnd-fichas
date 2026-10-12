@@ -42,15 +42,18 @@ export function escolhaSubclasseAtiva(escolha, ficha, subclasseId) {
     .includes(escolha.dependeDe.valor);
 }
 
-export function escolhasAtivasSubclasses(ficha) {
-  return classesDaFicha(ficha).flatMap((classe) => obterEscolhasPorSubclasse(classe.subclasseId, classe.nivel)
+export function escolhasAtivasSubclasses(ficha, nivelMaximo = 20) {
+  return classesDaFicha(ficha).flatMap((classeOriginal) => {
+    const classe = { ...classeOriginal, nivel: Math.min(Number(classeOriginal.nivel), nivelMaximo) };
+    return obterEscolhasPorSubclasse(classe.subclasseId, classe.nivel)
     .filter((escolha) => escolhaSubclasseAtiva(escolha, ficha, classe.subclasseId))
-    .map((escolha) => ({ classe, escolha })));
+    .map((escolha) => ({ classe, escolha }));
+  });
 }
 
-export function pendenciasEscolhasSubclasses(ficha) {
+export function pendenciasEscolhasSubclasses(ficha, nivelMaximo = 20) {
   const pendencias = [];
-  for (const { classe, escolha } of escolhasAtivasSubclasses(ficha)) {
+  for (const { classe, escolha } of escolhasAtivasSubclasses(ficha, nivelMaximo)) {
     const valores = valoresDaEscolhaSubclasse(ficha, classe.subclasseId, escolha.id)
       .map((valor) => typeof valor === "string" ? valor.trim() : valor).filter(Boolean);
     const quantidade = quantidadeDaEscolha(escolha, classe.nivel);
@@ -75,6 +78,7 @@ export function atualizarEscolhaSubclasse(ficha, subclasseId, escolhaId, valores
   return {
     ...ficha,
     perfilEscolhasSubclasse: "me-02c",
+    perfilProgressaoSubclasse: "me-02d",
     escolhasSubclasse: {
       ...(ficha.escolhasSubclasse ?? {}),
       [subclasseId]: {

@@ -8,6 +8,7 @@ import {
   obterMagiasSemprePreparadas,
 } from "../data/magiasExcecoesSubclasse";
 import { MAGIAS } from "../data/magiasSistema";
+import { obterHabilidadeClasse, obterHabilidadesPorClasse } from "../data/habilidadesClasses";
 
 export function classesDaFicha(ficha) {
   return [
@@ -29,6 +30,41 @@ export function subclasseCompativel(classeId, subclasseId, nivel) {
   if (!subclasseId) return true;
   const subclasse = obterSubclasse(subclasseId);
   return Boolean(subclasse && subclasse.classeId === classeId && Number(nivel) >= subclasse.nivel);
+}
+
+export function sincronizarHabilidadesAutomaticasClasses(ficha, criarId = () => crypto.randomUUID()) {
+  const existentes = (ficha.habilidades ?? []).filter(
+    (habilidade) => habilidade.tipo === "classe" && obterHabilidadeClasse(habilidade.origemId)
+  );
+  const automaticas = classesDaFicha(ficha).flatMap((classe) =>
+    obterHabilidadesPorClasse(classe.classeId)
+      .filter((habilidade) => habilidade.nivel <= Number(classe.nivel))
+      .map((habilidade) => {
+        const existente = existentes.find((item) =>
+          item.origemId === habilidade.id &&
+          (item.origemClasseId ?? habilidade.classeId) === classe.classeId
+        );
+        return {
+          ...(existente ?? { id: criarId() }),
+          nome: habilidade.nome,
+          tipo: "classe",
+          nivel: habilidade.nivel,
+          origemId: habilidade.id,
+          origemClasseId: classe.classeId,
+          sourceRefs: habilidade.sourceRefs,
+          verificationStatus: habilidade.verificationStatus,
+          automationLevel: habilidade.automationLevel,
+        };
+      })
+  );
+  const idsReaproveitados = new Set(automaticas.map((item) => item.id));
+  const preservadas = (ficha.habilidades ?? []).filter((habilidade) => {
+    if (idsReaproveitados.has(habilidade.id)) return false;
+    // Só removemos automaticamente registros que esta sincronização marcou
+    // com uma classe de origem. Entradas antigas ou manuais são preservadas.
+    return !(habilidade.tipo === "classe" && habilidade.origemClasseId && obterHabilidadeClasse(habilidade.origemId));
+  });
+  return [...preservadas, ...automaticas];
 }
 
 export function sincronizarHabilidadesAutomaticasSubclasses(ficha, criarId = () => crypto.randomUUID()) {
@@ -120,9 +156,13 @@ export function sincronizarFichaComSubclasses(ficha, criarId) {
       subclasseId: classe.subclasseId ?? null,
     })),
   };
-  const comHabilidades = {
+  const comClasses = {
     ...normalizada,
-    habilidades: sincronizarHabilidadesAutomaticasSubclasses(normalizada, criarId),
+    habilidades: sincronizarHabilidadesAutomaticasClasses(normalizada, criarId),
+  };
+  const comHabilidades = {
+    ...comClasses,
+    habilidades: sincronizarHabilidadesAutomaticasSubclasses(comClasses, criarId),
   };
   return {
     ...comHabilidades,

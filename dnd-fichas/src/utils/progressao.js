@@ -53,6 +53,10 @@ export function recalcularPv(fichaAtual, classe, modCon, novoNivel, override) {
   for (let n = 1; n <= novoNivel; n += 1) {
     novoPvMax += pvPorNivel[n] ?? 0;
   }
+  const possuiRobusto = (fichaAtual.habilidades ?? []).some(
+    (habilidade) => habilidade.tipo === "talento" && habilidade.origemId === "robusto"
+  );
+  if (possuiRobusto) novoPvMax += 2 * novoNivel;
 
   const danoAtual = Math.max(
     0,

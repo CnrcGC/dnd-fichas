@@ -815,13 +815,15 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
     if (calcularNivelTotal(fichaHipotetica) > NIVEL_MAXIMO_PERSONAGEM) {
       return {};
     }
-    const fichaSincronizada = sincronizarFichaComSubclasses(fichaHipotetica);
+    const fichaSincronizada = reconciliarProficienciasCriacao(
+      sincronizarFichaComSubclasses(fichaHipotetica)
+    );
     const modificadores = calcularModificadoresAtributos(
       fichaSincronizada.atributos,
       calcularBonusRacialFicha(fichaSincronizada)
     );
     return {
-      ...alteracoes,
+      ...fichaSincronizada,
       recursos: sincronizarRecursosDaFicha(fichaSincronizada, modificadores),
       habilidades: fichaSincronizada.habilidades,
       magias: fichaSincronizada.magias,
@@ -1019,6 +1021,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
               ficha={ficha}
               classe={classe}
               modificadoresAtributos={modificadoresAtributos}
+              atributosTotais={atributosTotais}
               onConcluir={handleConcluirLevelUp}
             />
           </Suspense>
@@ -1131,6 +1134,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           {abaAtiva === "habilidades" && (
             <Suspense fallback={<CarregandoSecao nome="habilidades" />}>
               <BlocoHabilidades
+                ficha={ficha}
                 classeId={ficha.classeId}
                 classeNome={classe?.nome}
                 habilidades={ficha.habilidades ?? []}

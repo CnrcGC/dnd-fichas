@@ -1,6 +1,7 @@
 import { CLASSES } from "../data/classes";
 import { obterNivelEscolhaSubclasse, obterSubclasse } from "../data/subclasses";
 import { obterHabilidadesPorSubclasse } from "../data/habilidadesSubclasses";
+import { obterHabilidadesPorClasse } from "../data/habilidadesClasses";
 import { TALENTOS } from "../data/talentos";
 import { tipoConjurador } from "./conjuracao";
 import {
@@ -30,6 +31,7 @@ import { NIVEL_MAXIMO_PERSONAGEM } from "./niveis";
 import { contarItensSintonizados, LIMITE_SINTONIZACAO } from "./itensMagicos";
 import { pendenciasEscolhasClasses } from "./escolhasClasses";
 import { pendenciasEscolhasSubclasses } from "./escolhasSubclasses";
+import { pendenciasTalentos, verificarPreRequisitoTalento } from "./talentos";
 
 const PRE_REQUISITOS_MULTICLASSE = {
   barbaro: {
@@ -111,7 +113,7 @@ export function validarFicha(ficha, atributosTotais) {
   const erros = [];
   const pendencias = [];
   const avisos = [];
-  const atributos = atributosTotais ?? {};
+  const atributos = atributosTotais ?? ficha.atributos ?? {};
   const classesSecundarias = ficha.classesSecundarias ?? [];
 
   if (ficha.normalizacaoNiveis?.ajustado) {
@@ -128,17 +130,37 @@ export function validarFicha(ficha, atributosTotais) {
   if (!ficha.antecedenteId) adicionar(pendencias, "Identidade: escolha um antecedente.");
   else if (!obterAntecedente(ficha.antecedenteId)) adicionar(erros, "Identidade: antecedente desconhecido.");
   for (const pendencia of escolhasObrigatoriasCriacao(ficha)) adicionar(pendencias, pendencia.mensagem);
-  const escolhasClassePendentes = pendenciasEscolhasClasses(ficha);
+  const escolhasClassePendentes = pendenciasEscolhasClasses(ficha, 10);
   if (ficha.perfilEscolhasClasse === "me-02b") {
     for (const pendencia of escolhasClassePendentes) adicionar(pendencias, pendencia);
   } else if (escolhasClassePendentes.length) {
     adicionar(avisos, "Classes: ficha anterior ao perfil ME-02B; confira as escolhas de classe dos níveis 1–5.");
   }
-  const escolhasSubclassePendentes = pendenciasEscolhasSubclasses(ficha);
+  const escolhasClasseAltasPendentes = pendenciasEscolhasClasses(ficha, 20)
+    .filter((mensagem) => !escolhasClassePendentes.includes(mensagem));
+  if (ficha.perfilProgressaoClasse === "me-02d") {
+    for (const pendencia of escolhasClasseAltasPendentes) adicionar(pendencias, pendencia);
+  } else if (escolhasClasseAltasPendentes.length) {
+    adicionar(avisos, "Classes: ficha anterior ao perfil ME-02D; confira as escolhas dos níveis 11–20.");
+  }
+  const escolhasSubclassePendentes = pendenciasEscolhasSubclasses(ficha, 10);
   if (ficha.perfilEscolhasSubclasse === "me-02c") {
     for (const pendencia of escolhasSubclassePendentes) adicionar(pendencias, pendencia);
   } else if (escolhasSubclassePendentes.length) {
     adicionar(avisos, "Subclasses: ficha anterior ao perfil ME-02C; confira as escolhas de subclasse até o nível 10.");
+  }
+  const escolhasSubclasseAltasPendentes = pendenciasEscolhasSubclasses(ficha, 20)
+    .filter((mensagem) => !escolhasSubclassePendentes.includes(mensagem));
+  if (ficha.perfilProgressaoSubclasse === "me-02d") {
+    for (const pendencia of escolhasSubclasseAltasPendentes) adicionar(pendencias, pendencia);
+  } else if (escolhasSubclasseAltasPendentes.length) {
+    adicionar(avisos, "Subclasses: ficha anterior ao perfil ME-02D; confira as escolhas dos níveis 11–20.");
+  }
+  const talentosPendentes = pendenciasTalentos(ficha, atributos);
+  if (ficha.perfilTalentos === "me-02d") {
+    for (const pendencia of talentosPendentes) adicionar(pendencias, pendencia);
+  } else if (talentosPendentes.length) {
+    adicionar(avisos, "Talentos: ficha anterior ao perfil ME-02D; confira pré-requisitos e escolhas internas.");
   }
   const atributosBase = Object.values(ficha.atributos ?? {}).map(Number);
   if (ficha.metodoAtributos === "arranjo-padrao") {
@@ -252,6 +274,18 @@ export function validarFicha(ficha, atributosTotais) {
       } else if (automaticas.length > 1) {
         adicionar(avisos, `${nomeClasse(classe.classeId)}: habilidade automática de subclasse duplicada: ${habilidade.nome}.`);
       }
+    }
+  }
+
+  for (const classe of classesComNivel.filter((item) => item.classeId)) {
+    const esperadas = obterHabilidadesPorClasse(classe.classeId)
+      .filter((habilidade) => habilidade.nivel <= Number(classe.nivel));
+    for (const habilidade of esperadas) {
+      const automaticas = (ficha.habilidades ?? []).filter(
+        (item) => item.tipo === "classe" && item.origemId === habilidade.id
+      );
+      if (automaticas.length === 0) adicionar(avisos, `${nomeClasse(classe.classeId)}: habilidade automática de classe ausente: ${habilidade.nome}.`);
+      if (automaticas.length > 1) adicionar(avisos, `${nomeClasse(classe.classeId)}: habilidade automática de classe duplicada: ${habilidade.nome}.`);
     }
   }
 
@@ -527,16 +561,9 @@ const excecao =
   for (const habilidade of ficha.habilidades ?? []) {
     if (habilidade.tipo !== "talento") continue;
     const talento = TALENTOS.find((item) => item.id === habilidade.origemId);
-    const requisito = talento?.preRequisito;
-    if (requisito?.atributo && atributos[requisito.atributo] < requisito.valorMinimo) {
-      adicionar(
-        avisos,
-        `${talento.nome} requer ${requisito.atributo} ${requisito.valorMinimo}+; a ficha tem ${atributos[requisito.atributo] ?? 0}.`
-      );
-    }
-    if (requisito?.conjurador && !possuiClasseConjuradora) {
-      adicionar(avisos, `${talento.nome} requer que o personagem seja conjurador.`);
-    }
+    if (!talento) continue;
+    const requisito = verificarPreRequisitoTalento(ficha, talento, atributos);
+    if (!requisito.atendido) adicionar(avisos, `${talento.nome}: ${requisito.texto}`);
   }
 
   const status = ficha.status ?? {};

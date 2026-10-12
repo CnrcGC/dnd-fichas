@@ -2,6 +2,7 @@ import { CLASSES, obterClasse } from "../data/classes";
 import { obterRaca, obterSubraca, subracaValidaParaRaca } from "../data/racas";
 import { obterAntecedente } from "../data/antecedentes";
 import { obterSubclasse } from "../data/subclasses";
+import { obterTalento } from "../data/talentos";
 import { PERICIAS } from "../data/pericias";
 import { IDIOMAS } from "../data/idiomas";
 import {
@@ -16,7 +17,7 @@ const IDIOMAS_ESCOLHIVEIS = IDIOMAS.filter((idioma) => idioma.tipo !== "secreto"
 // Esta camada é a única fonte das concessões automáticas da criação. O campo
 // `origensProficiencias` é aditivo: fichas antigas continuam legíveis e tudo
 // que não pode ser atribuído com segurança permanece manual.
-const ORIGENS_AUTOMATICAS = /^(classe-inicial|classe-feature|classe-escolha|subclasse-feature|subclasse-escolha|raca|subraca|antecedente|substituicao-criacao):/;
+const ORIGENS_AUTOMATICAS = /^(classe-inicial|classe-feature|classe-escolha|subclasse-feature|subclasse-escolha|talento|raca|subraca|antecedente|substituicao-criacao):/;
 
 export function opcoesPericias(regra) {
   if (!regra) return [];
@@ -201,6 +202,24 @@ export function reconciliarProficienciasCriacao(ficha) {
     ficha.escolhasClasse?.patrulheiro?.["patrulheiro-idioma-inimigo"],
     "classe-escolha:patrulheiro"
   );
+  for (const [origemAsi, registro] of Object.entries(ficha.escolhasTalentos ?? {})) {
+    const talento = obterTalento(registro?.talentoId);
+    if (!talento) continue;
+    const origem = `talento:${origemAsi}:${talento.id}`;
+    const escolhasTalento = registro.escolhas ?? {};
+    concederLista(origens, "armaduras", talento.concedeArmaduras, origem);
+    if (talento.concedeEscudo) adicionarOrigem(origens, "escudos", "escudos", origem);
+    if (talento.id === "mestre-armas") concederLista(origens, "armas", escolhasTalento.armas, origem);
+    if (talento.id === "poliglota") concederLista(origens, "idiomas", escolhasTalento.idiomas, origem);
+    if (talento.id === "resiliente") concederLista(origens, "salvaguardas", escolhasTalento.atributo, origem);
+    if (talento.id === "habilidoso") {
+      for (const valor of escolhasTalento.proficiencias ?? []) {
+        const [tipo, id] = String(valor).split(":");
+        if (tipo === "pericia") adicionarOrigem(origens, "pericias", id, origem);
+        if (tipo === "ferramenta") adicionarOrigem(origens, "ferramentas", id, origem);
+      }
+    }
+  }
   if (raca) {
     concederLista(origens, "idiomas", raca.idiomasFixos, `raca:${raca.id}`);
     concederLista(origens, "idiomas", escolhas.idiomasRaca, `raca:${raca.id}`);

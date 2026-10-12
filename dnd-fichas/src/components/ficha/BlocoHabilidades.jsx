@@ -17,6 +17,7 @@ const LABEL_TIPO = {
 };
 
 export default function BlocoHabilidades({
+  ficha,
   classeId,
   classeNome,
   habilidades,
@@ -104,6 +105,7 @@ export default function BlocoHabilidades({
         classeNome={classeNome}
         atributosTotais={atributosTotais}
         ehConjurador={ehConjurador}
+        ficha={ficha}
       />
 
       {habilidades.length === 0 ? (
@@ -204,7 +206,11 @@ export default function BlocoHabilidades({
                         type="button"
                         className="habilidades-remover"
                         onClick={() => handleRemover(habilidade.id)}
-                        aria-label={`Remover ${habilidade.nome || "habilidade"}`}
+                        aria-label={habilidade.origemAsi
+                          ? `${habilidade.nome} foi escolhido em uma melhoria de atributo e não pode ser removido aqui`
+                          : `Remover ${habilidade.nome || "habilidade"}`}
+                        disabled={Boolean(habilidade.origemAsi)}
+                        title={habilidade.origemAsi ? "Talento vinculado à escolha de melhoria de atributo." : undefined}
                       >
                         <Icon name="remove" />
                       </button>

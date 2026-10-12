@@ -183,6 +183,35 @@ test("ME-02C persiste escolha de subclasse na fronteira do nível 10", async ({ 
   await expect.poll(async () => (await readDurableCharacter(page, id))?.data?.escolhasSubclasse?.campeao?.["campeao-estilo-adicional"]).toEqual(["arquearia"]);
 });
 
+test("ME-02D substitui um ASI por talento e persiste suas escolhas", async ({ page }) => {
+  await page.goto("/dnd5e/characters/new");
+  await page.getByRole("button", { name: "Pular e criar ficha em branco" }).click();
+  await page.getByRole("combobox", { name: "Classe", exact: true }).selectOption("guerreiro");
+  const nivel = page.getByRole("spinbutton", { name: "Nível", exact: true });
+  await nivel.fill("3");
+  await nivel.press("Enter");
+  await page.getByRole("combobox", { name: "Subclasse", exact: true }).selectOption("campeao");
+
+  await page.getByRole("button", { name: "Subir de Nível" }).click();
+  const dialog = page.getByRole("dialog", { name: "Subir de nível" });
+  await dialog.getByRole("button", { name: /Usar média/ }).click();
+  await dialog.getByRole("button", { name: "Próximo" }).click();
+  await dialog.getByRole("button", { name: "Escolher um talento" }).click();
+  await dialog.getByLabel("Talento que substitui a melhoria de atributo").selectOption("atleta");
+  await dialog.getByLabel("Atributo 1").selectOption("forca");
+  await dialog.getByRole("button", { name: "Próximo" }).click();
+  await dialog.getByRole("button", { name: "Concluir level up" }).click();
+
+  const id = decodeURIComponent(new URL(page.url()).pathname.split("/").at(-1));
+  await expect.poll(async () => (await readDurableCharacter(page, id))?.data?.escolhasTalentos?.["guerreiro-4"]).toEqual({
+    talentoId: "atleta",
+    escolhas: { atributo: ["forca"] },
+  });
+  await page.getByRole("tab", { name: "Habilidades" }).click();
+  const painelHabilidades = page.getByRole("tabpanel", { name: "Habilidades" });
+  await expect(painelHabilidades.getByText("Atleta", { exact: true })).toBeVisible();
+});
+
 test("FE-04B exclui para a lixeira e restaura após recarregar", async ({ page }) => {
   await page.goto("/dnd5e/characters/new");
   await page.getByRole("button", { name: "Pular e criar ficha em branco" }).click();

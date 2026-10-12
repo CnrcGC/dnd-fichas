@@ -67,8 +67,10 @@ export function criarFichaVazia(nome) {
     escolhasRaciais: {}, // escolhas próprias da raça, como ancestralidade dracônica
     escolhasClasse: {}, // escolhas por classe e nível, preservadas por ID estável
     perfilEscolhasClasse: "me-02b",
+    perfilProgressaoClasse: "me-02d",
     escolhasSubclasse: {}, // escolhas internas da subclasse, preservadas por ID estável
     perfilEscolhasSubclasse: "me-02c",
+    perfilProgressaoSubclasse: "me-02d",
     periciasDoAntecedente: [], // rastreia quais perícias vieram do antecedente atual
     idiomas: ["comum"],
     proficienciasFerramentas: [], // ids de FERRAMENTAS (data/equipamentos.js) em que é proficiente
@@ -81,6 +83,8 @@ export function criarFichaVazia(nome) {
     proficienciasEscudos: false,
     proficienciasMulticlasse: {},
     niveisAsiAplicados: [],
+    escolhasTalentos: {}, // uma instância por ASI substituído: { [classe-nivel]: { talentoId, escolhas } }
+    perfilTalentos: "me-02d",
     magias: [],
     espacosMagia: criarEspacosMagiaVazios(),
     espacosMagiaPacto: null, // { quantidade, nivel, usados } — Bruxo, sempre separado
@@ -173,10 +177,14 @@ export function normalizarFicha(ficha) {
     escolhasRaciais: base.escolhasRaciais && typeof base.escolhasRaciais === "object" ? base.escolhasRaciais : {},
     escolhasClasse: base.escolhasClasse && typeof base.escolhasClasse === "object" ? base.escolhasClasse : {},
     perfilEscolhasClasse: base.perfilEscolhasClasse ?? null,
+    perfilProgressaoClasse: base.perfilProgressaoClasse ?? null,
     escolhasSubclasse: base.escolhasSubclasse && typeof base.escolhasSubclasse === "object" ? base.escolhasSubclasse : {},
     perfilEscolhasSubclasse: base.perfilEscolhasSubclasse ?? null,
+    perfilProgressaoSubclasse: base.perfilProgressaoSubclasse ?? null,
     origensProficiencias: base.origensProficiencias && typeof base.origensProficiencias === "object" ? base.origensProficiencias : {},
     trocasMagiasAplicadas: base.trocasMagiasAplicadas && typeof base.trocasMagiasAplicadas === "object" ? base.trocasMagiasAplicadas : {},
+    escolhasTalentos: base.escolhasTalentos && typeof base.escolhasTalentos === "object" ? base.escolhasTalentos : {},
+    perfilTalentos: base.perfilTalentos ?? null,
     origemClassePvPorNivel,
     dadosVidaPorClasse,
     dadosDeVidaUsados: totalDadosVidaUsados(dadosVidaPorClasse),

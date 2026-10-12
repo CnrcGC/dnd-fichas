@@ -43,7 +43,7 @@ test("ME-02C catálogo representa as 41 subclasses do livro anexado com fonte", 
 test("ME-02C escolhas respeitam fronteiras dos níveis 6, 7 e 10", () => {
   const manobras = escolhasDados.ESCOLHAS_SUBCLASSES.find((item) => item.id === "mestre-batalha-manobras");
   assert.equal(classesEscolhas.ESCOLHAS_CLASSES.find((item) => item.id === "bardo-especializacao").quantidadePorNivel.at(-1)[1], 4);
-  assert.equal(classesEscolhas.ESCOLHAS_CLASSES.find((item) => item.id === "bruxo-invocacoes").quantidadePorNivel.at(-1)[1], 5);
+  assert.equal(classesEscolhas.ESCOLHAS_CLASSES.find((item) => item.id === "bruxo-invocacoes").quantidadePorNivel.find(([nivel]) => nivel === 9)[1], 5);
   assert.equal(escolhasDados.obterEscolhasPorSubclasse("totem-guerreiro", 5).some((item) => item.id === "totem-aspecto"), false);
   assert.equal(escolhasDados.obterEscolhasPorSubclasse("totem-guerreiro", 6).some((item) => item.id === "totem-aspecto"), true);
   assert.equal(classesEscolhas.ESCOLHAS_CLASSES.find((item) => item.id === "ladino-especializacao").quantidadePorNivel.at(-1)[0], 6);

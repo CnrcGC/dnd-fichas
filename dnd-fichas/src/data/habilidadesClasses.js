@@ -1,8 +1,7 @@
-// Habilidades de classe do 5e (PHB), por nível — resumos escritos com
-// nossas próprias palavras. Aqui ficam só as habilidades centrais da
-// classe (o que toda a classe ganha); as habilidades específicas de cada
-// subclasse não estão detalhadas ainda, só o ponto em que você escolhe
-// uma (fica como próxima etapa).
+// Habilidades centrais das classes do Livro do Jogador, por nível, em
+// resumos próprios. Características específicas ficam no catálogo de
+// subclasses; progressões da mesma característica permanecem orientadas
+// por dados em vez de gerar registros duplicados a cada fronteira.
 
 const HABILIDADES_CLASSES_BASE = [
   // ---- Bárbaro ----
@@ -15,7 +14,7 @@ const HABILIDADES_CLASSES_BASE = [
   { id: "barbaro-movimento-rapido", classeId: "barbaro", nivel: 5, nome: "Movimento Rápido", descricao: "Deslocamento aumenta em 3m enquanto não estiver com armadura pesada." },
   { id: "barbaro-instinto-selvagem", classeId: "barbaro", nivel: 7, nome: "Instinto Selvagem", descricao: "Vantagem em testes de iniciativa; não pode ser surpreendido enquanto estiver consciente." },
   { id: "barbaro-critico-selvagem", classeId: "barbaro", nivel: 9, nome: "Crítico Selvagem", descricao: "Rola um dado de dano extra em acertos críticos com armas corpo a corpo." },
-  { id: "barbaro-furia-implacavel", classeId: "barbaro", nivel: 11, nome: "Fúria Implacável", descricao: "Uma vez por fúria, evita cair a 0 PV e fica com 1 PV em vez disso." },
+  { id: "barbaro-furia-implacavel", classeId: "barbaro", nivel: 11, nome: "Fúria Implacável", descricao: "Durante a fúria, pode fazer uma salvaguarda de Constituição para ficar com 1 PV ao cair a 0; a CD cresce após cada sucesso e reinicia no descanso." },
   { id: "barbaro-furia-persistente", classeId: "barbaro", nivel: 15, nome: "Fúria Persistente", descricao: "A fúria só termina antes da hora se você ficar inconsciente ou decidir encerrá-la." },
   { id: "barbaro-forca-indomita", classeId: "barbaro", nivel: 18, nome: "Força Indômita", descricao: "Rolagens de teste de Força que dariam um resultado abaixo do seu valor de Força passam a valer o próprio valor de Força." },
   { id: "barbaro-campeao-primitivo", classeId: "barbaro", nivel: 20, nome: "Campeão Primitivo", descricao: "Força e Constituição aumentam, e seus valores máximos sobem." },
@@ -31,7 +30,7 @@ const HABILIDADES_CLASSES_BASE = [
   { id: "bardo-contra-encantamento", classeId: "bardo", nivel: 6, nome: "Contra-encantamento", descricao: "Gasta uma ação pra ajudar aliados próximos a resistir a medo e encantamento." },
   { id: "bardo-especializacao-2", classeId: "bardo", nivel: 10, nome: "Especialização Adicional", descricao: "Escolhe mais duas perícias treinadas para dobrar o bônus de proficiência." },
   { id: "bardo-segredos-magicos", classeId: "bardo", nivel: 10, nome: "Segredos Mágicos", descricao: "Aprende magias de qualquer classe conjuradora." },
-  { id: "bardo-inspiracao-suprema", classeId: "bardo", nivel: 20, nome: "Inspiração Suprema", descricao: "Recupera todos os usos de Inspiração de Bardo ao rolar iniciativa, se estiver sem nenhum." },
+  { id: "bardo-inspiracao-suprema", classeId: "bardo", nivel: 20, nome: "Inspiração Superior", descricao: "Recupera um uso de Inspiração de Bardo ao rolar iniciativa, se estiver sem nenhum." },
 
   // ---- Bruxo ----
   { id: "bruxo-patrono", classeId: "bruxo", nivel: 1, nome: "Patrono Sobrenatural", descricao: "Escolhe um protetor sobrenatural que concede poderes em troca de um pacto." },
@@ -39,7 +38,7 @@ const HABILIDADES_CLASSES_BASE = [
   { id: "bruxo-invocacoes", classeId: "bruxo", nivel: 2, nome: "Invocações Místicas", descricao: "Aprende invocações permanentes que concedem efeitos mágicos variados." },
   { id: "bruxo-dadiva", classeId: "bruxo", nivel: 3, nome: "Dádiva de Pacto", descricao: "Escolhe um benefício especial do pacto: uma arma, um familiar ou um grimório místico." },
   { id: "bruxo-arcano-aprimorado", classeId: "bruxo", nivel: 11, nome: "Arcano Místico", descricao: "Ganha uma magia poderosa de nível 6 que pode conjurar uma vez por dia sem gastar espaço." },
-  { id: "bruxo-mestre-eterno", classeId: "bruxo", nivel: 20, nome: "Mestre Sombrio Eterno", descricao: "Pode gastar 1 minuto comunicando-se com o patrono pra recuperar todos os espaços de Magia de Pacto." },
+  { id: "bruxo-mestre-eterno", classeId: "bruxo", nivel: 20, nome: "Mestre Místico", descricao: "Uma vez por descanso longo, pode gastar 1 minuto comunicando-se com o patrono para recuperar todos os espaços de Magia de Pacto." },
 
   // ---- Clérigo ----
   { id: "clerigo-conjuracao", classeId: "clerigo", nivel: 1, nome: "Conjuração", descricao: "Conjura magias divinas usando Sabedoria." },
@@ -54,7 +53,8 @@ const HABILIDADES_CLASSES_BASE = [
   { id: "druida-conjuracao", classeId: "druida", nivel: 1, nome: "Conjuração", descricao: "Conjura magias da natureza usando Sabedoria." },
   { id: "druida-forma-selvagem", classeId: "druida", nivel: 2, nome: "Forma Selvagem", descricao: "Transforma-se em animais que já observou de perto, um número limitado de vezes por descanso." },
   { id: "druida-circulo", classeId: "druida", nivel: 2, nome: "Círculo Druídico", descricao: "Escolhe uma tradição druídica que define seu foco na natureza." },
-  { id: "druida-corpo-atemporal", classeId: "druida", nivel: 18, nome: "Corpo Atemporal", descricao: "Envelhece muito mais devagar e fica imune a doenças ligadas à idade." },
+  { id: "druida-corpo-atemporal", classeId: "druida", nivel: 18, nome: "Corpo Atemporal", descricao: "A magia primordial reduz seu envelhecimento: a cada dez anos passados, seu corpo envelhece apenas um." },
+  { id: "druida-magia-besta", classeId: "druida", nivel: 18, nome: "Magia de Besta", descricao: "Pode conjurar muitas magias de Druida enquanto estiver em Forma Selvagem, respeitando componentes materiais com custo ou consumo." },
   { id: "druida-arquidruida", classeId: "druida", nivel: 20, nome: "Arquidruida", descricao: "Pode usar Forma Selvagem quantas vezes quiser." },
 
   // ---- Feiticeiro ----
@@ -125,7 +125,9 @@ const HABILIDADES_CLASSES_BASE = [
   { id: "paladino-ataque-extra", classeId: "paladino", nivel: 5, nome: "Ataque Extra", descricao: "Ataca duas vezes sempre que usar a ação de Atacar." },
   { id: "paladino-aura-protecao", classeId: "paladino", nivel: 6, nome: "Aura de Proteção", descricao: "Soma seu modificador de Carisma nas salvaguardas de aliados próximos." },
   { id: "paladino-aura-coragem", classeId: "paladino", nivel: 10, nome: "Aura de Coragem", descricao: "Aliados próximos ficam imunes a serem amedrontados." },
-  { id: "paladino-toque-purificador", classeId: "paladino", nivel: 14, nome: "Toque Purificador", descricao: "Pode usar Imposição de Mãos pra remover uma doença ou condição em vez de curar." },
+  { id: "paladino-punicao-divina-aprimorada", classeId: "paladino", nivel: 11, nome: "Punição Divina Aprimorada", descricao: "Ataques corpo a corpo com arma passam a causar dano radiante adicional." },
+  { id: "paladino-toque-purificador", classeId: "paladino", nivel: 14, nome: "Toque Purificador", descricao: "Usa uma ação para encerrar uma magia em si ou em criatura voluntária, com usos por descanso longo iguais ao modificador de Carisma." },
+  { id: "paladino-auras-aprimoradas", classeId: "paladino", nivel: 18, nome: "Auras Aprimoradas", descricao: "O alcance das auras de Proteção e Coragem aumenta." },
   { id: "paladino-campeao-sagrado", classeId: "paladino", nivel: 20, nome: "Ápice do Juramento", descricao: "Ganha um poder culminante ligado ao juramento escolhido no nível 3." },
 
   // ---- Patrulheiro ----
@@ -138,10 +140,12 @@ const HABILIDADES_CLASSES_BASE = [
   { id: "patrulheiro-inimigo-favorito-aprimorado", classeId: "patrulheiro", nivel: 6, nome: "Inimigo Favorito Adicional", descricao: "Escolhe outro inimigo favorito e um idioma associado quando aplicável." },
   { id: "patrulheiro-explorador-aprimorado", classeId: "patrulheiro", nivel: 6, nome: "Terreno Favorito Adicional", descricao: "Escolhe outro tipo de terreno favorito." },
   { id: "patrulheiro-terra-pes", classeId: "patrulheiro", nivel: 8, nome: "Terra sob os Pés", descricao: "Move-se por terreno difícil natural sem gastar deslocamento extra." },
-  { id: "patrulheiro-esconder", classeId: "patrulheiro", nivel: 10, nome: "Esconder-se na Natureza", descricao: "Pode se camuflar rapidamente em ambientes naturais." },
-  { id: "patrulheiro-vanish", classeId: "patrulheiro", nivel: 14, nome: "Desaparecer", descricao: "Pode se esconder mesmo estando apenas levemente obscurecido pelo ambiente." },
+  { id: "patrulheiro-esconder", classeId: "patrulheiro", nivel: 10, nome: "Esconder-se na Natureza", descricao: "Após um minuto de camuflagem com materiais naturais, recebe grande bônus de Furtividade enquanto permanecer imóvel." },
+  { id: "patrulheiro-explorador-2", classeId: "patrulheiro", nivel: 10, nome: "Terreno Favorito Adicional", descricao: "Escolhe um terceiro tipo de terreno favorito." },
+  { id: "patrulheiro-inimigo-favorito-2", classeId: "patrulheiro", nivel: 14, nome: "Inimigo Favorito Adicional", descricao: "Escolhe um terceiro inimigo favorito e um idioma associado quando aplicável." },
+  { id: "patrulheiro-vanish", classeId: "patrulheiro", nivel: 14, nome: "Desaparecer", descricao: "Pode usar Esconder-se como ação bônus e não pode ser rastreado por meios não mágicos, salvo se decidir deixar rastros." },
   { id: "patrulheiro-sentidos-selvagens", classeId: "patrulheiro", nivel: 18, nome: "Sentidos Selvagens", descricao: "Percebe a localização de criaturas invisíveis próximas." },
-  { id: "patrulheiro-matador", classeId: "patrulheiro", nivel: 20, nome: "Matador de Inimigos", descricao: "Uma vez por turno, soma um modificador de atributo extra a um ataque ou dano." },
+  { id: "patrulheiro-matador", classeId: "patrulheiro", nivel: 20, nome: "Matador de Inimigos", descricao: "Uma vez por turno contra inimigo favorito, soma Sabedoria a uma jogada de ataque ou de dano." },
 ];
 
 const PAGINAS_CLASSES = {
@@ -150,32 +154,40 @@ const PAGINAS_CLASSES = {
   mago: [94, 101], monge: [102, 107], paladino: [108, 114], patrulheiro: [115, 121],
 };
 
-const PROGRESSAO_NIVEIS_1_A_5 = {
-  "barbaro-furia": { usos: [[1, 2], [3, 3]], bonusDano: [[1, 2]] },
-  "bardo-inspiracao": { dado: [[1, "d6"], [5, "d8"]], recuperacao: [[1, "longo"], [5, "curto"]] },
-  "bardo-cancao-descanso": { dado: [[2, "d6"], [9, "d8"]] },
-  "bruxo-invocacoes": { quantidade: [[2, 2], [5, 3], [7, 4], [9, 5]] },
-  "clerigo-canalizar": { usos: [[2, 1], [6, 2]] },
-  "clerigo-destruir-mortosvivos": { ndMaximo: [[5, "1/2"], [8, "1"]] },
-  "druida-forma-selvagem": { ndMaximo: [[2, "1/4"], [4, "1/2"]], limitacoes: [[2, "sem voo ou natação"], [4, "sem voo"]] },
-  "feiticeiro-fonte": { pontos: [[2, 2], [3, 3], [4, 4], [5, 5]] },
-  "ladino-ataque-furtivo": { dano: [[1, "1d6"], [3, "2d6"], [5, "3d6"], [7, "4d6"], [9, "5d6"]] },
-  "monge-artes-marciais": { dado: [[1, "d4"], [5, "d6"]] },
-  "monge-ki": { pontos: [[2, 2], [3, 3], [4, 4], [5, 5]] },
-  "monge-movimento-sem-armadura": { bonusMetros: [[2, 3], [6, 4.5], [10, 6]] },
-  "paladino-imposicao": { pontos: [[1, 5], [2, 10], [3, 15], [4, 20], [5, 25]] },
+const PROGRESSAO_NIVEIS_1_A_20 = {
+  "barbaro-furia": { usos: [[1, 2], [3, 3], [6, 4], [12, 5], [17, 6], [20, "ilimitado"]], bonusDano: [[1, 2], [9, 3], [16, 4]] },
+  "barbaro-critico-selvagem": { dadosAdicionais: [[9, 1], [13, 2], [17, 3]] },
+  "bardo-inspiracao": { dado: [[1, "d6"], [5, "d8"], [10, "d10"], [15, "d12"]], recuperacao: [[1, "longo"], [5, "curto"]] },
+  "bardo-cancao-descanso": { dado: [[2, "d6"], [9, "d8"], [13, "d10"], [17, "d12"]] },
+  "bardo-segredos-magicos": { quantidadeTotal: [[10, 2], [14, 4], [18, 6]] },
+  "bruxo-invocacoes": { quantidade: [[2, 2], [5, 3], [7, 4], [9, 5], [12, 6], [15, 7], [18, 8]] },
+  "bruxo-arcano-aprimorado": { circulos: [[11, 6], [13, 7], [15, 8], [17, 9]] },
+  "clerigo-canalizar": { usos: [[2, 1], [6, 2], [18, 3]] },
+  "clerigo-destruir-mortosvivos": { ndMaximo: [[5, "1/2"], [8, "1"], [11, "2"], [14, "3"], [17, "4"]] },
+  "druida-forma-selvagem": { ndMaximo: [[2, "1/4"], [4, "1/2"], [8, "1"]], limitacoes: [[2, "sem voo ou natação"], [4, "sem voo"], [8, "sem limitação de deslocamento"]] },
+  "feiticeiro-fonte": { pontos: Array.from({ length: 19 }, (_, indice) => [indice + 2, indice + 2]) },
+  "guerreiro-surto": { usos: [[2, 1], [17, 2]] },
+  "guerreiro-indomavel": { usos: [[9, 1], [13, 2], [17, 3]] },
+  "ladino-ataque-furtivo": { dano: [[1, "1d6"], [3, "2d6"], [5, "3d6"], [7, "4d6"], [9, "5d6"], [11, "6d6"], [13, "7d6"], [15, "8d6"], [17, "9d6"], [19, "10d6"]] },
+  "monge-artes-marciais": { dado: [[1, "d4"], [5, "d6"], [11, "d8"], [17, "d10"]] },
+  "monge-ki": { pontos: Array.from({ length: 19 }, (_, indice) => [indice + 2, indice + 2]) },
+  "monge-movimento-sem-armadura": { bonusMetros: [[2, 3], [6, 4.5], [10, 6], [14, 7.5], [18, 9]] },
+  "paladino-imposicao": { pontos: Array.from({ length: 20 }, (_, indice) => [indice + 1, (indice + 1) * 5]) },
 };
 
 export const HABILIDADES_CLASSES = HABILIDADES_CLASSES_BASE.map((habilidade) => {
   const [printedPage, endPrintedPage] = PAGINAS_CLASSES[habilidade.classeId];
   return {
     ...habilidade,
-    ...(PROGRESSAO_NIVEIS_1_A_5[habilidade.id]
-      ? { progressaoNiveis1a5: PROGRESSAO_NIVEIS_1_A_5[habilidade.id] }
+    ...(PROGRESSAO_NIVEIS_1_A_20[habilidade.id]
+      ? {
+          progressaoNiveis1a5: PROGRESSAO_NIVEIS_1_A_20[habilidade.id],
+          progressaoNiveis1a20: PROGRESSAO_NIVEIS_1_A_20[habilidade.id],
+        }
       : {}),
     catalogVersion: 1,
     rulesProfile: "dnd5e-books-2014",
-    verificationStatus: habilidade.nivel <= 5 ? "verified" : "pending-review",
+    verificationStatus: "verified",
     automationLevel: "descriptive",
     sourceRefs: [{
       ruleId: `R-CLASS-FEATURE-${habilidade.id.toUpperCase()}`,

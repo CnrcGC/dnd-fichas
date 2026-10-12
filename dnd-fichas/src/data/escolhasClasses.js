@@ -81,16 +81,16 @@ const TERRENOS_FAVORITOS = ["ártico", "costa", "deserto", "floresta", "montanha
 
 export const ESCOLHAS_CLASSES = [
   { id: "bardo-especializacao", classeId: "bardo", nivel: 3, nome: "Especialização", quantidadePorNivel: [[3, 2], [10, 4]], opcoesDinamicas: "pericias-proficientes", sourceRefs: [referencia("bardo", 54, 55, "Aptidão")] },
-  { id: "bruxo-invocacoes", classeId: "bruxo", nivel: 2, nome: "Invocações Místicas", quantidadePorNivel: [[2, 2], [5, 3], [7, 4], [9, 5]], opcoes: INVOCACOES_MISTICAS, sourceRefs: [referencia("bruxo", 58, 61, "Invocações Místicas")] },
+  { id: "bruxo-invocacoes", classeId: "bruxo", nivel: 2, nome: "Invocações Místicas", quantidadePorNivel: [[2, 2], [5, 3], [7, 4], [9, 5], [12, 6], [15, 7], [18, 8]], opcoes: INVOCACOES_MISTICAS, sourceRefs: [referencia("bruxo", 58, 61, "Invocações Místicas")] },
   { id: "bruxo-dadiva", classeId: "bruxo", nivel: 3, nome: "Dádiva de Pacto", quantidade: 1, opcoes: DADIVAS_PACTO, sourceRefs: [referencia("bruxo", 58, 59, "Dádiva do Pacto")] },
-  { id: "feiticeiro-metamagia", classeId: "feiticeiro", nivel: 3, nome: "Metamagia", quantidade: 2, opcoes: METAMAGIAS, sourceRefs: [referencia("feiticeiro", 79, 80, "Metamágica")] },
+  { id: "feiticeiro-metamagia", classeId: "feiticeiro", nivel: 3, nome: "Metamagia", quantidadePorNivel: [[3, 2], [10, 3], [17, 4]], opcoes: METAMAGIAS, sourceRefs: [referencia("feiticeiro", 79, 80, "Metamágica")] },
   { id: "guerreiro-estilo", classeId: "guerreiro", nivel: 1, nome: "Estilo de Combate", quantidade: 1, opcoes: ESTILOS_COMBATE, sourceRefs: [referencia("guerreiro", 85, 85, "Estilo de Luta")] },
   { id: "ladino-especializacao", classeId: "ladino", nivel: 1, nome: "Especialização", quantidadePorNivel: [[1, 2], [6, 4]], opcoesDinamicas: "pericias-ou-ferramentas-proficientes", sourceRefs: [referencia("ladino", 91, 91, "Especialização")] },
   { id: "paladino-estilo", classeId: "paladino", nivel: 2, nome: "Estilo de Combate", quantidade: 1, opcoes: ESTILOS_COMBATE.filter((item) => ["defesa", "duelismo", "armas-grandes", "protecao"].includes(item.id)), sourceRefs: [referencia("paladino", 109, 110, "Estilo de Luta")] },
-  { id: "patrulheiro-inimigo", classeId: "patrulheiro", nivel: 1, nome: "Inimigo Favorito", quantidadePorNivel: [[1, 1], [6, 2]], opcoes: INIMIGOS_FAVORITOS, sourceRefs: [referencia("patrulheiro", 116, 118, "Inimigo Favorito")] },
-  { id: "patrulheiro-idioma-inimigo", classeId: "patrulheiro", nivel: 1, nome: "Idioma do Inimigo Favorito", quantidadePorNivel: [[1, 1], [6, 2]], opcional: true, opcoesDinamicas: "idiomas", sourceRefs: [referencia("patrulheiro", 116, 118, "Inimigo Favorito")] },
+  { id: "patrulheiro-inimigo", classeId: "patrulheiro", nivel: 1, nome: "Inimigo Favorito", quantidadePorNivel: [[1, 1], [6, 2], [14, 3]], opcoes: INIMIGOS_FAVORITOS, sourceRefs: [referencia("patrulheiro", 116, 118, "Inimigo Favorito")] },
+  { id: "patrulheiro-idioma-inimigo", classeId: "patrulheiro", nivel: 1, nome: "Idioma do Inimigo Favorito", quantidadePorNivel: [[1, 1], [6, 2], [14, 3]], opcional: true, opcoesDinamicas: "idiomas", sourceRefs: [referencia("patrulheiro", 116, 118, "Inimigo Favorito")] },
   { id: "patrulheiro-humanoides", classeId: "patrulheiro", nivel: 1, nome: "Povos humanoides favoritos", quantidade: 2, tipo: "texto", dependeDe: { escolhaId: "patrulheiro-inimigo", valor: "humanoides" }, sourceRefs: [referencia("patrulheiro", 116, 118, "Inimigo Favorito")] },
-  { id: "patrulheiro-terreno", classeId: "patrulheiro", nivel: 1, nome: "Terreno Favorito", quantidadePorNivel: [[1, 1], [6, 2]], opcoes: TERRENOS_FAVORITOS, sourceRefs: [referencia("patrulheiro", 116, 118, "Explorador Nato")] },
+  { id: "patrulheiro-terreno", classeId: "patrulheiro", nivel: 1, nome: "Terreno Favorito", quantidadePorNivel: [[1, 1], [6, 2], [10, 3]], opcoes: TERRENOS_FAVORITOS, sourceRefs: [referencia("patrulheiro", 116, 118, "Explorador Nato")] },
   { id: "patrulheiro-estilo", classeId: "patrulheiro", nivel: 2, nome: "Estilo de Combate", quantidade: 1, opcoes: ESTILOS_COMBATE.filter((item) => ["arquearia", "defesa", "duelismo", "duas-armas"].includes(item.id)), sourceRefs: [referencia("patrulheiro", 117, 117, "Estilo de Luta")] },
 ].map((escolha) => ({
   ...escolha,
