@@ -5,7 +5,7 @@ Especificação: [MVP-9-DIAS-ISSUES-ACESSIBILIDADE.md](./MVP-9-DIAS-ISSUES-ACESS
 ## Baseline e validação
 
 - Cópia local: main, HEAD f0d01c459bed86b89eb11f8487a6d979329dca53 (1.19). Baseline 1.20 citada no documento não está no HEAD local. Nenhum pull/reset substituiu o trabalho existente.
-- Não havia alterações rastreadas anteriores. Quatro planos locais não rastreados preservados. Nenhum commit/tag/push/publicação.
+- Não havia alterações rastreadas anteriores. Quatro planos locais não rastreados preservados. Commit/tag/push/publicação realizados somente após autorização explícita do usuário em 2026-10-12. O fetch encontrou 1.20 em `main` remoto; a candidata fica em `codex/mvp-apresentacao` e o build em `gh-pages`, preservando a versão remota.
 - Node v24.12.0 e npm 11.6.2. Instalação restaurada com npm ci --no-audit --no-fund; lockfile preservado.
 - npm test: **213/213 aprovados** em 2026-10-12; inclui três casos novos de recuperação segura das rotas de Pages.
 - npm run lint: **aprovado**.
@@ -76,7 +76,7 @@ Modificados characterRepository.js, migrationPolicy.js, characterStore.js, Ficha
 ### Critérios de aceite
 
 - [x] Reload mantém edição durável; abort/falha não anunciam sucesso; retry/lixeira/restauração; legado obsoleto/futuro/IDs protegidos não sobrescrevem atuais.
-- [ ] Validação no domínio final em RELEASE-01.
+- [x] Persistência no domínio final: 6/6 ensaios Chrome.
 
 ### Testes
 
@@ -88,7 +88,7 @@ Aguardar “Alterações salvas neste dispositivo”, recarregar e conferir.
 
 ### Pendências
 
-Validação no domínio final em RELEASE-01.
+Nenhuma pendência técnica conhecida; aprovação humana segue em RELEASE-02.
 
 ### Próxima issue
 
@@ -675,7 +675,7 @@ RELEASE-01
 
 ## Issue
 
-RELEASE-01 — Build de apresentação — PARCIAL no ambiente final
+RELEASE-01 — Build publicado — PARCIAL apenas na impressão nativa
 
 ### Estado encontrado
 
@@ -697,7 +697,9 @@ Chrome instalado exercita preview do build, rota inicial/direta/reload, temas, I
 
 - [x] Build/budget, 6/6 ensaios Chrome no preview e 8/8 ensaios no emulador de Pages aprovados.
 - [x] Endereço escolhido: https://cnrcgc.github.io/dnd-fichas/, Chrome como navegador da apresentação.
-- [ ] Refresh/IndexedDB/import-export no endereço HTTPS publicado. Pages ainda não está ativo e a publicação exige commit/push, proibidos sem pedido explícito. Preparação e ensaio local em DEPLOY.md.
+- [x] Refresh/IndexedDB/import-export no endereço HTTPS: 6/6 ensaios Chrome aprovados.
+- [x] Publicação HTTPS aprovada, 38 arquivos públicos conferidos contra o commit do build.
+- [ ] Dialog nativo de impressão no Chrome da apresentação.
 
 ### Testes
 
@@ -709,7 +711,7 @@ URL final → importar → salvar → refresh de rota direta → reabrir/exporta
 
 ### Pendências
 
-Publicação e refresh/IndexedDB/import-export no endereço HTTPS escolhido. Nenhum commit, push ou deploy realizado. A versão local permanece utilizável para apresentação sem backend.
+Somente dialog nativo de impressão no Chrome. Site publicado em 2026-10-12; fonte `3ac1eb9` em `codex/mvp-apresentacao`, build `37bbf35` em `gh-pages`, tag `mvp-rc-2026-10-12`. `main` remoto 1.20 preservado. O build local permanece como fallback.
 
 ### Próxima issue
 
@@ -730,7 +732,7 @@ RELEASE-02 — Regressão e RC — PARCIAL
 
 Cobertura ampliada; test:a11y inclui rotas/ficha/teclado/reflow. Diff revisto para imports, dados legados, acessibilidade e escopo; nenhum arquivo funcional removido e nenhum limite de bundle aumentado.
 
-Retomada da RELEASE-02 em 2026-10-12: conferidos a especificação, arquivos atuais, comandos e relatórios JSON finais. Não houve mudança de código após os checks aprovados. Atualizados este registro, DEMO.md e IMPLEMENTATION_STATUS.md; criada evidência `output/validation/release-02-status.json`. Nenhum teste removido, nenhuma feature iniciada e nenhum commit/tag/push realizado.
+Primeira retomada da RELEASE-02 em 2026-10-12: conferidos a especificação, arquivos atuais, comandos e relatórios JSON finais. Não houve mudança de código após os checks aprovados. Atualizados este registro, DEMO.md e IMPLEMENTATION_STATUS.md; criada evidência `output/validation/release-02-status.json`. Nenhum teste removido, nenhuma feature iniciada e nenhum commit/tag/push realizado.
 
 Foi aberto o build estático de Pages em Chrome visível, com perfil temporário separado das fichas do usuário. O carregamento da biblioteca foi confirmado pelo título/H1. Isso é uma preparação por automação, não uma aprovação de smoke manual. A captura da interface via Computer Use foi encerrada pela ferramenta: não conseguiu determinar a URL atual do navegador com confiança suficiente para aplicar sua política e exigiu interromper o controle neste turno. Não foram executados atalhos de zoom ou ações de impressão; nenhum desses itens foi marcado como aprovado. NVDA não foi encontrado nos três locais usuais consultados nem nos registros de instalação consultados; não foi instalado software.
 
@@ -741,8 +743,8 @@ Foi aberto o build estático de Pages em Chrome visível, com perfil temporário
 - [x] Escopo congelado; nenhuma funcionalidade nova na RELEASE-02.
 - [ ] Smoke manual de biblioteca, criação, ficha, level up, JSON, PDF, teclado e mobile.
 - [ ] NVDA, zoom nativo 200%, impressão nativa e dois ensaios humanos no endereço final.
-- [ ] Publicação e validação no domínio escolhido — dependência RELEASE-01.
-- [ ] Commit/tag de RC: somente mediante pedido explícito do usuário. “Pode ir pra próxima issue” autoriza a RELEASE-02, sem substituir a restrição original sobre commits.
+- [x] Publicação e validação no domínio escolhido: workflow aprovado e 6/6 ensaios Chrome.
+- [x] Commit/tag/push da candidata autorizados explicitamente e realizados. Tag `mvp-rc-2026-10-12`; aprovação humana final continua pendente.
 
 ### Testes
 
@@ -754,27 +756,35 @@ Roteiro DEMO.md, duas vezes no Chrome/endereço final. Conferir Tab/Shift+Tab/se
 
 ### Pendências
 
-NVDA, zoom 200%, impressão nativa, mobile real, dois ensaios humanos e publicação/validação no domínio. Computer Use encerrou o controle por falha em confirmar a URL do Chrome, antes do smoke da interface. Commit/tag somente mediante pedido explícito do usuário; a passagem para esta issue não autorizou publicação ou commits. RELEASE-02 permanece PARCIAL, com automação aprovada e sem RC formal.
+NVDA, zoom nativo 200%, impressão nativa, mobile real e dois ensaios humanos. A conexão de controle do Chrome está indisponível; a tentativa anterior de Computer Use foi interrompida por falta de confiança na URL. Inspeção complementar no navegador interno confirmou criação/salvamento na origem final e importação/level up/ampliação no build local. Publicação e tag concluídas após autorização explícita. RELEASE-02 permanece PARCIAL até a aprovação humana.
 
 ### Próxima issue
 
-Fechar RELEASE-01 no endereço real e A11Y-01/02/05; A11Y-06 permanece adiado.
+Fechar impressão nativa e validação humana A11Y-01/02/05; A11Y-06 permanece adiado.
 
 ## A11Y-06 — Assistência por áudio — ADIADO
 
-Não implementada: a especificação exige adiamento se P0/P1 estiverem pendentes. Ainda faltam NVDA/zoom/domínio. Nenhum áudio automático nem arquitetura de áudio iniciada. Informação essencial permanece textual. Próxima ação ativa: fechar validação P0/P1.
+Não implementada: a especificação exige adiamento se P0/P1 estiverem pendentes. Ainda faltam NVDA/zoom nativo e aprovação humana. Nenhum áudio automático nem arquitetura de áudio iniciada. Informação essencial permanece textual. Próxima ação ativa: fechar validação P0/P1.
 
 ## Referência do caso mínimo de sub-raça
 
 [Basic Rules 2014 — Races](https://www.dndbeyond.com/sources/dnd/basic-rules-2014/races). Apenas as duas sub-raças de Anão necessárias ao teste mínimo foram adicionadas; não é catálogo completo.
 
+## Publicação e evidência final — 2026-10-12
+
+Usuário autorizou explicitamente commit, tag, push e publicação. Fonte congelada: `3ac1eb943d18dae5ad7fe606edfe7ada1c5feabd`, tag `mvp-rc-2026-10-12`, branch `codex/mvp-apresentacao`. Build publicado: `37bbf357dc939f6b250eb8b37b2c245c493d9a3a`, branch `gh-pages`. A versão 1.20 em `main` não foi alterada. [Publicação aprovada](https://github.com/CnrcGC/dnd-fichas/actions/runs/38309889568). `npm run test:hosted -- --reporter=list,json`: **6/6 aprovados**, sem falhas/skips/flaky, 130,2 s, no Chrome. Os 38 arquivos públicos correspondem aos blobs do commit; somente o favicon difere do arquivo Windows por normalização CRLF/LF. Relatórios: `output/validation/hosted-final.json` e `deployment.json`. Nova configuração `playwright.hosted.config.js`; lint e descoberta dos seis testes aprovados. Código funcional do build permaneceu inalterado.
+
+Inspeção da interface pelo agente, no navegador interno: criação guiada Humano/Guerreiro/Soldado no domínio final, escolhas obrigatórias, abertura da ficha, estado de salvamento e biblioteca com ficha fictícia. Teclado Enter/Home/End conferido na navegação e abas; ficha a 390 px com texto 150% inspecionada sem overflow horizontal da página. No build local: importação de Celeste, tema claro, texto 150%, level up 4→5 e reabertura. Captura: `output/screenshots/release-publicada.jpg`. Essa inspeção não conta como uso humano de NVDA nem ensaio humano do Chrome.
+
+Revisão final: nenhum arquivo rastreado removido, lockfile e formatos persistidos preservados, quatro planos anteriores fora dos commits. A cópia autoritativa do documento mantém os hard breaks Markdown e seu whitespace intencional.
+
 ## Resultado final e limites
 
-Validação automatizada aprovada: 213 unitários, 152 E2E (incluindo 60 de acessibilidade), 6 ensaios Chrome no preview, 8 no emulador de Pages, lint e ambos os builds dentro do orçamento. Automação não substitui NVDA, zoom nativo 200%, mobile real, dialog nativo de impressão e dois ensaios humanos. Usuário confirmou Chrome e autorizou a escolha do endereço: https://cnrcgc.github.io/dnd-fichas/. A hospedagem ainda não foi publicada. RELEASE-01/02 permanecem parciais; não há declaração de conformidade WCAG ou RC formal.
+Validação automatizada aprovada: 213 unitários, 152 E2E (incluindo 60 de acessibilidade), 6 ensaios Chrome no preview, 8 no emulador de Pages, lint e ambos os builds dentro do orçamento. Automação não substitui NVDA, zoom nativo 200%, mobile real, dialog nativo de impressão e dois ensaios humanos. Usuário confirmou Chrome e autorizou a escolha do endereço: https://cnrcgc.github.io/dnd-fichas/. Hospedagem publicada, com workflow aprovado e 6/6 ensaios adicionais no Chrome no domínio final. Candidata versionada pela tag `mvp-rc-2026-10-12`; `main` remoto preservado. RELEASE-01/02 permanecem parciais nas verificações humanas pendentes; não há declaração de conformidade WCAG nem aprovação humana formal.
 
 ## Inventário final dos arquivos desta execução
 
-Caminhos relativos à raiz Git. 73 arquivos rastreados modificados e 45 arquivos criados, incluindo dados, PDFs, screenshots e relatórios JSON de validação. Nenhum arquivo rastreado removido. Os quatro planos prévios não rastreados foram preservados e não pertencem a este inventário. PNGs intermediários de inspeção foram removidos; os artefatos finais permanecem.
+Caminhos relativos à raiz Git. 73 arquivos rastreados modificados e 49 arquivos criados, incluindo dados, PDFs, screenshots e relatórios JSON de validação. Nenhum arquivo rastreado removido. Os quatro planos prévios não rastreados foram preservados e não pertencem a este inventário. PNGs intermediários de inspeção foram removidos; os artefatos finais permanecem.
 
 ### Modificados
 
@@ -871,11 +881,15 @@ Caminhos relativos à raiz Git. 73 arquivos rastreados modificados e 45 arquivos
 - `dnd-fichas/output/screenshots/criacao-390.png`
 - `dnd-fichas/output/screenshots/ficha-1280.png`
 - `dnd-fichas/output/screenshots/ficha-390.png`
+- `dnd-fichas/output/screenshots/release-publicada.jpg`
+- `dnd-fichas/output/validation/deployment.json`
+- `dnd-fichas/output/validation/hosted-final.json`
 - `dnd-fichas/output/validation/e2e-final.json`
 - `dnd-fichas/output/validation/pages-final.json`
 - `dnd-fichas/output/validation/production-final.json`
 - `dnd-fichas/output/validation/release-02-status.json`
 - `dnd-fichas/output/validation/routing-final.json`
+- `dnd-fichas/playwright.hosted.config.js`
 - `dnd-fichas/playwright.pages.config.js`
 - `dnd-fichas/playwright.production.config.js`
 - `dnd-fichas/scripts/build-pages.mjs`

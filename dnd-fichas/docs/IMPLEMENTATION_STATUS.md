@@ -18,7 +18,7 @@ Auditado em 2026-10-10 e retomado em 2026-10-12 sobre a cópia local, commit `f0
 ## Parcial
 
 - **FE-09:** tema e tamanho de texto estão funcionais e persistidos; demais preferências futuras permanecem fora do MVP.
-- **FE-12/VA-12:** testes unitários, axe/teclado e reflow 320/390/768/1280 existem; screenshots de biblioteca/criação/ficha e PDFs de fallback foram gerados. Faltam matriz humana e validação no domínio final; rotas futuras estão fora do MVP.
+- **FE-12/VA-12:** testes unitários, axe/teclado e reflow 320/390/768/1280 existem; screenshots de biblioteca/criação/ficha e PDFs de fallback foram gerados. Falta matriz humana; o domínio final foi validado; rotas futuras estão fora do MVP.
 - **MECH-00/03:** Pilares de Atlas possui biblioteca, criação, ficha, editor e regras locais com testes. Compatibilidade com outras versões da aplicação original não foi presumida; impressão continua desabilitada no adapter. Expansão adiada.
 - **MECH-04:** política e casos de legado/corrupto/futuro estão cobertos no cliente; faltam fixtures reais adicionais.
 - **MECH-05/06:** schema F&M, registro de rastreabilidade e núcleo inequivocamente especificado pelo plano existem; conteúdo e fórmulas dependentes do livro não foram inferidos.
@@ -27,12 +27,12 @@ Auditado em 2026-10-10 e retomado em 2026-10-12 sobre a cópia local, commit `f0
 ## Bloqueios de fonte/ambiente
 
 - **ADIADO no MVP:** backend/sync, login, criaturas, encontros, Tabletop/VTT, novos sistemas, expansão completa de catálogo e redesign. Implementações já existentes são preservadas, sem expansão ativa.
-- **PARCIAL:** validação humana com NVDA, zoom nativo e dialog de impressão, além de publicação/validação no endereço escolhido **https://cnrcgc.github.io/dnd-fichas/**. Chrome confirmado pelo usuário; dois ensaios automáticos por ficha passaram no Chrome/preview. Todas as seis páginas dos PDFs foram renderizadas e inspecionadas. Preparação de Pages em [DEPLOY.md](./DEPLOY.md); ainda sem commit/push/deploy. Não há declaração de conformidade formal WCAG.
-- **RELEASE-02 — PARCIAL:** relatórios finais de 213 unitários, 152 E2E, 6 ensaios de produção, 8 de Pages e 16 de biblioteca/roteamento conferidos. A tentativa de smoke no Chrome visível foi interrompida por Computer Use ao não conseguir confirmar a URL da janela. NVDA não foi localizado nos locais e registros consultados; zoom nativo, impressão nativa, mobile real e ensaios humanos continuam pendentes. Nenhuma alteração funcional, commit/tag ou publicação na retomada.
-- **ADIADO:** A11Y-06 (áudio próprio), pois a aprovação P0/P1 ainda depende das verificações humanas e do domínio final.
+- **RELEASE-01:** publicada em **https://cnrcgc.github.io/dnd-fichas/**, HTTPS obrigatório, workflow aprovado e **6/6 ensaios no Chrome no domínio final**. Build corresponde à tag `mvp-rc-2026-10-12`; código em `codex/mvp-apresentacao`, hospedagem em `gh-pages`, `main` remoto preservado. Detalhes em [DEPLOY.md](./DEPLOY.md). Impressão nativa no Chrome permanece pendente; os seis layouts PDF foram renderizados e inspecionados.
+- **RELEASE-02 — PARCIAL:** relatórios de 213 unitários, 152 E2E, 6 ensaios de produção, 8 de Pages, 16 de biblioteca/roteamento e 6 no domínio final aprovados. Commit, tag e push autorizados e realizados. Inspeção complementar pelo agente no navegador interno: criação e salvamento no site publicado; importação, ampliação e level up no build local. Chrome não está conectado ao controle de UI; a tentativa anterior de Computer Use foi interrompida por falta de confiança na URL. NVDA não foi localizado nos locais e registros consultados. Faltam NVDA, zoom e impressão nativos, mobile real e dois ensaios humanos; não há declaração formal de conformidade WCAG.
+- **ADIADO:** A11Y-06 (áudio próprio), pois a aprovação P0/P1 ainda depende das verificações humanas.
 - **PARCIAL:** sub-raças além das duas opções de Anão não são automatizadas. O catálogo é selecionado; fichas antigas sem sub-raça não recebem bônus novos implicitamente.
 
 - O repositório contém a interface Pilares de Atlas; não foi iniciada evolução desse sistema nesta execução.
 - A interface de Feiticeiros & Maldições permanece bloqueada conforme as capabilities atuais. Nenhuma fonte de regra ausente foi inferida ou implementada para a apresentação.
 - O ambiente atual não possui PostgreSQL (`psql`) nem Docker; migrations, constraints, backup e restore não foram executados.
-- Hospedagem escolhida: GitHub Pages; publicação depende do commit/push autorizado e ativação de Pages. Branding, retenção e direitos visuais permanecem fora desta execução.
+- Hospedagem: GitHub Pages, publicada e validada em 2026-10-12. Branding, retenção e direitos visuais permanecem fora desta execução.
