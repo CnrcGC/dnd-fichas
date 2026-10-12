@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Reabrindo D&D Fichas</title></head>
+<body><main><h1>Reabrindo D&D Fichas</h1><p><a href="/dnd-fichas/">Abrir a biblioteca</a></p></main>
+<script>
+  const base = "/dnd-fichas/";
+  if (location.pathname.startsWith(base) && location.pathname !== base) {
+    const route = location.pathname + location.search + location.hash;
+    location.replace(base + "?__dnd_route=" + encodeURIComponent(route));
+  }
+</script></body></html>

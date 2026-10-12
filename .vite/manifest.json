@@ -1,0 +1,268 @@
+{
+  "_DetalheHabilidade-CWfdg6KO.js": {
+    "file": "assets/DetalheHabilidade-CWfdg6KO.js",
+    "name": "DetalheHabilidade",
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js"
+    ]
+  },
+  "_ModalCatalogoItens-BGsdXF1V.css": {
+    "file": "assets/ModalCatalogoItens-BGsdXF1V.css",
+    "src": "_ModalCatalogoItens-BGsdXF1V.css"
+  },
+  "_ModalCatalogoItens-CaULcG0g.js": {
+    "file": "assets/ModalCatalogoItens-CaULcG0g.js",
+    "name": "ModalCatalogoItens",
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "_react-3W8R1pOO.js"
+    ],
+    "css": [
+      "assets/ModalCatalogoItens-BGsdXF1V.css"
+    ]
+  },
+  "_catalogoItens-AXEzoaRm.js": {
+    "file": "assets/catalogoItens-AXEzoaRm.js",
+    "name": "catalogoItens",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_dnd-sq_G4HaW.js": {
+    "file": "assets/dnd-sq_G4HaW.js",
+    "name": "dnd"
+  },
+  "_habilidadesClasses-Bt4nwqgv.js": {
+    "file": "assets/habilidadesClasses-Bt4nwqgv.js",
+    "name": "habilidadesClasses"
+  },
+  "_jsx-runtime-DGeXAQPT.js": {
+    "file": "assets/jsx-runtime-DGeXAQPT.js",
+    "name": "jsx-runtime"
+  },
+  "_progressao-cY7o2kOU.js": {
+    "file": "assets/progressao-cY7o2kOU.js",
+    "name": "progressao",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_react-3W8R1pOO.js": {
+    "file": "assets/react-3W8R1pOO.js",
+    "name": "react",
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-D6attC6_.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "_react-3W8R1pOO.js"
+    ],
+    "dynamicImports": [
+      "src/systems/dnd5e/engine.js",
+      "src/systems/dnd5e/adapter.jsx",
+      "src/systems/yusong/engine.js",
+      "src/systems/yusong/adapter.jsx",
+      "src/systems/feiticeiros/engine.js",
+      "src/systems/feiticeiros/adapter.jsx"
+    ],
+    "css": [
+      "assets/index-Cqc1Bua5.css"
+    ]
+  },
+  "src/components/ficha/BlocoHabilidades.jsx": {
+    "file": "assets/BlocoHabilidades-jLTGnmMK.js",
+    "name": "BlocoHabilidades",
+    "src": "src/components/ficha/BlocoHabilidades.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "_DetalheHabilidade-CWfdg6KO.js",
+      "_ModalCatalogoItens-CaULcG0g.js",
+      "_habilidadesClasses-Bt4nwqgv.js"
+    ],
+    "css": [
+      "assets/BlocoHabilidades-BwCKbg5I.css"
+    ]
+  },
+  "src/components/ficha/BlocoInventario.jsx": {
+    "file": "assets/BlocoInventario-C5ME9E7s.js",
+    "name": "BlocoInventario",
+    "src": "src/components/ficha/BlocoInventario.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "_ModalCatalogoItens-CaULcG0g.js",
+      "_catalogoItens-AXEzoaRm.js"
+    ],
+    "css": [
+      "assets/BlocoInventario--_K5ZXSh.css"
+    ]
+  },
+  "src/components/ficha/BlocoMagias.jsx": {
+    "file": "assets/BlocoMagias-gk8C9kDu.js",
+    "name": "BlocoMagias",
+    "src": "src/components/ficha/BlocoMagias.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "_ModalCatalogoItens-CaULcG0g.js",
+      "_dnd-sq_G4HaW.js"
+    ],
+    "css": [
+      "assets/BlocoMagias-DNp9C0Ge.css"
+    ]
+  },
+  "src/components/ficha/BlocoMoedas.jsx": {
+    "file": "assets/BlocoMoedas-D8PXy6E6.js",
+    "name": "BlocoMoedas",
+    "src": "src/components/ficha/BlocoMoedas.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js"
+    ],
+    "css": [
+      "assets/BlocoMoedas-CWx_Z0wN.css"
+    ]
+  },
+  "src/components/ficha/BlocoPericias.jsx": {
+    "file": "assets/BlocoPericias-CHUInoLJ.js",
+    "name": "BlocoPericias",
+    "src": "src/components/ficha/BlocoPericias.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "_dnd-sq_G4HaW.js"
+    ],
+    "css": [
+      "assets/BlocoPericias-Ca3xa2Gf.css"
+    ]
+  },
+  "src/components/ficha/BlocoProficiencias.jsx": {
+    "file": "assets/BlocoProficiencias-DBSc2U1W.js",
+    "name": "BlocoProficiencias",
+    "src": "src/components/ficha/BlocoProficiencias.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_dnd-sq_G4HaW.js"
+    ],
+    "css": [
+      "assets/BlocoProficiencias-S5LHXoLy.css"
+    ]
+  },
+  "src/components/modal/ModalLevelUp.jsx": {
+    "file": "assets/ModalLevelUp-B4GWv8cJ.js",
+    "name": "ModalLevelUp",
+    "src": "src/components/modal/ModalLevelUp.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "_DetalheHabilidade-CWfdg6KO.js",
+      "_ModalCatalogoItens-CaULcG0g.js",
+      "_habilidadesClasses-Bt4nwqgv.js",
+      "_dnd-sq_G4HaW.js",
+      "_progressao-cY7o2kOU.js"
+    ],
+    "css": [
+      "assets/ModalLevelUp-sWByJtN-.css"
+    ]
+  },
+  "src/systems/dnd5e/adapter.jsx": {
+    "file": "assets/adapter-LI1WnwON.js",
+    "name": "adapter",
+    "src": "src/systems/dnd5e/adapter.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "_catalogoItens-AXEzoaRm.js",
+      "_habilidadesClasses-Bt4nwqgv.js",
+      "src/systems/dnd5e/engine.js",
+      "_dnd-sq_G4HaW.js",
+      "_progressao-cY7o2kOU.js"
+    ],
+    "dynamicImports": [
+      "src/components/ficha/BlocoHabilidades.jsx",
+      "src/components/ficha/BlocoInventario.jsx",
+      "src/components/ficha/BlocoMagias.jsx",
+      "src/components/ficha/BlocoMoedas.jsx",
+      "src/components/ficha/BlocoPericias.jsx",
+      "src/components/ficha/BlocoProficiencias.jsx",
+      "src/components/modal/ModalLevelUp.jsx"
+    ],
+    "css": [
+      "assets/adapter-BN79wB3H.css"
+    ]
+  },
+  "src/systems/dnd5e/engine.js": {
+    "file": "assets/engine-C2oB3ufT.js",
+    "name": "engine",
+    "src": "src/systems/dnd5e/engine.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "src/systems/feiticeiros/adapter.jsx": {
+    "file": "assets/adapter-DICMawwz.js",
+    "name": "adapter",
+    "src": "src/systems/feiticeiros/adapter.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "src/systems/feiticeiros/engine.js"
+    ]
+  },
+  "src/systems/feiticeiros/engine.js": {
+    "file": "assets/engine-DMptJ5uf.js",
+    "name": "engine",
+    "src": "src/systems/feiticeiros/engine.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "src/systems/yusong/adapter.jsx": {
+    "file": "assets/adapter-CYwHw4t6.js",
+    "name": "adapter",
+    "src": "src/systems/yusong/adapter.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_jsx-runtime-DGeXAQPT.js",
+      "index.html",
+      "_react-3W8R1pOO.js",
+      "src/systems/yusong/engine.js"
+    ],
+    "css": [
+      "assets/adapter-CNRGhqoh.css"
+    ]
+  },
+  "src/systems/yusong/engine.js": {
+    "file": "assets/engine-CAa-832K.js",
+    "name": "engine",
+    "src": "src/systems/yusong/engine.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  }
+}

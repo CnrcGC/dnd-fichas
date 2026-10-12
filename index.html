@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/dnd-fichas/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plataforma de fichas de RPG</title>
+    <script>
+      (() => {
+        try {
+          const theme = localStorage.getItem("rpg-platform:theme");
+          if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+          const textSize = localStorage.getItem("rpg-platform:text-size");
+          if (["normal", "large", "extra-large"].includes(textSize)) document.documentElement.dataset.textSize = textSize;
+        } catch { /* preferência opcional; a aplicação continua com o tema do sistema */ }
+      })();
+    </script>
+    <script type="module" crossorigin src="/dnd-fichas/assets/index-D6attC6_.js"></script>
+    <link rel="modulepreload" crossorigin href="/dnd-fichas/assets/jsx-runtime-DGeXAQPT.js">
+    <link rel="modulepreload" crossorigin href="/dnd-fichas/assets/react-3W8R1pOO.js">
+    <link rel="stylesheet" crossorigin href="/dnd-fichas/assets/index-Cqc1Bua5.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
