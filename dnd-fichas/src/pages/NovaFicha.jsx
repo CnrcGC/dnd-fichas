@@ -218,19 +218,31 @@ export default function NovaFicha() {
     navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`, { replace: true });
   }
 
+  const etapasDefinidas = [
+    Boolean(racaEscolhida && podeEscolherRaca(racaEscolhida)),
+    Boolean(classeEscolhida),
+    Boolean(antecedenteEscolhido),
+    etapa > 3,
+    false,
+  ];
+
   return (
-    <div className="criacao-shell">
-      <h1>Criar personagem D&D 5e</h1>
-      <button type="button" className="criacao-pular" onClick={handlePular}>
-        Pular e criar ficha em branco
-      </button>
+    <div className="criacao-shell criacao-grimoire">
+      <header className="criacao-abertura">
+        <p className="criacao-abertura-marca">Grimório de aventureiro</p>
+        <h1>Criar personagem D&D 5e</h1>
+        <p className="criacao-abertura-texto">Preencha cinco capítulos. As escolhas obrigatórias ficam em Toques Finais.</p>
+        <button type="button" className="criacao-pular" onClick={handlePular}>
+          Pular e criar ficha em branco
+        </button>
+      </header>
 
       <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
         Etapa {etapa + 1} de {ETAPAS.length}: {ETAPAS[etapa].label}
       </p>
       <ol
         className="criacao-passos"
-        aria-label="Etapas de criação; role horizontalmente para consultar todas"
+        aria-label="Etapas de criação"
         tabIndex={0}
       >
         {ETAPAS.map((info, indice) => (
@@ -239,23 +251,29 @@ export default function NovaFicha() {
             className={
               indice === etapa
                 ? "criacao-passo is-ativo"
-                : indice < etapa
+                : etapasDefinidas[indice]
                 ? "criacao-passo is-concluido"
-                : "criacao-passo"
+                : indice < etapa ? "criacao-passo is-pendente" : "criacao-passo"
             }
             aria-current={indice === etapa ? "step" : undefined}
           >
-            {info.label}
+            <span className="criacao-passo-numero" aria-hidden="true">{indice + 1}</span>
+            <span className="criacao-passo-corpo">
+              <span className="criacao-passo-nome"><span className="visually-hidden">Capítulo {indice + 1}: </span>{info.label}</span>
+              <span className="criacao-passo-estado">{indice === etapa ? "Atual" : etapasDefinidas[indice] ? "Concluído" : indice < etapa ? "Pendente" : "A seguir"}</span>
+            </span>
           </li>
         ))}
       </ol>
 
       <div className="criacao-conteudo" ref={conteudoRef}>
+        <p className="criacao-capitulo" aria-hidden="true">Capítulo {etapa + 1} de {ETAPAS.length}</p>
         {etapa === 0 && (
           <EtapaEscolha
             titulo="Escolha sua Raça"
             texto="A raça define traços físicos, bônus de atributo e alguns talentos naturais do seu personagem."
             itens={RACAS}
+            selecionadoId={rascunho.racaId}
             renderExtra={(raca) => {
               const subracas = obterSubracasPorRaca(raca.id);
               const selecionada = rascunho.racaId === raca.id;
@@ -296,6 +314,7 @@ export default function NovaFicha() {
             titulo="Escolha sua Classe"
             texto="Sua classe é o treinamento e papel do seu personagem no grupo — a característica mais importante em termos de jogo."
             itens={CLASSES}
+            selecionadoId={rascunho.classeId}
             renderExtra={(classe) => (
               <p className="criacao-card-extra">
                 Dado de vida: d{classe.dadoVida} · Atributo principal:{" "}
@@ -313,6 +332,7 @@ export default function NovaFicha() {
             titulo="Escolha seu Antecedente"
             texto="O antecedente representa como a vida do seu personagem era antes da aventura. Concede duas perícias treinadas automaticamente."
             itens={ANTECEDENTES}
+            selecionadoId={rascunho.antecedenteId}
             renderExtra={(antecedente) => (
               <p className="criacao-card-extra">
                 Perícias: {antecedente.periciasConcedidas.join(", ")} · Equipamento:{" "}
@@ -575,7 +595,7 @@ function EscolhasDeCriacao({ rascunho, raca, subraca, classe, antecedente, onCha
   </section>;
 }
 
-function EtapaEscolha({ titulo, texto, itens, renderExtra, podeEscolher = () => true, onEscolher, onVoltar, onPular }) {
+function EtapaEscolha({ titulo, texto, itens, selecionadoId, renderExtra, podeEscolher = () => true, onEscolher, onVoltar, onPular }) {
   return (
     <section>
       <h2 className="criacao-titulo" data-etapa-titulo tabIndex={-1}>{titulo}</h2>
@@ -583,11 +603,13 @@ function EtapaEscolha({ titulo, texto, itens, renderExtra, podeEscolher = () => 
 
       <div className="criacao-cards-lista">
         {itens.map((item) => (
-          <div key={item.id} className="criacao-card">
+          <div key={item.id} className={`criacao-card${selecionadoId === item.id ? " is-selecionado" : ""}`}>
             <div className="criacao-card-corpo">
               <h3 className="criacao-card-nome">{item.nome}</h3>
+              {selecionadoId === item.id && <p className="criacao-card-selecao">Selecionado</p>}
               <p className="criacao-card-descricao">{item.descricao}</p>
               {renderExtra?.(item)}
+              {!podeEscolher(item) && <p id={`criacao-escolha-${item.id}-ajuda`} className="criacao-card-ajuda">Complete a seleção acima para continuar.</p>}
             </div>
             <button
               type="button"
@@ -595,6 +617,7 @@ function EtapaEscolha({ titulo, texto, itens, renderExtra, podeEscolher = () => 
               onClick={() => onEscolher(item.id)}
               disabled={!podeEscolher(item)}
               aria-label={`Escolher ${item.nome}`}
+              aria-describedby={!podeEscolher(item) ? `criacao-escolha-${item.id}-ajuda` : undefined}
             >
               Escolher
             </button>

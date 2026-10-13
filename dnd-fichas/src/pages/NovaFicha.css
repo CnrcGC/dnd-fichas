@@ -296,3 +296,151 @@
     font-size: var(--text-xs);
   }
 }
+
+/* Capítulos e entradas do livro; apenas a criação D&D recebe este tratamento. */
+.criacao-grimoire { max-width: 960px; }
+.criacao-abertura {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--grimoire-rule);
+  border-inline-start: 6px solid var(--grimoire-binding);
+  border-radius: var(--grimoire-radius) var(--radius-md) var(--radius-md) var(--grimoire-radius);
+  background: var(--grimoire-cover);
+}
+.criacao-abertura-marca,
+.criacao-capitulo {
+  margin: 0 0 var(--space-2);
+  color: var(--color-ink-soft);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.criacao-abertura h1 { margin: 0; overflow-wrap: anywhere; }
+.criacao-abertura-texto {
+  color: var(--color-ink-soft);
+  margin: var(--space-3) 0;
+}
+.criacao-grimoire .criacao-pular {
+  margin: 0;
+  min-height: 44px;
+  max-width: 100%;
+  padding: var(--space-2) 0;
+  text-align: start;
+  font-size: var(--text-sm);
+}
+.criacao-grimoire .criacao-passos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.criacao-grimoire .criacao-passo {
+  min-width: 0;
+  align-items: start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-2);
+  border: 1px solid var(--grimoire-rule);
+  border-block-start: 3px solid var(--grimoire-rule);
+  border-radius: var(--grimoire-radius);
+  background: var(--grimoire-paper);
+  white-space: normal;
+  font-size: var(--text-sm);
+}
+.criacao-grimoire .criacao-passo::after { content: none; }
+.criacao-passo-numero {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1.75em;
+  min-height: 1.75em;
+  border: 1px solid var(--grimoire-rule);
+  border-radius: 50%;
+}
+.criacao-passo-corpo { min-width: 0; overflow-wrap: anywhere; }
+.criacao-passo-nome { display: block; }
+.criacao-passo-estado { display: block; font-size: var(--text-xs); font-weight: 400; }
+.criacao-grimoire .criacao-passo.is-ativo {
+  color: var(--color-ink);
+  border-block-start-color: var(--color-accent);
+  background: var(--grimoire-cover);
+}
+.criacao-passo.is-ativo .criacao-passo-numero {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+.criacao-passo.is-concluido .criacao-passo-estado { text-decoration: underline; text-underline-offset: 0.2em; }
+.criacao-grimoire .criacao-passo.is-pendente { border-style: dashed; }
+.criacao-grimoire .criacao-conteudo {
+  background: var(--grimoire-paper);
+  border-color: var(--grimoire-rule);
+  border-radius: var(--grimoire-radius);
+}
+.criacao-grimoire .criacao-titulo { padding-bottom: var(--space-2); border-bottom: 1px solid var(--grimoire-rule); }
+.criacao-grimoire .criacao-cards-lista {
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+.criacao-grimoire .criacao-card {
+  align-items: start;
+  background: var(--grimoire-cover);
+  border-color: var(--grimoire-rule);
+  border-inline-start-width: 3px;
+  border-radius: var(--grimoire-radius);
+}
+.criacao-grimoire .criacao-card.is-selecionado { border-inline-start-color: var(--color-accent); }
+.criacao-grimoire .criacao-card-nome { font-family: var(--font-display); font-size: var(--text-lg); }
+.criacao-card-selecao { margin: 0 0 var(--space-2); color: var(--color-ink); font-size: var(--text-xs); font-weight: 700; }
+.criacao-card-ajuda { margin: var(--space-2) 0 0; color: var(--color-ink-soft); font-size: var(--text-xs); }
+.criacao-grimoire .criacao-card-corpo { overflow-wrap: anywhere; }
+.criacao-grimoire .criacao-card-escolher,
+.criacao-grimoire .criacao-navegacao button {
+  min-height: 44px;
+  max-width: 100%;
+  border-radius: var(--grimoire-radius);
+  overflow-wrap: anywhere;
+}
+.criacao-grimoire .criacao-card-escolher:disabled {
+  background: var(--color-bg-raised);
+  color: var(--color-ink-soft);
+  border: 1px dashed var(--color-ink-soft);
+  cursor: not-allowed;
+}
+.criacao-grimoire .criacao-botao-voltar { border-color: var(--color-ink-soft); }
+.criacao-grimoire .criacao-campo :is(input, select, textarea),
+.criacao-grimoire .criacao-atributo-card select,
+.criacao-grimoire .criacao-escolhas > select {
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--color-ink-soft);
+  border-radius: var(--grimoire-radius);
+}
+.criacao-grimoire .criacao-escolhas {
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--grimoire-rule);
+  border-radius: var(--grimoire-radius);
+  background: var(--grimoire-cover);
+}
+.criacao-grimoire .criacao-atributo-card { border-color: var(--grimoire-rule); border-radius: var(--grimoire-radius); }
+.criacao-grimoire #criacao-erros {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--grimoire-radius);
+}
+.criacao-grimoire #criacao-erros button {
+  min-height: 44px;
+  max-width: 100%;
+  padding: var(--space-2);
+  border: 1px solid var(--color-ink-soft);
+  border-radius: var(--grimoire-radius);
+  background: var(--grimoire-paper);
+  color: var(--color-ink);
+}
+@media (max-width: 640px) {
+  .criacao-abertura { padding: var(--space-3); }
+  .criacao-abertura h1 { font-size: var(--text-xl); }
+  .criacao-grimoire .criacao-card { align-items: stretch; }
+  .criacao-grimoire .criacao-escolhas { padding: var(--space-3); }
+}

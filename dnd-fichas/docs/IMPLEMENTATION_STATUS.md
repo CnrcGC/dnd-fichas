@@ -9,7 +9,9 @@ Por decisão explícita do proprietário, o trabalho atual ocorre somente na `ma
 - **PRESERVADO:** raças/sub-raças e ancestralidades, classes, subclasses, talentos, ataques/equipamentos e perfis de escolhas mais recentes da 1.21; IDs, dados, adapters e migrações existentes.
 - **CORRIGIDO:** iniciativa não soma Destreza duas vezes na criação; PV da Colina acompanham nível/troca de sub-raça; concentração encerra em condições de incapacidade; CA manual permanece após reabrir; foco dos diálogos combina restauração, fundo inerte e suporte a diálogos sobrepostos; foco inicial da criação não é roubado pelo StrictMode; idiomas escolhidos em sub-raça/antecedente não se repetem.
 - **PARCIAL:** validação humana de NVDA, zoom nativo 200% e dispositivo móvel real. Não há declaração de conformidade WCAG.
-- **ADIADO:** backend/sync, criaturas, encontros, VTT e expansão de catálogo; VIS-G03 ainda não foi iniciada.
+- **IMPLEMENTADO:** VIS-G03 na ficha: resumo de identidade/combate na abertura, atributos antes dos formulários, capítulos e abas como marcadores, atalho por teclado para ações e composição de impressão preservada. Validação e revisão visual em [VIS_G03.md](./VIS_G03.md).
+- **IMPLEMENTADO:** VIS-G04 na criação: cinco capítulos numerados, progresso textual, estados de seleção, opções como entradas de livro e orientação próxima das escolhas bloqueadas. Uma etapa pulada sem seleção permanece pendente; nenhuma regra de finalização mudou. Validação e revisão visual em [VIS_G04.md](./VIS_G04.md).
+- **ADIADO:** backend/sync, criaturas, encontros, VTT e expansão de catálogo.
 
 Resultados desta cópia e arquivos envolvidos: [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md). Os registros abaixo conservam a auditoria e as etapas anteriores.
 

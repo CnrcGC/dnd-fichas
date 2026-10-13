@@ -10,7 +10,8 @@ O frontend fica em [`dnd-fichas/`](./dnd-fichas). O serviço em [`server/`](./se
 
 ## Recursos
 
-- Criação guiada de personagem e ficha em branco.
+- Criação guiada em cinco capítulos numerados, com seleção e pendências explícitas, além de ficha em branco. Entrega visual em [VIS_G04.md](./dnd-fichas/docs/VIS_G04.md).
+- Biblioteca e ficha com aparência de grimório; identidade, vida, defesa e atributos destacados, com atalho para as ações. Estado da entrega visual em [VIS_G03.md](./dnd-fichas/docs/VIS_G03.md).
 - Catálogo local com 9 raças, 9 sub-raças, 12 classes, 13 antecedentes, 41 subclasses, talentos e magias; automação varia conforme a regra.
 - Proficiências iniciais por classe, raça e antecedente, com idiomas, ferramentas e origem de cada concessão.
 - Multiclasse com pré-requisitos, nível total máximo 20, proficiências reduzidas, pools de dados de vida e PV por classe de origem.

@@ -935,10 +935,49 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 
   return (
     <>
-      <h1 className="ficha-titulo">Ficha de {ficha.nome || "personagem sem nome"}</h1>
-      <button type="button" className="ficha-imprimir-botao" onClick={handleImprimirFicha}>
-        Imprimir / Salvar em PDF
-      </button>
+      <div className="ficha-grimoire">
+      <header className="ficha-abertura">
+        <div className="ficha-abertura-identidade">
+          <p className="ficha-capitulo">Grimório de personagem</p>
+          <h1 className="ficha-titulo">Ficha de {ficha.nome || "personagem sem nome"}</h1>
+          <p className="ficha-linhagem">
+            {obterRaca(ficha.racaId, ficha.subracaId)?.nome || "Raça a definir"}
+            {" · "}{classe?.nome || "Classe a definir"}
+            {(ficha.classesSecundarias ?? []).map((secundaria) => (
+              <span key={secundaria.classeId}> / {obterClasse(secundaria.classeId)?.nome || secundaria.classeId} {secundaria.nivel}</span>
+            ))}
+            {" · Nível "}{nivelTotal}
+          </p>
+        </div>
+        <div className="ficha-abertura-acoes">
+          <a className="ficha-atalho-acoes" href={`#ficha-aba-${abaAtiva}`}>Ir para ações</a>
+          <button type="button" className="ficha-imprimir-botao" onClick={handleImprimirFicha}>
+            Imprimir / Salvar em PDF
+          </button>
+        </div>
+        <dl className="ficha-stats-rapidas" aria-label="Resumo de combate">
+          <div className="ficha-stat-rapida">
+            <dt className="ficha-stat-label">Vida</dt>
+            <dd className="ficha-stat-valor">{ficha.status.pvAtual}/{ficha.status.pvMax}</dd>
+            {ficha.status.pvTemp > 0 && <dd className="ficha-stat-nota">+{ficha.status.pvTemp} temporários</dd>}
+          </div>
+          <div className="ficha-stat-rapida">
+            <dt className="ficha-stat-label">Defesa</dt>
+            <dd className="ficha-stat-valor">{ficha.status.ca}</dd>
+          </div>
+          <div className="ficha-stat-rapida">
+            <dt className="ficha-stat-label">Proficiência</dt>
+            <dd className="ficha-stat-valor">+{bonusProficiencia}</dd>
+          </div>
+        </dl>
+      </header>
+      <div className="ficha-atributos-pagina">
+        <BlocoAtributos
+          atributos={ficha.atributos}
+          bonusRacial={bonusRacial}
+          onChangeAtributo={handleChangeAtributo}
+        />
+      </div>
       <div className="ficha-shell">
       <aside
         id="ficha-secao-identidade"
@@ -946,9 +985,11 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
         tabIndex={-1}
         aria-labelledby="ficha-identidade-titulo"
       >
-        <h2 id="ficha-identidade-titulo" className="visually-hidden">
+        <h2 id="ficha-identidade-titulo" className="bloco-titulo">
           Identidade e progressão
         </h2>
+        <label className="ficha-nome-campo">
+        <span className="ficha-campo-texto-label">Nome do personagem</span>
         <input
           type="text"
           className="ficha-nome-input"
@@ -956,6 +997,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           onChange={handleChangeNome}
           aria-label="Editar nome do personagem"
         />
+        </label>
 
        <BlocoRacaClasse
   ficha={ficha}
@@ -1037,24 +1079,6 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           </Suspense>
         )}
 
-        <div className="ficha-stats-rapidas">
-          <div className="ficha-stat-rapida">
-            <span className="ficha-stat-label">Vida</span>
-            <span className="ficha-stat-valor">
-              {ficha.status.pvAtual}/{ficha.status.pvMax}
-            </span>
-          </div>
-          <div className="ficha-stat-rapida">
-            <span className="ficha-stat-label">Defesa</span>
-            <span className="ficha-stat-valor">{ficha.status.ca}</span>
-          </div>
-        </div>
-
-        <BlocoAtributos
-          atributos={ficha.atributos}
-          bonusRacial={bonusRacial}
-          onChangeAtributo={handleChangeAtributo}
-        />
       </aside>
 
       <div className="ficha-coluna-principal">
@@ -1297,6 +1321,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
             </>
           )}
         </div>
+      </div>
       </div>
       </div>
       <FichaImpressao

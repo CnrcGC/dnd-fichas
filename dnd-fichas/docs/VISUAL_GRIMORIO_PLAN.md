@@ -1,6 +1,6 @@
 # D&D Fichas — Plano visual: Grimório de aventureiro
 
-**Base atual:** por decisão do proprietário, esta entrega foi integrada diretamente na `main` 1.21 (`a708251`), em `Área de Trabalho/Jogo/dnd-fichas`. Resultados atuais em [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md). As matrizes e números anteriores deste documento são históricos da cópia candidata. VIS-G03 permanece pendente de execução.
+**Base atual:** por decisão do proprietário, a biblioteca e as preferências foram integradas diretamente na `main` 1.21, em `Área de Trabalho/Jogo/dnd-fichas`, e registradas no commit `70636e8`. Resultados da integração em [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md). As matrizes e números anteriores deste documento são históricos da cópia candidata. VIS-G03 e VIS-G04 aplicadas sobre esse commit; evidências específicas em [VIS_G03.md](./VIS_G03.md) e [VIS_G04.md](./VIS_G04.md).
 
 Data: 2026-10-12. Direção escolhida pelo usuário: **papel, tinta, selos e detalhes de fantasia**.
 
@@ -85,6 +85,8 @@ Arquivos principais: `src/pages/Home.jsx`, `Home.css` e `src/components/icons/Ic
 
 **Prioridade: alta. Dependências: VIS-G01 e revisão de VIS-G02.**
 
+**Execução em 2026-10-13:** identidade e resumo de combate na abertura, atributos em faixa própria, campos e rolagens diferenciados, abas como marcadores e impressão separada. Biblioteca aprovada pelo proprietário; VIS-G03 disponível para revisão visual. Ver [VIS_G03.md](./VIS_G03.md) para verificações e limites da validação.
+
 - Construir um bloco de identidade com hierarquia entre nome, raça, classe e nível, usando os dados existentes.
 - Dar destaque imediato a vida, defesa e ações de uso frequente.
 - Revisar o agrupamento da coluna lateral para reduzir o corredor de formulários, especialmente com texto ampliado. Ajustar composição dos blocos existentes, sem introduzir novas etapas de edição.
@@ -100,6 +102,8 @@ Arquivos principais: `src/pages/Ficha.jsx`, `Ficha.css` e os componentes existen
 ### VIS-G04 — Criação como registro de um novo aventureiro
 
 **Prioridade: média. Dependências: VIS-G01 e VIS-G02.**
+
+**Execução em 2026-10-13:** capítulos numerados com estados textuais, abertura de grimório, opções com filetes e descrição, seleção mantida ao voltar e orientação para sub-raça/ancestralidade antes da confirmação. Etapas puladas sem escolha são identificadas como pendentes. Fluxo, foco, validação, dados gerados e alternativas de rascunho/ficha em branco preservados. Resultados e pendências em [VIS_G04.md](./VIS_G04.md).
 
 - Apresentar as cinco etapas atuais como capítulos numerados.
 - Distinguir etapa atual, concluída e pendente por texto/forma, além de cor.

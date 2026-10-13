@@ -10,7 +10,7 @@ A especificação recuperada é idêntica ao documento de Downloads após normal
 - **PARCIAL:** persistência e acessibilidade sem algumas proteções/validações do MVP; documentação com referências antigas; layout anterior ao grimório.
 - **AUSENTE nesta main:** preferências de texto/leitura ampliadas, engrenagem, alternância compacta do tema, scrollbar temática e retorno ao topo; scripts e testes de produção/Pages da candidata.
 - **BUGS corrigidos:** concentração com condições de incapacidade, iniciativa duplicando Destreza na criação, PV da Colina e sua troca na ficha, idiomas repetidos entre sub-raça/antecedente, foco inicial da criação sob StrictMode, CA manual sobrescrita, feedback de gravação sem proteção completa contra hidratação/registros incompatíveis e erro de lint em itens mágicos.
-- **ADIADO:** VIS-G03, áudio próprio e demais funcionalidades fora do MVP.
+- **NA CONCLUSÃO DESTA INTEGRAÇÃO:** VIS-G03 ainda não havia sido iniciada; sua entrega posterior está em [VIS_G03.md](./VIS_G03.md). Áudio próprio e demais funcionalidades fora do MVP continuam adiados.
 
 ## Alterações aplicadas
 
