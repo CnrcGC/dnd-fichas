@@ -32,7 +32,7 @@ test("entrada abre D&D mesmo quando a preferência legada aponta para outro sist
   await expect(page.getByRole("heading", { name: "Personagens de Pilares de Atlas" })).toBeVisible();
   await page.goto("/");
   await expect(page).toHaveURL(/\/dnd5e$/);
-  await expect(page.getByRole("heading", { name: /Personagens D&D/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Seus personagens/ })).toBeVisible();
 });
 
 test("navegação ativa oferece somente fluxos D&D disponíveis", async ({ page }) => {

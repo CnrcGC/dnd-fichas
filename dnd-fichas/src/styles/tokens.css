@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   /* Cores — tema escuro "grimório", refinado a partir da paleta original
      (pergaminho + azul marinho + dourado) */
   --color-bg: #14151d;
@@ -9,12 +10,12 @@
   --color-line: #2a2c3a;
   --color-line-strong: #3a3d4f;
 
-  --color-primary: #6d7bab;
+  --color-primary: #909ed0;
   --color-primary-hover: #8291c2;
   --color-accent: #c9a355;
   --color-accent-hover: #d9b874;
   --color-accent-ink: #3a2c0f;
-  --color-danger: #a3504f;
+  --color-danger: #dd8685;
   --color-danger-soft: #bd6f6e;
   --color-success: #6fa878;
   --color-success-soft: #9ac6a1;
@@ -160,6 +161,14 @@
   }
 }
 
-[data-system="dnd5e"] { --system-accent: var(--color-accent); }
+[data-system="dnd5e"] {
+  --system-accent: var(--color-accent);
+  --grimoire-paper: var(--color-bg-raised);
+  --grimoire-cover: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg-raised));
+  --grimoire-binding: color-mix(in srgb, var(--color-accent) 70%, var(--color-bg-raised));
+  --grimoire-rule: color-mix(in srgb, var(--color-accent) 32%, var(--color-line));
+  --grimoire-control-border: color-mix(in srgb, var(--color-ink-soft) 65%, var(--color-line-strong));
+  --grimoire-radius: 3px;
+}
 [data-system="yusong"] { --system-accent: #4d8f99; }
 [data-system="feiticeiros-maldicoes"] { --system-accent: #8d5aa3; }

@@ -26,11 +26,23 @@ export default function RouteAccessibility() {
       ?? (systemName && location.pathname.split("/").filter(Boolean).length === 1 ? "Personagens" : "Página não encontrada");
     document.title = `${routeTitle}${systemName ? ` — ${systemName}` : ""} · D&D Fichas`;
     if (navigationType === "POP") return;
-    requestAnimationFrame(() => {
-      const heading = document.querySelector("main h1");
-      if (heading && !heading.hasAttribute("tabindex")) heading.setAttribute("tabindex", "-1");
-      heading?.focus({ preventScroll: false });
-    });
+    const initialFocus = document.activeElement;
+    if (navigationType === "REPLACE" && initialFocus === document.body && /^\/(dnd5e|yusong|feiticeiros-maldicoes)$/.test(location.pathname)) return;
+    const main = document.querySelector("main");
+    function focusReadyHeading() {
+      const heading = main?.querySelector("h1");
+      if (!heading || heading.closest('[aria-busy="true"]')) return;
+      observer.disconnect();
+      // Se a pessoa já navegou para outro controle durante o carregamento,
+      // preservar essa escolha de foco.
+      if (document.activeElement !== initialFocus && document.activeElement !== document.body) return;
+      heading.setAttribute("tabindex", "-1");
+      heading.focus();
+    }
+    const observer = new MutationObserver(focusReadyHeading);
+    if (main) observer.observe(main, { childList: true, subtree: true });
+    const frame = requestAnimationFrame(focusReadyHeading);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
   }, [location.pathname, navigationType]);
   return null;
 }

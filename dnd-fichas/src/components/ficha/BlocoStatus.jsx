@@ -58,7 +58,7 @@ export default function BlocoStatus({
     }
   }
 
-  
+
 
   function handleRolarIniciativa() {
     const resultado = rolarD20(iniciativaTotal);
@@ -84,7 +84,8 @@ export default function BlocoStatus({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Status</h3>
+      <h2 className="bloco-titulo">Status</h2>
+      {status.caManual && <p className="status-nota">CA definida manualmente. <button type="button" onClick={() => onChangeStatus("caManual", false)}>Usar CA calculada</button></p>}
             <div className="bloco-status-grid">
         {CAMPOS_STATUS.map((campo) => (
           <label key={campo.chave} className="status-campo">
@@ -97,13 +98,14 @@ export default function BlocoStatus({
             />
           </label>
         ))}
-        
+
         <div className="status-campo">
           <span className="status-label">Iniciativa</span>
           <button
             type="button"
             className="status-iniciativa-botao"
             onClick={handleRolarIniciativa}
+            aria-label={`Rolar iniciativa (${formatarModificador(iniciativaTotal)})`}
             title={`Rolar iniciativa (d20${formatarModificador(iniciativaTotal)})`}
           >
             {formatarModificador(iniciativaTotal)}
@@ -111,6 +113,7 @@ export default function BlocoStatus({
                     <input
             type="number"
             className="status-iniciativa-bonus"
+
             value={status.iniciativa ?? 0}
             aria-label="Bônus extra de iniciativa"
             onChange={(evento) => handleChange("iniciativa", evento)}
@@ -129,7 +132,7 @@ export default function BlocoStatus({
       </div>
 
       <div className="condicoes-ativas">
-        <h4 className="condicoes-ativas-titulo">Condições ativas</h4>
+        <h3 className="condicoes-ativas-titulo">Condições ativas</h3>
         {condicoesAtivas.length === 0 ? (
           <p className="condicoes-ativas-vazio">Nenhuma condição ativa.</p>
         ) : (
@@ -227,13 +230,13 @@ export default function BlocoStatus({
               : "testes-morte"
           }
         >
-          <h4
+          <h3
             className={
               !morto && estabilizado ? "testes-morte-titulo is-estabilizado" : "testes-morte-titulo"
             }
           >
             {morto ? "Morto" : estabilizado ? "Estabilizado" : "Testes de Morte"}
-          </h4>
+          </h3>
           <div className="testes-morte-linhas">
             <div className="testes-morte-linha">
               <span className="testes-morte-label">Sucessos</span>
@@ -249,6 +252,7 @@ export default function BlocoStatus({
                   onClick={() => handleTogglePip("sucesso", indice)}
                   disabled={morto}
                   aria-label={`Sucesso ${indice + 1}`}
+                  aria-pressed={indice < sucessos}
                 />
               ))}
             </div>
@@ -264,6 +268,7 @@ export default function BlocoStatus({
                   onClick={() => handleTogglePip("falha", indice)}
                   disabled={estabilizado}
                   aria-label={`Falha ${indice + 1}`}
+                  aria-pressed={indice < falhas}
                 />
               ))}
             </div>

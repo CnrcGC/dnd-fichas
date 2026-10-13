@@ -1,0 +1,69 @@
+/* Opt-in treatments: other systems and existing sheet fields keep their styles. */
+/* Native scrolling keeps wheel, keyboard, touch and operating-system behavior. */
+@supports selector(::-webkit-scrollbar) {
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar,
+  [data-system="dnd5e"] ::-webkit-scrollbar,
+  .preferences-dialog::-webkit-scrollbar { width: 14px; height: 14px; }
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar-track,
+  [data-system="dnd5e"] ::-webkit-scrollbar-track,
+  .preferences-dialog::-webkit-scrollbar-track {
+    background-color: var(--color-bg-inset);
+    background-image: repeating-linear-gradient(to bottom, var(--color-line-strong) 0 4px, transparent 4px 9px);
+    background-size: 2px 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar-thumb,
+  [data-system="dnd5e"] ::-webkit-scrollbar-thumb,
+  .preferences-dialog::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border: 3px solid var(--color-bg-inset);
+    border-radius: 7px;
+    min-height: 44px;
+  }
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar-thumb:hover,
+  [data-system="dnd5e"] ::-webkit-scrollbar-thumb:hover,
+  .preferences-dialog::-webkit-scrollbar-thumb:hover { background: var(--color-accent-hover); }
+}
+@supports not selector(::-webkit-scrollbar) {
+  :root:has([data-system="dnd5e"]), [data-system="dnd5e"] *, .preferences-dialog {
+    scrollbar-color: var(--color-accent) var(--color-bg-inset);
+  }
+}
+@media (forced-colors: active) {
+  :root:has([data-system="dnd5e"]), [data-system="dnd5e"] *, .preferences-dialog { scrollbar-color: auto; }
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar,
+  [data-system="dnd5e"] ::-webkit-scrollbar,
+  .preferences-dialog::-webkit-scrollbar { all: revert; }
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar-track,
+  [data-system="dnd5e"] ::-webkit-scrollbar-track,
+  .preferences-dialog::-webkit-scrollbar-track,
+  :root:has([data-system="dnd5e"])::-webkit-scrollbar-thumb,
+  [data-system="dnd5e"] ::-webkit-scrollbar-thumb,
+  .preferences-dialog::-webkit-scrollbar-thumb { all: revert; }
+}
+[data-system="dnd5e"] .grimoire-capa {
+  background: var(--grimoire-cover);
+  border: 1px solid var(--grimoire-rule);
+  border-inline-start: 6px solid var(--grimoire-binding);
+  border-radius: var(--grimoire-radius) var(--radius-md) var(--radius-md) var(--grimoire-radius);
+}
+
+[data-system="dnd5e"] .grimoire-pagina {
+  background: var(--grimoire-paper);
+  border-block: 1px solid var(--grimoire-rule);
+}
+
+[data-system="dnd5e"] .grimoire-campo {
+  background: var(--color-bg-inset);
+  border: 1px solid var(--grimoire-control-border);
+  border-radius: var(--grimoire-radius);
+}
+
+[data-system="dnd5e"] .grimoire-aviso {
+  padding: var(--space-3) var(--space-4);
+  background: var(--grimoire-paper);
+  border: 1px solid var(--color-line);
+  border-inline-start: 4px solid var(--color-warning);
+  border-radius: var(--grimoire-radius);
+}

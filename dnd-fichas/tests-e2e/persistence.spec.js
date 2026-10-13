@@ -1,4 +1,82 @@
 import { test, expect } from "@playwright/test";
+import { Buffer } from "node:buffer";
+
+test("MVP-02 reload usa a edição IndexedDB mesmo com bootstrap legado desatualizado", async ({ page }) => {
+  await page.goto("/dnd5e/characters/new");
+  await page.getByRole("button", { name: "Pular e criar ficha em branco" }).click();
+  await page.getByLabel("Editar nome do personagem").fill("Versão durável mais recente");
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
+  await page.evaluate(async () => {
+    const { openPlatformDatabase, IndexedDbCharacterRepository } = await import("/src/platform/persistence/characterRepository.js");
+    const database = await openPlatformDatabase();
+    const [record] = await new IndexedDbCharacterRepository(database).list({ systemId: "dnd5e" });
+    localStorage.setItem("pilares-de-atlas:fichas", JSON.stringify([{ ...record.data, nome: "Legado antigo", status: { ...record.data.status, ca: 99 } }]));
+    database.close();
+  });
+  await page.reload();
+  await expect(page.getByLabel("Editar nome do personagem")).toHaveValue("Versão durável mais recente");
+  await expect(page.getByRole("heading", { name: "Ficha de Legado antigo" })).toHaveCount(0);
+});
+
+test("MVP-02 só confirma put após commit e rejeita aborto após sucesso do request", async ({ page }) => {
+  await page.goto("/dnd5e");
+  await expect(page.getByRole("heading", { name: "Seus personagens", exact: true })).toBeVisible();
+  const result = await page.evaluate(async () => {
+    const { openPlatformDatabase, IndexedDbCharacterRepository } = await import("/src/platform/persistence/characterRepository.js");
+    const { createEnvelope } = await import("/src/platform/persistence/envelope.js");
+    const database = await openPlatformDatabase();
+    const repository = new IndexedDbCharacterRepository(database);
+    const original = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function put(...args) {
+      const request = original.apply(this, args);
+      const transaction = this.transaction;
+      request.addEventListener("success", () => transaction.abort());
+      return request;
+    };
+    let rejected = false;
+    try {
+      await repository.put(createEnvelope({ id: "abort-after-request", systemId: "dnd5e", schemaVersion: 8, displayName: "Aborto", data: { id: "abort-after-request" } }));
+    } catch { rejected = true; }
+    finally { IDBObjectStore.prototype.put = original; }
+    const present = Boolean(await repository.get("abort-after-request"));
+    database.close();
+    return { rejected, present };
+  });
+  expect(result).toEqual({ rejected: true, present: false });
+});
+
+test("MVP-02 anuncia falha, recupera a gravação e reabre a edição durável", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__failCharacterWrites = false;
+    const original = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function put(...args) {
+      if (this.name === "characters" && window.__failCharacterWrites) throw new DOMException("Sem espaço", "QuotaExceededError");
+      return original.apply(this, args);
+    };
+  });
+  await page.goto("/dnd5e/characters/new");
+  await page.getByRole("button", { name: "Pular e criar ficha em branco" }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
+  await page.evaluate(() => { window.__failCharacterWrites = true; });
+  await page.getByLabel("Editar nome do personagem").fill("Nome recuperado");
+  await expect(page.getByRole("alert")).toContainText("Suas alterações não foram salvas");
+  await expect(page.getByRole("alert")).toContainText("cheio");
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toHaveCount(0);
+  await page.evaluate(() => { window.__failCharacterWrites = false; });
+  await page.getByRole("button", { name: "Tentar novamente" }).click();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel("Editar nome do personagem")).toHaveValue("Nome recuperado");
+});
+
+test("MVP-02 importar versão futura mostra erro e não cria nem altera fichas", async ({ page }) => {
+  await page.goto("/dnd5e");
+  await expect(page.getByText("0 personagens", { exact: true })).toBeVisible();
+  await page.locator('input[type="file"]').setInputFiles({ name: "futura.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify({ id: "future-import", nome: "Futura", versaoFicha: 99 })) });
+  await expect(page.getByRole("alert")).toContainText("versão mais recente");
+  await expect(page.getByText("0 personagens", { exact: true })).toBeVisible();
+});
 
 test("IndexedDB aplica revisão otimista e rollback atômico de importação", async ({ page }) => {
   await page.goto("/");

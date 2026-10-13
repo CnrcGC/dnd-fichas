@@ -1,216 +1,107 @@
-.home-marca {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto var(--space-4);
-}
+.home-grimoire { min-width: 0; }
 
-.home-logo {
-  display: block;
-  width: min(100%, 360px);
-  height: auto;
+/* The library keeps the dice history in flow so it cannot cover a cover or title. */
+[data-system="dnd5e"]:has(.home-grimoire) .painel-rolagens {
+  position: relative;
+  inset: auto;
+  align-self: flex-end;
+  max-width: calc(100% - 2 * var(--space-4));
+  margin: 0 var(--space-4) var(--space-4);
 }
 
 .home-cabecalho {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
   margin-bottom: var(--space-4);
 }
-
-.home-titulo {
-  font-size: var(--text-lg);
-}
-
-.home-nova-ficha {
-  text-decoration: none;
+.home-cabecalho::before, .home-cabecalho::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
   background: var(--color-accent);
-  color: var(--color-accent-ink);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
-  font-weight: 600;
+  transform: rotate(45deg);
+  inset-inline-start: var(--space-3);
 }
+.home-cabecalho::before { top: -4px; }
+.home-cabecalho::after { bottom: -4px; }
+.home-abertura { min-width: 0; }
+.home-sobretitulo { margin: 0 0 var(--space-2); color: var(--color-accent); font-size: var(--text-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.home-titulo { font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.15; overflow-wrap: anywhere; }
+.home-subtitulo { margin: var(--space-2) 0 0; color: var(--color-ink-soft); font-family: var(--font-display); font-size: var(--text-lg); }
+.home-selo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); flex: 0 0 8rem; min-height: 8rem; border: 3px double var(--grimoire-rule); border-radius: 50%; color: var(--color-accent); }
+.home-selo span { font-size: var(--text-xs); font-weight: 600; letter-spacing: .16em; }
 
-.home-nova-ficha:hover {
-  background: var(--color-accent-hover);
-}
+.home-ferramentas { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-5); }
+.home-busca-label { flex: 1 1 16rem; max-width: 24rem; min-width: 0; display: grid; gap: var(--space-2); font-size: var(--text-sm); font-weight: 500; }
+.home-busca { width: 100%; min-width: 0; min-height: 44px; padding: var(--space-2) var(--space-3); color: var(--color-ink); font: inherit; }
+.home-busca::placeholder { color: var(--color-ink-soft); }
+.home-cabecalho-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.home-importar, .home-nova-ficha { min-height: 44px; padding: var(--space-2) var(--space-3); font-size: var(--text-sm); }
+.home-importar { color: var(--color-ink); border: 1px solid var(--grimoire-control-border); background: transparent; }
+.home-nova-ficha { color: var(--color-accent-ink); border: 1px solid var(--color-accent); background: var(--color-accent); text-decoration: none; }
+.home-nova-ficha:hover { background: var(--color-accent-hover); }
+.home-input-arquivo-escondido { display: none; }
+.home-erro { overflow-wrap: anywhere; margin-block: 0 var(--space-4); }
 
-.home-busca {
-  display: block;
-  width: 100%;
-  max-width: 360px;
-  padding: var(--space-2) var(--space-3);
-  margin-bottom: var(--space-5);
-  background: var(--color-bg-raised);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-sm);
-  color: var(--color-ink);
-  font-size: var(--text-sm);
-}
+.home-colecao-cabecalho { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-4); }
+.home-colecao-titulo { font-size: var(--text-lg); }
+.home-contagem { margin: 0; font-size: var(--text-sm); color: var(--color-ink-soft); }
+.home-colecao-cabecalho::after { content: ""; flex: 1; min-width: 2rem; height: 1px; background: var(--grimoire-rule); align-self: center; }
 
-.home-busca::placeholder {
-  color: var(--color-ink-soft);
-}
-
-.home-vazio {
-  color: var(--color-ink-soft);
-}
-
-.home-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-4);
-}
-
-.ficha-card {
+.home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: var(--space-4); }
+.home-grimoire .ficha-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg-raised);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  border: 1px solid var(--color-line);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  min-width: 0;
+  min-height: 21rem;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  box-shadow: 0 3px 0 var(--color-bg-inset), 0 4px 0 var(--grimoire-rule), var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
+.home-grimoire .ficha-card:hover, .home-grimoire .ficha-card:focus-within { border-color: var(--color-accent); box-shadow: 0 3px 0 var(--color-bg-inset), 0 4px 0 var(--grimoire-rule), var(--shadow-md); }
+.ficha-card-cabecalho { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); }
+.ficha-card-nivel { padding: var(--space-2) 0; color: var(--color-accent); font-size: var(--text-xs); font-weight: 600; border-bottom: 2px solid var(--grimoire-rule); }
+.ficha-card-acoes { display: flex; gap: var(--space-2); }
+.home-grimoire :is(.ficha-card-exportar, .ficha-card-remover) { position: static; width: 44px; min-width: 44px; height: 44px; min-height: 44px; border-radius: var(--grimoire-radius); }
+.home-grimoire .ficha-card-exportar { color: var(--color-ink-soft); border-color: var(--grimoire-control-border); }
+.home-grimoire .ficha-card-exportar:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.ficha-card-corpo { display: flex; flex-direction: column; align-items: center; min-width: 0; flex: 1; gap: var(--space-2); padding-block: var(--space-4); text-align: center; }
+.ficha-card-simbolo { display: flex; align-items: center; justify-content: center; width: 3.75rem; height: 3.75rem; border: 1px solid var(--grimoire-rule); border-radius: 50%; color: var(--color-accent); margin-bottom: var(--space-2); }
+.ficha-card-nome { overflow-wrap: anywhere; max-width: 100%; font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.2; font-weight: 600; }
+.ficha-card-classe { color: var(--color-accent); font-size: var(--text-sm); font-weight: 500; }
+.ficha-card-data { margin-top: auto; padding-top: var(--space-3); color: var(--color-ink-soft); font-size: var(--text-xs); }
+.home-grimoire .ficha-card-acessar { display: flex; width: 100%; min-height: 44px; justify-content: space-between; margin-top: var(--space-2); padding: var(--space-2) var(--space-3); color: var(--color-ink); background: transparent; border: 1px solid var(--grimoire-control-border); border-radius: var(--grimoire-radius); font-size: var(--text-sm); text-decoration: none; }
+.home-grimoire .ficha-card-acessar:hover { background: var(--color-accent); color: var(--color-accent-ink); border-color: var(--color-accent); }
+.ficha-card-acessar .ui-icon, .home-vazio-criar .ui-icon { transform: rotate(-90deg); }
 
-.ficha-card:hover {
-  border-color: var(--color-line-strong);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-2px);
-}
-
-.ficha-card:focus-within {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px var(--color-interactive-selected), var(--shadow-sm);
-}
-
-.ficha-card-remover {
-  position: absolute;
-  top: var(--space-2);
-  right: var(--space-2);
-  background: none;
-  border: none;
-  color: var(--color-ink-soft);
-  font-size: var(--text-base);
-  line-height: 1;
-  padding: var(--space-1);
-  border-radius: var(--radius-sm);
-}
-
-.ficha-card-remover:hover {
-  color: var(--color-ink);
-  background: var(--color-bg-inset);
-}
-
-.ficha-card-corpo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding-right: var(--space-4);
-}
-
-.ficha-card-nome {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 600;
-}
-
-.ficha-card-classe {
-  color: var(--color-accent);
-  font-size: var(--text-sm);
-  font-weight: 500;
-}
-
-.ficha-card-data {
-  color: var(--color-ink-soft);
-  font-size: var(--text-xs);
-  margin-top: var(--space-1);
-}
-
-.ficha-card-acessar {
-  align-self: flex-end;
-  margin-top: var(--space-3);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--color-bg);
-  background: var(--color-accent);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
-}
-
-.ficha-card-acessar:hover {
-  background: var(--color-accent-hover);
-}
-.home-cabecalho-acoes {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.home-importar {
-  padding: var(--space-2) var(--space-3);
-  background: transparent;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-sm);
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 500;
-}
-
-.home-importar:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.home-input-arquivo-escondido {
-  display: none;
-}
-
-.home-importacao-erro {
-  margin: 0 0 var(--space-3);
-  padding: var(--space-3);
-  color: var(--color-danger-soft);
-  background: var(--color-bg-raised);
-  border: 1px solid var(--color-danger-soft);
-  border-radius: var(--radius-sm);
-}
-
-.ficha-card-exportar {
-  position: absolute;
-  top: var(--space-2);
-  right: calc(var(--space-2) + 28px);
-  background: none;
-  border: none;
-  color: var(--color-ink-soft);
-  font-size: var(--text-base);
-  cursor: pointer;
-}
-
-.ficha-card-exportar:hover {
-  color: var(--color-accent);
-}
-
-.home-lixeira {
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-line);
-}
-
-.home-lixeira h2 { font-size: var(--text-base); }
-.home-lixeira p { color: var(--color-ink-soft); font-size: var(--text-sm); }
+.home-vazio { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-5) var(--space-4); text-align: center; }
+.home-vazio-simbolo { display: flex; align-items: center; justify-content: center; width: 5rem; height: 5rem; color: var(--color-accent); border: 3px double var(--grimoire-rule); border-radius: 50%; margin-bottom: var(--space-3); }
+.home-vazio h3 { font-size: var(--text-lg); }
+.home-vazio p { margin: 0; color: var(--color-ink-soft); }
+.home-vazio-criar { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: var(--space-2); margin-top: var(--space-3); color: var(--color-accent); font-weight: 600; text-underline-offset: .25em; }
+.home-sem-resultados { padding: var(--space-4); overflow-wrap: anywhere; }
+.home-protegidas { margin-top: var(--space-5); overflow-wrap: anywhere; }
+.home-protegidas h2, .home-lixeira h2 { font-size: var(--text-lg); }
+.home-protegidas p, .home-lixeira p { color: var(--color-ink-soft); font-size: var(--text-sm); }
+.home-lixeira { margin-top: var(--space-5); padding: var(--space-4); }
 .home-lixeira ul { display: grid; gap: var(--space-2); padding: 0; list-style: none; }
-.home-lixeira li { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-.home-lixeira button { min-height: 44px; }
+.home-lixeira li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.home-lixeira li span { min-width: 0; overflow-wrap: anywhere; }
+.home-lixeira button { min-height: 44px; padding: var(--space-2) var(--space-3); }
 
 @media (max-width: 640px) {
-  .home-cabecalho { align-items: stretch; flex-direction: column; gap: var(--space-3); }
-  .home-cabecalho-acoes { display: grid; grid-template-columns: 1fr 1fr; }
-  .home-importar, .home-nova-ficha { min-height: 44px; width: 100%; }
-  .home-busca { max-width: none; min-height: 44px; margin-bottom: var(--space-4); }
-  .home-grid { grid-template-columns: 1fr; gap: var(--space-3); }
-  .ficha-card { min-width: 0; }
-  .ficha-card-corpo { padding-right: calc(2 * 38px + var(--space-2)); }
-  .ficha-card-acessar { align-self: stretch; min-height: 44px; margin-top: var(--space-4); }
+  .home-cabecalho { padding: var(--space-4) var(--space-2); }
+  .home-titulo { font-size: var(--text-xl); }
+  .home-selo { display: none; }
+  .home-ferramentas { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .home-busca-label { max-width: none; }
+  .home-cabecalho-acoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); }
+  .home-importar, .home-nova-ficha { width: 100%; }
+  .home-grid { gap: var(--space-4); }
 }

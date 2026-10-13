@@ -1,0 +1,123 @@
+/* User reading adjustments apply to screens; the A4 print layout stays stable. */
+@media screen {
+  :root[data-reading-spacing="true"] :where(p, li, dt, dd, label, input, select, textarea, button, a, h1, h2, h3, h4, span, td, th, legend, summary) {
+    line-height: 1.8 !important;
+    letter-spacing: 0.04em !important;
+    word-spacing: 0.08em !important;
+  }
+  :root[data-underline-links="true"] a[href] {
+    text-decoration-line: underline !important;
+    text-decoration-thickness: max(1px, 0.08em);
+    text-underline-offset: 0.18em;
+  }
+  :root[data-light-dimmed="true"]:not([data-high-contrast="true"])[data-theme="light"] {
+    --color-bg: color-mix(in srgb, #f6f2e8 var(--light-brightness), black);
+    --color-bg-raised: color-mix(in srgb, #fffdf7 var(--light-brightness), black);
+    --color-bg-inset: color-mix(in srgb, #ece6d8 var(--light-brightness), black);
+    --surface-overlay: var(--color-bg-raised);
+    --color-ink-soft: #423d34;
+    --color-line: #625c50;
+    --color-line-strong: #534c42;
+    --color-interactive-hover: color-mix(in srgb, #e9e2d4 var(--light-brightness), black);
+    --color-primary: #344471;
+    --color-primary-hover: #253555;
+    --color-accent: #533b09;
+    --color-accent-hover: #392800;
+    --color-danger: #7d2024;
+    --color-success: #174827;
+    --color-success-soft: #174827;
+    --color-warning: #583604;
+    --color-warning-soft: #583604;
+    --placeholder-opacity: 1;
+  }
+  :root[data-high-contrast="true"] {
+    --placeholder-opacity: 1;
+    --color-bg: #07080d;
+    --color-bg-raised: #101218;
+    --color-bg-inset: #07080d;
+    --surface-overlay: var(--color-bg-raised);
+    --color-ink: #fff;
+    --color-ink-soft: #e8e8e8;
+    --color-line: #b5b5b5;
+    --color-line-strong: #d5d5d5;
+    --color-accent: #ffd57a;
+    --color-accent-hover: #ffebad;
+    --color-accent-ink: #211700;
+    --color-primary: #b7d3ff;
+    --color-primary-hover: #d7e6ff;
+    --color-danger: #ffb4ab;
+    --color-danger-soft: #ffb4ab;
+    --color-success: #a9e7b4;
+    --color-success-soft: #a9e7b4;
+    --color-warning: #ffd57a;
+    --color-warning-soft: #ffd57a;
+    --color-focus-ring: #ffd57a;
+    --color-interactive-hover: #252836;
+  }
+  :root[data-high-contrast="true"][data-theme="light"] {
+    --color-bg: color-mix(in srgb, #f4f4f4 var(--light-brightness, 100%), black);
+    --color-bg-raised: color-mix(in srgb, white var(--light-brightness, 100%), black);
+    --color-bg-inset: color-mix(in srgb, #f9f9f9 var(--light-brightness, 100%), black);
+    --color-ink: #111;
+    --color-ink-soft: #222;
+    --color-line: #454545;
+    --color-line-strong: #333;
+    --color-accent: #533900;
+    --color-accent-hover: #392800;
+    --color-accent-ink: #fff;
+    --color-primary: #163b69;
+    --color-primary-hover: #102c50;
+    --color-danger: #8b1421;
+    --color-danger-soft: #8b1421;
+    --color-success: #174827;
+    --color-success-soft: #174827;
+    --color-warning: #583604;
+    --color-warning-soft: #583604;
+    --color-focus-ring: #163b69;
+    --color-interactive-hover: color-mix(in srgb, #e5e5e5 var(--light-brightness, 100%), black);
+  }
+}
+@media screen and (prefers-color-scheme: light) {
+  :root[data-light-dimmed="true"]:not([data-high-contrast="true"]):not([data-theme="dark"]):not([data-theme="light"]) {
+    --color-bg: color-mix(in srgb, #f6f2e8 var(--light-brightness), black);
+    --color-bg-raised: color-mix(in srgb, #fffdf7 var(--light-brightness), black);
+    --color-bg-inset: color-mix(in srgb, #ece6d8 var(--light-brightness), black);
+    --surface-overlay: var(--color-bg-raised);
+    --color-ink-soft: #423d34;
+    --color-line: #625c50;
+    --color-line-strong: #534c42;
+    --color-interactive-hover: color-mix(in srgb, #e9e2d4 var(--light-brightness), black);
+    --color-primary: #344471;
+    --color-primary-hover: #253555;
+    --color-accent: #533b09;
+    --color-accent-hover: #392800;
+    --color-danger: #7d2024;
+    --color-success: #174827;
+    --color-success-soft: #174827;
+    --color-warning: #583604;
+    --color-warning-soft: #583604;
+    --placeholder-opacity: 1;
+  }
+  :root[data-high-contrast="true"]:not([data-theme="dark"]):not([data-theme="light"]) {
+    --color-bg: color-mix(in srgb, #f4f4f4 var(--light-brightness, 100%), black);
+    --color-bg-raised: color-mix(in srgb, white var(--light-brightness, 100%), black);
+    --color-bg-inset: color-mix(in srgb, #f9f9f9 var(--light-brightness, 100%), black);
+    --color-ink: #111;
+    --color-ink-soft: #222;
+    --color-line: #454545;
+    --color-line-strong: #333;
+    --color-accent: #533900;
+    --color-accent-hover: #392800;
+    --color-accent-ink: #fff;
+    --color-primary: #163b69;
+    --color-primary-hover: #102c50;
+    --color-danger: #8b1421;
+    --color-danger-soft: #8b1421;
+    --color-success: #174827;
+    --color-success-soft: #174827;
+    --color-warning: #583604;
+    --color-warning-soft: #583604;
+    --color-focus-ring: #163b69;
+    --color-interactive-hover: color-mix(in srgb, #e5e5e5 var(--light-brightness, 100%), black);
+  }
+}

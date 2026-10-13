@@ -17,7 +17,7 @@ export default function BlocoProgressao({ progressao, nivelTotal, onChangeModo, 
 
   return (
     <section className="bloco-progressao">
-      <h4 className="bloco-progressao-titulo">Progressão</h4>
+      <h2 className="bloco-progressao-titulo">Progressão</h2>
 
       <div className="progressao-modo-toggle">
         <button

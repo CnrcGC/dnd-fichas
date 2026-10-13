@@ -17,7 +17,7 @@ const traco = (id, nome, descricao, automationLevel = "descriptive") => ({
 export const SUBRACAS = [
   {
     id: "anao-colina", racaId: "anao", nome: "Anão da Colina",
-    bonusAtributos: { sabedoria: 1 },
+    bonusAtributos: { sabedoria: 1 }, pvPorNivel: 1,
     tracos: [traco("tenacidade-ana", "Tenacidade Anã", "O máximo de PV aumenta em 1 por nível de personagem.", "assisted")],
     ...metadados(20, "Anão da Colina"),
   },
@@ -186,8 +186,11 @@ export const RACAS = [
   },
 ];
 
-export function obterRaca(id) {
-  return RACAS.find((raca) => raca.id === id) ?? null;
+export function obterRaca(id, subracaId) {
+  const raca = RACAS.find((item) => item.id === id) ?? null;
+  const subraca = obterSubracasPorRaca(id).find((item) => item.id === subracaId);
+  if (!subraca) return raca;
+  return { ...raca, nome: subraca.nome, bonusAtributos: obterBonusRaciais(id, subracaId), pvPorNivel: subraca.pvPorNivel ?? 0, armaduras: subraca.proficienciasArmaduras ?? [] };
 }
 
 export function obterSubracasPorRaca(racaId) {

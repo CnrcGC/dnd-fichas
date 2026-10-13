@@ -1,0 +1,82 @@
+{
+  "issue": "RELEASE-02",
+  "reviewDate": "2026-10-12",
+  "status": "PARCIAL",
+  "sourceChangedSinceValidatedBuild": false,
+  "previousValidatedResults": {
+    "unit": {
+      "passed": 213,
+      "failed": 0
+    },
+    "e2e": {
+      "report": "e2e-final.json",
+      "passed": 152,
+      "failed": 0
+    },
+    "productionChrome": {
+      "report": "production-final.json",
+      "passed": 6,
+      "failed": 0
+    },
+    "pagesChrome": {
+      "report": "pages-final.json",
+      "passed": 8,
+      "failed": 0
+    },
+    "routing": {
+      "report": "routing-final.json",
+      "passed": 16,
+      "failed": 0
+    },
+    "hostedChrome": {
+      "report": "hosted-final.json",
+      "passed": 6,
+      "failed": 0
+    }
+  },
+  "visibleBrowserAttempt": {
+    "browser": "Google Chrome",
+    "url": "http://127.0.0.1:4174/dnd-fichas/",
+    "separateTemporaryProfile": true,
+    "libraryHeadingLoaded": true,
+    "nativeUiSmokePassed": false,
+    "endedByTool": "Computer Use could not determine the current browser URL on Windows with enough confidence to enforce policy."
+  },
+  "nvda": {
+    "foundInCheckedLocationsOrInstallRegistry": false,
+    "validationPassed": false
+  },
+  "pending": [
+    "Native Chrome zoom at 200 percent",
+    "Native print dialog",
+    "NVDA validation",
+    "Real mobile device",
+    "Two human rehearsals of the complete demo"
+  ],
+  "commitCreated": true,
+  "tagCreated": true,
+  "published": true,
+  "applicationSourceChangedSinceValidatedBuild": false,
+  "validationConfigurationAdded": "playwright.hosted.config.js",
+  "agentUiInspection": {
+    "browser": "Codex In-app Browser",
+    "humanChromeSmoke": false,
+    "publishedGuidedCreation": true,
+    "publishedSaveFeedback": true,
+    "localFictitiousImport": true,
+    "localLevelUp4To5": true,
+    "localText150PercentAndReload": true,
+    "screenshot": "../screenshots/release-publicada.jpg",
+    "publishedKeyboardEnterHomeEnd": true,
+    "publishedViewport390Text150Percent": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "fontSize": "24px",
+      "horizontalOverflow": false
+    }
+  },
+  "tag": "mvp-rc-2026-10-12",
+  "sourceCommit": "3ac1eb943d18dae5ad7fe606edfe7ada1c5feabd",
+  "publishedUrl": "https://cnrcgc.github.io/dnd-fichas/",
+  "deploymentEvidence": "deployment.json"
+}

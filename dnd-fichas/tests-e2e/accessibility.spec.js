@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { Buffer } from "node:buffer";
 
 async function escolherCardCriacao(page, nome) {
   const card = page.getByRole("heading", { name: nome, exact: true }).locator("..").locator("..");
@@ -15,21 +16,24 @@ for (const path of ["/", "/characters/new", "/dnd5e", "/yusong", "/feiticeiros-m
   });
 }
 
-test("skip link e seletor de tema funcionam por teclado", async ({ page }) => {
+test("skip link e botão de tema funcionam por teclado", async ({ page }) => {
   await page.goto("/");
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: "Pular para o conteúdo principal" });
   await expect(skip).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.locator("main")).toBeFocused();
-  await page.getByLabel("Tema da interface").selectOption("light");
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  const toggle = page.getByRole("button", { name: /Ativar tema (claro|escuro)/ });
+  const theme = await toggle.getAttribute("aria-label") === "Ativar tema claro" ? "light" : "dark";
+  await toggle.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
 });
 
 test("FE-01 entrada e criação genéricas encaminham diretamente para D&D", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/dnd5e$/);
-  await expect(page.getByRole("heading", { name: /Personagens D&D/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Seus personagens/ })).toBeVisible();
   await page.goto("/characters/new");
   await expect(page).toHaveURL(/\/dnd5e\/characters\/new$/);
   await expect(page.getByRole("heading", { name: "Criar personagem D&D 5e" })).toBeVisible();

@@ -1,0 +1,35 @@
+import { test, expect } from "@playwright/test";
+import { importCharacter, readCharacter, waitForSave } from "./helpers/dnd.js";
+
+test("MVP-06 magias, slots, concentração, dano e descanso da demo", async ({ page }) => {
+  await importCharacter(page, { classeId: "mago", subclasseId: "escola-evocacao", nivel: 3, magias: [{ id: "detect-demo", nome: "Detectar Magia", nivel: 1, origemId: "detectar-magia", classeId: "mago", preparada: true }], espacosMagia: { 1: { total: 4, usados: 0 }, 2: { total: 2, usados: 0 } } });
+  await page.getByRole("tab", { name: "Magias", exact: true }).click();
+  await expect(page.getByLabel("Espaços totais de nível 1")).toHaveValue("4");
+  await expect(page.getByLabel("Espaços totais de nível 2")).toHaveValue("2");
+  await page.getByLabel("Espaços usados de nível 1").fill("1");
+  await page.getByRole("button", { name: "Concentrar", exact: true }).click();
+  await page.getByRole("tab", { name: "Combate", exact: true }).click();
+  await expect(page.locator(".concentracao-bloco")).toContainText("Detectar Magia");
+  await page.getByLabel("PV atual", { exact: true }).fill("20");
+  await expect(page.getByRole("alert")).toContainText("CD 10");
+  await page.getByRole("button", { name: "Parar", exact: true }).click();
+  await waitForSave(page);
+  expect((await readCharacter(page)).concentracao).toBeNull();
+  await page.getByRole("tab", { name: "Magias", exact: true }).click();
+  await page.getByRole("button", { name: "Concentrar", exact: true }).click();
+  await page.getByRole("tab", { name: "Combate", exact: true }).click();
+  await page.getByLabel("PV atual", { exact: true }).fill("0");
+  await expect(page.locator(".concentracao-bloco")).toHaveCount(0);
+  await expect(page.locator(".concentracao-aviso")).toHaveCount(0);
+  const descanso = page.getByRole("button", { name: "Fazer descanso longo" });
+  await expect(descanso).toBeDisabled();
+  await expect(page.locator("#descanso-longo-indisponivel")).toContainText("1 PV");
+  await page.getByLabel("PV atual", { exact: true }).fill("1");
+  await expect(descanso).toBeEnabled();
+  await page.getByRole("button", { name: "Fazer descanso longo" }).click();
+  await page.getByRole("tab", { name: "Magias", exact: true }).click();
+  await expect(page.getByLabel("Espaços usados de nível 1")).toHaveValue("0");
+  await waitForSave(page);
+  await page.reload();
+  expect((await readCharacter(page)).concentracao).toBeNull();
+});

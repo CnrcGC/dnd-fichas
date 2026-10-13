@@ -2,16 +2,16 @@
   <img src="dnd-fichas/public/logo-dd-fichas.png" alt="D&D Fichas" width="320" />
 </p>
 
-# Plataforma de fichas de RPG
+# D&D Fichas — MVP de apresentação
 
-Aplicação local-first em evolução para reunir fichas de **D&D 5e**, **Yusong** e **Feiticeiros & Maldições** sem misturar as regras dos sistemas. A experiência D&D existente continua sendo a interface funcional principal enquanto os demais módulos são incorporados com migrações explícitas.
+Aplicação local-first para criar e usar fichas de **D&D 5e (regras de 2014)**. O foco da apresentação é biblioteca → criação → ficha → combate/recursos → magias → inventário → level up → salvar/reabrir → JSON → impressão/PDF. Os módulos multissistema existentes são preservados, mas sua expansão está adiada.
 
-O frontend fica em [`dnd-fichas/`](./dnd-fichas) e o serviço opcional de sincronização em [`server/`](./server). Os quatro planos de implementação na raiz são o contrato de evolução do projeto.
+O frontend fica em [`dnd-fichas/`](./dnd-fichas). O serviço em [`server/`](./server) é opcional e está fora do MVP. A especificação ativa é o [MVP de 9 dias](./dnd-fichas/docs/MVP-9-DIAS-ISSUES-ACESSIBILIDADE.md); os planos anteriores servem como histórico.
 
 ## Recursos
 
 - Criação guiada de personagem e ficha em branco.
-- 9 raças, 12 classes, 8 antecedentes e 26 subclasses do catálogo atual.
+- Catálogo local com 9 raças, 9 sub-raças, 12 classes, 13 antecedentes, 41 subclasses, talentos e magias; automação varia conforme a regra.
 - Proficiências iniciais por classe, raça e antecedente, com idiomas, ferramentas e origem de cada concessão.
 - Multiclasse com pré-requisitos, nível total máximo 20, proficiências reduzidas, pools de dados de vida e PV por classe de origem.
 - Assistente de level up com PV, ASI, subclasse, habilidades e troca opcional de magias.
@@ -19,17 +19,19 @@ O frontend fica em [`dnd-fichas/`](./dnd-fichas) e o serviço opcional de sincro
 - Segredos Mágicos de Bardo/Colégio do Conhecimento e origens especiais por talento, item ou regra da mesa.
 - Validação para a mesa: erros bloqueantes, escolhas pendentes, avisos e estado de rascunho ou ficha pronta.
 - Combate, ataques, recursos, concentração, descansos, inventário, moedas e rolagens.
-- Persistência automática em `localStorage`, além de importação e exportação de fichas em JSON.
+- Persistência automática em IndexedDB, lixeira recuperável e importação/exportação JSON; dados legados de `localStorage` são preservados durante o bootstrap.
+- Impressão A4 com ficha própria para PDF; arquivos de demonstração em [`docs/demo`](./dnd-fichas/docs/demo) e roteiro em [`DEMO.md`](./dnd-fichas/docs/DEMO.md).
+- Tema automático com botão claro/escuro, configurações na engrenagem, texto de 16 a 28 px por slider, espaçamento de leitura, alto contraste, links sublinhados e brilho do tema claro de 80% a 100%. Preferências salvas localmente. Skip link, abas e modais por teclado, feedback textual e redução de movimento seguem disponíveis. NVDA e zoom nativo continuam pendentes; não há declaração formal de conformidade WCAG.
 
 ## Executar localmente
 
 ```bash
 cd dnd-fichas
-npm install
+npm ci
 npm run dev
 ```
 
-O frontend continua funcionando sem servidor. Para configurar autenticação, PostgreSQL e sincronização, consulte [`server/README.md`](./server/README.md).
+O frontend funciona sem backend e sem conexão com a internet para seus fluxos locais. Fontes web possuem fallback do sistema. Autenticação, PostgreSQL e sincronização estão fora da apresentação; documentação histórica em [`server/README.md`](./server/README.md).
 
 ## Comandos disponíveis
 
@@ -41,17 +43,29 @@ npm test         # testes automatizados
 npm run lint     # análise estática
 npm run build    # build de produção
 npm run preview  # visualização do build
+npm run test:a11y -- --workers=1 # axe, teclado e ampliação/reflow
+npm run test:e2e -- --workers=1  # regressões de navegador
+npm run test:production         # ensaios no preview; gera PDFs de fallback
+npm run build:pages             # build para /dnd-fichas/, com budget e 404
+npm run test:pages              # Chrome contra hospedagem estática simulada
+npm run test:hosted             # Chrome contra a origem HTTPS real
+npm run preview:pages           # http://127.0.0.1:4174/dnd-fichas/
+npm run demo:prepare            # recria somente os JSONs de demonstração
 ```
+
+Endereço escolhido para apresentação: **https://cnrcgc.github.io/dnd-fichas/**. A publicação anterior usa o build da candidata em `gh-pages`. Por decisão do proprietário, o desenvolvimento atual ocorre somente na **`main`**, sobre a versão 1.21, com as correções do MVP e o visual de grimório integrados localmente. Biblioteca e preferências aprovadas pelo proprietário em 2026-10-13; esta revisão ainda não foi publicada. Validação atual em [`MAIN_INTEGRATION.md`](./dnd-fichas/docs/MAIN_INTEGRATION.md); histórico em [`DEPLOY.md`](./dnd-fichas/docs/DEPLOY.md) e [`MVP_VALIDATION.md`](./dnd-fichas/docs/MVP_VALIDATION.md).
 
 ## Dados e privacidade
 
-As fichas D&D legadas continuam no `localStorage`. A camada de plataforma usa envelopes isolados por sistema e IndexedDB; a ponte de importação nunca apaga automaticamente os registros legados. A sincronização é opcional, autenticada e não envia dados locais apenas porque o usuário entrou na conta.
+IndexedDB é a fonte de verdade das fichas D&D após o bootstrap legado. Os registros originais de `localStorage` não são apagados nem usados para sobrescrever edições mais recentes. A interface aguarda a hidratação antes de editar, confirma o commit antes de anunciar salvamento e informa falhas com opção de tentar novamente. Registros futuros/incompatíveis são preservados e não entram na edição normal. Exporte JSONs como cópias externas; armazenamento do navegador é específico do dispositivo e domínio.
+
+O fluxo da apresentação funciona sem backend, autenticação ou sincronização. Esses recursos estão fora do MVP. Escopo: [`MVP-9-DIAS-ISSUES-ACESSIBILIDADE.md`](./dnd-fichas/docs/MVP-9-DIAS-ISSUES-ACESSIBILIDADE.md). Evidências reais: [`MVP_VALIDATION.md`](./dnd-fichas/docs/MVP_VALIDATION.md).
 
 ## Estado da migração multissistema
 
-- D&D 5e: engine existente encapsulado sem alteração de regras, rotas legadas preservadas.
-- Yusong: contrato, schema v1, migração defensiva e fórmulas auditadas; a interface-fonte não está presente neste repositório.
-- Feiticeiros & Maldições: schema/registro de regras e núcleo determinístico explicitado pelos planos; catálogo e regras dependentes do livro permanecem bloqueados sem o PDF 2.5.2.
+- D&D 5e: interface e engine ativos no MVP, com rotas legadas preservadas.
+- Pilares de Atlas/Yusong: biblioteca, criação, ficha e regras locais existem; impressão não está habilitada. Preservado, com expansão adiada.
+- Feiticeiros & Maldições: schema, núcleo de regras, rastreabilidade e metadados de especializações existem; criação/ficha/impressão estão bloqueadas no adapter. Fora do MVP.
 - Plataforma: registro lazy de sistemas, envelope versionado, repositório IndexedDB, importação idempotente, temas e fundação acessível.
 
 ## Escopo do catálogo

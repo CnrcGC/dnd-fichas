@@ -97,6 +97,7 @@ export default function BlocoAtaques({
             <input
               type="text"
               value={ataque.nome}
+
               placeholder="Nome do ataque"
               aria-label="Nome do ataque manual"
               onChange={(evento) =>
@@ -158,6 +159,7 @@ export default function BlocoAtaques({
               type="button"
               className="ataques-rolar-botao"
               onClick={() => handleRolarAcerto(ataque, bonusAcerto)}
+              aria-label={`Rolar acerto de ${ataque.nome || "ataque"}`}
               title={`Rolar ataque (d20${formatarModificador(bonusAcerto)})`}
             >
               <Icon name="dice" /> {formatarModificador(bonusAcerto)}
@@ -239,7 +241,7 @@ export default function BlocoAtaques({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Ataques</h3>
+      <h2 className="bloco-titulo">Ataques</h2>
 
       {armasEquipadas.length > 0 && (
         <div className="ataques-secao">
@@ -254,7 +256,7 @@ export default function BlocoAtaques({
                 <th>Acerto</th>
                 <th>Dano</th>
                 <th>Tipo</th>
-                <th aria-label="ações"></th>
+                <th scope="col"><span className="visually-hidden">ações</span></th>
               </tr>
             </thead>
             <tbody>
@@ -291,7 +293,7 @@ export default function BlocoAtaques({
                 <th>Acerto</th>
                 <th>Dano</th>
                 <th>Tipo</th>
-                <th aria-label="Remover"></th>
+                <th scope="col"><span className="visually-hidden">Remover</span></th>
               </tr>
             </thead>
             <tbody>

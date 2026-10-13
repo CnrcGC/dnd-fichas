@@ -119,7 +119,7 @@ export default function BlocoInventario({
   return (
     <section>
       <div className="inventario-cabecalho">
-        <h3 className="bloco-titulo">Inventário</h3>
+        <h2 className="bloco-titulo">Inventário</h2>
         <div className="inventario-resumos">
           <span className={sobrecarregado ? "inventario-peso is-sobrecarregado" : "inventario-peso"}>
             Peso total: {pesoTotal} / {capacidadeCarga} kg
@@ -171,7 +171,7 @@ export default function BlocoInventario({
               <th>Equipado</th>
               <th>Ataca com</th>
               <th>Mágico</th>
-              <th aria-label="Remover"></th>
+              <th scope="col"><span className="visually-hidden">Remover</span></th>
             </tr>
           </thead>
           <tbody>
@@ -195,6 +195,7 @@ export default function BlocoInventario({
                     <input
                       type="text"
                       value={item.nome}
+
                       placeholder="Nome do item"
                       aria-label="Nome do item"
                       onChange={(evento) =>

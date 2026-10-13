@@ -19,6 +19,12 @@
 }
 
 @media print {
+  html, body, #root {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+    color-scheme: light !important;
+  }
   @page {
     size: A4 portrait;
     margin: 10mm;
@@ -35,6 +41,8 @@
   }
 
   .topbar,
+  .skip-link,
+  .ficha-titulo,
   .app-footer,
   .painel-rolagens,
   .aviso-persistencia,
@@ -60,6 +68,7 @@
 
   .ficha-impressao * {
     box-sizing: border-box;
+    overflow-wrap: anywhere;
   }
 
   .ficha-impressao-cabecalho {

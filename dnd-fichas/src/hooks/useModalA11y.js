@@ -9,6 +9,7 @@ const FOCUSABLE = [
   "[contenteditable='true']",
   "[tabindex]:not([tabindex='-1'])",
 ].join(",");
+const dialogs = [];
 
 function elementoVisivel(elemento) {
   if (!(elemento instanceof HTMLElement)) return false;
@@ -50,7 +51,7 @@ function tornarFundoInerte(dialog) {
   };
 }
 
-export function useModalA11y(aberto, onFechar) {
+export function useModalA11y(aberto, onFechar, returnFocusRef) {
   const dialogRef = useRef(null);
   const onFecharRef = useRef(onFechar);
 
@@ -62,12 +63,14 @@ export function useModalA11y(aberto, onFechar) {
     if (!aberto || !dialogRef.current) return undefined;
 
     const dialog = dialogRef.current;
-    const focoAnterior = document.activeElement;
+    const focoAnterior = returnFocusRef?.current ?? document.activeElement;
+    dialogs.push(dialog);
     const restaurarFundo = tornarFundoInerte(dialog);
     const elementos = () => elementosFocaveis(dialog);
     (elementos()[0] ?? dialog).focus();
 
     function handleKeyDown(evento) {
+      if (dialogs.at(-1) !== dialog) return;
       if (evento.key === "Escape") {
         evento.preventDefault();
         onFecharRef.current();
@@ -84,7 +87,10 @@ export function useModalA11y(aberto, onFechar) {
 
       const primeiro = focaveis[0];
       const ultimo = focaveis[focaveis.length - 1];
-      if (evento.shiftKey && document.activeElement === primeiro) {
+      if (!dialog.contains(document.activeElement)) {
+        evento.preventDefault();
+        (evento.shiftKey ? ultimo : primeiro).focus();
+      } else if (evento.shiftKey && document.activeElement === primeiro) {
         evento.preventDefault();
         ultimo.focus();
       } else if (!evento.shiftKey && document.activeElement === ultimo) {
@@ -94,6 +100,7 @@ export function useModalA11y(aberto, onFechar) {
     }
 
     function handleFocusIn(evento) {
+      if (dialogs.at(-1) !== dialog) return;
       if (dialog.contains(evento.target)) return;
       (elementos()[0] ?? dialog).focus();
     }
@@ -103,11 +110,15 @@ export function useModalA11y(aberto, onFechar) {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("focusin", handleFocusIn);
+      dialogs.splice(dialogs.indexOf(dialog), 1);
       restaurarFundo();
       if (focoAnterior?.isConnected && elementoVisivel(focoAnterior)) focoAnterior.focus();
       else document.querySelector("main")?.focus();
+      requestAnimationFrame(() => {
+        if (focoAnterior?.isConnected && elementoVisivel(focoAnterior) && document.activeElement === document.body && !dialogs.length) focoAnterior.focus();
+      });
     };
-  }, [aberto]);
+  }, [aberto, returnFocusRef]);
 
   return dialogRef;
 }

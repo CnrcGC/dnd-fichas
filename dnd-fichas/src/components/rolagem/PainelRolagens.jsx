@@ -100,6 +100,10 @@ export default function PainelRolagens() {
     : "";
 
   return (
+    <>
+    <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+      {ultima ? <span key={ultima.id}>{`${ultima.titulo}. Resultado ${ultima.resultado.total}.${ultima.tipo === "d20" && ultima.resultado.d20 === 20 ? " Crítico." : ultima.tipo === "d20" && ultima.resultado.d20 === 1 ? " Falha crítica." : ""}`}</span> : ""}
+    </p>
     <div className={expandido ? "painel-rolagens is-expandido" : "painel-rolagens"}>
       <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
         {anuncioUltima}
@@ -107,6 +111,8 @@ export default function PainelRolagens() {
       <button
         type="button"
         className="painel-rolagens-toggle"
+        aria-expanded={expandido}
+        aria-controls="painel-rolagens-historico"
         onClick={() => setExpandido((atual) => !atual)}
         aria-expanded={expandido}
         aria-controls="painel-rolagens-historico"
@@ -156,5 +162,6 @@ export default function PainelRolagens() {
         </div>
       )}
     </div>
+    </>
   );
 }

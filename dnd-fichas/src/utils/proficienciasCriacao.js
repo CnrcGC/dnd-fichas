@@ -60,6 +60,9 @@ export function escolhasObrigatoriasCriacao(ficha) {
     ? obterSubraca(ficha.subracaId)
     : null;
   const antecedente = obterAntecedente(ficha.antecedenteId);
+  if (raca?.requerSubraca && !subraca) {
+    pendencias.push({ secao: "identidade", mensagem: "Sub-raça: escolha uma opção compatível com a raça." });
+  }
   const verificar = (titulo, regra, valores) => {
     const quantidade = Number(regra?.quantidade ?? regra ?? 0);
     if (quantidade && [...new Set((valores ?? []).filter(Boolean))].length !== quantidade) {
@@ -221,6 +224,7 @@ export function reconciliarProficienciasCriacao(ficha) {
     }
   }
   if (raca) {
+    concederLista(origens, "armaduras", raca.armaduras, `raca:${raca.id}`);
     concederLista(origens, "idiomas", raca.idiomasFixos, `raca:${raca.id}`);
     concederLista(origens, "idiomas", escolhas.idiomasRaca, `raca:${raca.id}`);
     concederLista(origens, "pericias", raca.periciasConcedidas, `raca:${raca.id}`);

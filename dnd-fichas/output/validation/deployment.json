@@ -1,0 +1,292 @@
+{
+  "issue": "RELEASE-01",
+  "reviewDate": "2026-10-12",
+  "url": "https://cnrcgc.github.io/dnd-fichas/",
+  "sourceBranch": "codex/mvp-apresentacao",
+  "sourceCommit": "3ac1eb943d18dae5ad7fe606edfe7ada1c5feabd",
+  "deploymentBranch": "gh-pages",
+  "deploymentCommit": "37bbf357dc939f6b250eb8b37b2c245c493d9a3a",
+  "mainPreserved": "be9fef14cbc2c02f71a2fc78a1675cba1ef48f02",
+  "httpsEnforced": true,
+  "siteStatus": "built",
+  "workflow": {
+    "id": 38309889568,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/CnrcGC/dnd-fichas/actions/runs/38309889568"
+  },
+  "assets": [
+    {
+      "file": "404.html",
+      "status": 200,
+      "sha256": "49e6e6aeb6b396fa4e9af09c229f083ab1607528609c2af72480f4f5a9fe5923",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoHabilidades-BwCKbg5I.css",
+      "status": 200,
+      "sha256": "c3de1a639e1658a8a62a22f307428d9f7174bcdaa298fdf8f453ebc438afff95",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoHabilidades-jLTGnmMK.js",
+      "status": 200,
+      "sha256": "2aa4713b0e8802816fc0588f89ecbab81d892e0d20e56709eedd86ee7ebac52a",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoInventario--_K5ZXSh.css",
+      "status": 200,
+      "sha256": "391a7ebca82c391956d725a85a6979054dd682a9970f1d6a08f79f15d853ea0b",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoInventario-C5ME9E7s.js",
+      "status": 200,
+      "sha256": "87e5722e3c1014ba0fa2adb3efa2328f9df5ff2b75460b4eec0aae33f78b123c",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoMagias-DNp9C0Ge.css",
+      "status": 200,
+      "sha256": "138c19438c0079da497a24361a71f9370a19e12ef20a83ab4b843f6ab2623049",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoMagias-gk8C9kDu.js",
+      "status": 200,
+      "sha256": "cf4dd38bdb3117a3c48344804473cbd1eb7e7a4ef98ab96257cc8a36588251fd",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoMoedas-CWx_Z0wN.css",
+      "status": 200,
+      "sha256": "8a57d73cdfa3a81e98c375b46e9e91f9be28b005159fa3361befc8518fa11d4a",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoMoedas-D8PXy6E6.js",
+      "status": 200,
+      "sha256": "27ac3f29351d411b84ba361f158aa07ea1aea61a0ff9958867c1b662e7ed440e",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoPericias-CHUInoLJ.js",
+      "status": 200,
+      "sha256": "8f27b654876edc54b2a2e96216ce7a6ed5ee69f4cee661a1ca9840f9451ce467",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoPericias-Ca3xa2Gf.css",
+      "status": 200,
+      "sha256": "44d577dbccf510fac8c318d116406cbc572dbe2d76df18f8bd8b2a56536d41d3",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoProficiencias-DBSc2U1W.js",
+      "status": 200,
+      "sha256": "3655307d94558ab5c4612091defa664593e85895fefc8e79a3b7335f8f4d2d69",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/BlocoProficiencias-S5LHXoLy.css",
+      "status": 200,
+      "sha256": "c5a5cf572bf993450e933842e345b0bf4746f54b76273c109e0bc1d3862386f0",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/DetalheHabilidade-CWfdg6KO.js",
+      "status": 200,
+      "sha256": "c74d63ba0aa3badd8b2ddf14d091d3f8f81571e9978bbc22edf1ad5af613bd3a",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/ModalCatalogoItens-BGsdXF1V.css",
+      "status": 200,
+      "sha256": "848b8c9bab0e01035d6ddd607f717cfd3380e77894146ef406596ca161d200b7",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/ModalCatalogoItens-CaULcG0g.js",
+      "status": 200,
+      "sha256": "cec3ca7ec1ebc38e3083cd008d3994525af0a7be64aea8663502fd1addab6fe1",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/ModalLevelUp-B4GWv8cJ.js",
+      "status": 200,
+      "sha256": "0fccb3743c3707acedf234e967f8fc4ff83924d0131261c2f94eba2bcc6bb5e1",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/ModalLevelUp-sWByJtN-.css",
+      "status": 200,
+      "sha256": "53a339fdd61b886797f99b3b77d6d0897574408b2eb5ef99988a3a4d48faf1df",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/adapter-BN79wB3H.css",
+      "status": 200,
+      "sha256": "753219c76f6c9a0258da62b616d91388eb928ebfc850994574bb126bdb818c4e",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/adapter-CNRGhqoh.css",
+      "status": 200,
+      "sha256": "bc78fb15b270fe5b77650333ffd4e76733e150ef994c677f7c043e7dd542b802",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/adapter-CYwHw4t6.js",
+      "status": 200,
+      "sha256": "ab9bdd363eeda04b2f377b17ed9252788d07377ad58f1ce1369eb1bde92ac22d",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/adapter-DICMawwz.js",
+      "status": 200,
+      "sha256": "f136aead61564b2c56f60e11560c32f1893b0488ee11902b5457f7c6fe7c3476",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/adapter-LI1WnwON.js",
+      "status": 200,
+      "sha256": "d31f977e0b37f71a46f6dfae10a909e3559e4d947e46dcd174d0a9c8b02c2c7f",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/catalogoItens-AXEzoaRm.js",
+      "status": 200,
+      "sha256": "1591138c6e98f3fd5696f715a17ec12c34a6202354112aaf58886c74a66639ac",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/dnd-sq_G4HaW.js",
+      "status": 200,
+      "sha256": "507a6286db76743957a1f4737247c0a2139f2fb2dcb4ef7ce167731db019c06c",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/engine-C2oB3ufT.js",
+      "status": 200,
+      "sha256": "4c9e46fe7a4527111d41e6f6d9d633c57175bfbdc24132cf65eeb6af6d61ecbf",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/engine-CAa-832K.js",
+      "status": 200,
+      "sha256": "a7eb818e098280a3f760f134480e33b8438766628c7dc1ab3ea641967ebc74a1",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/engine-DMptJ5uf.js",
+      "status": 200,
+      "sha256": "583e33396c0f882e57effe2829347e9841b86fdf777a50872f3ca3992b607b0a",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/habilidadesClasses-Bt4nwqgv.js",
+      "status": 200,
+      "sha256": "7aaede0d4ae486103fae66be344a5a5970a0a9ff9877c9caceb5eff9da587b0c",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/index-Cqc1Bua5.css",
+      "status": 200,
+      "sha256": "f6d400116e5fd0489a6bb192c69ea2b03bb1c1c8a4ac95b142903251a477cd1d",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/index-D6attC6_.js",
+      "status": 200,
+      "sha256": "a53010bec5136c1a4966563dd148767067dcafd4506b8979caa1aa541a527283",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/jsx-runtime-DGeXAQPT.js",
+      "status": 200,
+      "sha256": "c2d44aaf9f8fb72cd9cdab2793140bcf8ca534918e10ead6e78d59535cc9ab36",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/progressao-cY7o2kOU.js",
+      "status": 200,
+      "sha256": "04ab594feb7a2e9e6b14c08d8e24ba54fe52b7a361a472400d8a964b6ef65b15",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "assets/react-3W8R1pOO.js",
+      "status": 200,
+      "sha256": "3cd67301be8247e232eab8710072fcdceea47765fbb9a13609932c596b6d5350",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "favicon.svg",
+      "status": 200,
+      "sha256": "891902ce5f029c5a6333f33382c20a9cd442b25a8da871262edc6255035d56fb",
+      "matchesLocal": false,
+      "matchesDeployCommit": true,
+      "localDifference": "Git CRLF to LF normalization"
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "249b433216e398d047fe836d09d9d26efea5da841fd770c0d6bd38f7bf9299b0",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "logo-dd-fichas.png",
+      "status": 200,
+      "sha256": "dfe21cc7e40e81ed2950464aa1348045f940daec0b6bd34de752ca159c178d88",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    },
+    {
+      "file": "release.json",
+      "status": 200,
+      "sha256": "eb7942500f1826055b540b34bff39f50deb7cec776b99208074729000f640518",
+      "matchesLocal": true,
+      "matchesDeployCommit": true
+    }
+  ],
+  "directRoute": {
+    "status": 404,
+    "hasRecoveryScript": true
+  },
+  "manualAccessibilityApproval": "pending"
+}

@@ -148,7 +148,7 @@ export default function BlocoMagias({
   return (
     <>
       <section>
-        <h3 className="bloco-titulo">Conjuração</h3>
+        <h2 className="bloco-titulo">Conjuração</h2>
         {conjuracoes.length === 0 ? (
           <p className="magias-aviso">
             Nenhuma classe da ficha possui conjuração no nível atual.
@@ -157,7 +157,7 @@ export default function BlocoMagias({
           <div className="magias-resumo-grupos">
             {conjuracoes.map(({ classeId, nome, atributo, cd, ataque }) => (
               <div key={classeId} className="magias-resumo-grupo">
-                <h4 className="magias-resumo-classe">{nome}</h4>
+                <h3 className="magias-resumo-classe">{nome}</h3>
                 <div className="magias-resumo">
                   <div className="magias-resumo-item">
                     <span className="magias-resumo-label">Atributo de conjuração</span>
@@ -183,7 +183,7 @@ export default function BlocoMagias({
       </section>
 
       <section>
-        <h3 className="bloco-titulo">Espaços de magia</h3>
+        <h2 className="bloco-titulo">Espaços de magia</h2>
         <div className="espacos-magia-grid">
           {Object.entries(espacosMagia).map(([nivel, espaco]) => (
             <div key={nivel} className="espaco-magia-campo">
@@ -212,7 +212,7 @@ export default function BlocoMagias({
 
       {espacosMagiaPacto && (
         <section>
-          <h3 className="bloco-titulo">Espaços de Magia de Pacto (Bruxo)</h3>
+          <h2 className="bloco-titulo">Espaços de Magia de Pacto (Bruxo)</h2>
           <div className="espacos-magia-grid">
             <div className="espaco-magia-campo">
               <span className="espaco-magia-nivel">{espacosMagiaPacto.nivel}º</span>
@@ -236,7 +236,7 @@ export default function BlocoMagias({
       )}
 
       <section>
-        <h3 className="bloco-titulo">Magias conhecidas</h3>
+        <h2 className="bloco-titulo">Magias conhecidas</h2>
 
         <button
           type="button"
@@ -264,13 +264,13 @@ export default function BlocoMagias({
           <table className="magias-tabela">
             <thead>
               <tr>
-                <th aria-label="Expandir"></th>
+                <th scope="col"><span className="visually-hidden">Expandir</span></th>
                 <th>Magia</th>
                 <th>Nível</th>
                 <th>Origem</th>
                 <th>Preparada</th>
                 <th>Concentração</th>
-                <th aria-label="Remover"></th>
+                <th scope="col"><span className="visually-hidden">Remover</span></th>
               </tr>
             </thead>
             <tbody>

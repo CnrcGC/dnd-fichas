@@ -1,0 +1,54 @@
+import { test, expect } from "@playwright/test";
+import { importCharacter, readCharacter, waitForSave } from "./helpers/dnd.js";
+
+test("MVP-05 PV, morte, recursos, descansos e ataque persistem", async ({ page }) => {
+  await importCharacter(page, { recursos: [{ id: "demo-resource", nome: "Reserva da demo", usosMax: 2, usosGastos: 0, restauraEm: "curto" }] });
+  await page.getByLabel("PV temporário", { exact: true }).fill("5");
+  await expect(page.getByLabel("PV temporário", { exact: true })).toHaveValue("5");
+  await page.getByLabel("PV atual", { exact: true }).fill("0");
+  await page.getByRole("button", { name: "Sucesso 1", exact: true }).click();
+  await waitForSave(page);
+  expect((await readCharacter(page)).status.testesMorteSucessos).toBe(1);
+  await page.getByRole("button", { name: "Reiniciar", exact: true }).click();
+  await page.getByLabel("PV atual", { exact: true }).fill("20");
+  await page.getByRole("tab", { name: "Habilidades", exact: true }).click();
+  await page.getByRole("button", { name: "Reserva da demo — uso 1", exact: true }).click();
+  await waitForSave(page);
+  expect((await readCharacter(page)).recursos.find((r) => r.id === "demo-resource").usosGastos).toBe(1);
+  await page.getByRole("tab", { name: "Combate", exact: true }).click();
+  await page.getByRole("button", { name: /Concluir descanso curto/ }).click();
+  await waitForSave(page);
+  expect((await readCharacter(page)).recursos.find((r) => r.id === "demo-resource").usosGastos).toBe(0);
+  await page.getByRole("button", { name: /Gastar 1 dado de vida/ }).click();
+  await waitForSave(page);
+  expect((await readCharacter(page)).dadosDeVidaUsados).toBe(1);
+  await page.getByRole("button", { name: "Fazer descanso longo" }).click();
+  await expect(page.getByLabel("PV atual", { exact: true })).toHaveValue("40");
+  await expect(page.getByLabel("PV temporário", { exact: true })).toHaveValue("0");
+  await page.getByRole("button", { name: "Ataque manual" }).click();
+  await page.getByPlaceholder("Nome do ataque").fill("Espada da demo");
+  await page.getByPlaceholder("1d8", { exact: true }).fill("1d8");
+  await page.locator(".ataques-dano-preview").click();
+  await expect(page.locator(".painel-rolagens-titulo")).toContainText("Espada da demo");
+  await waitForSave(page);
+  await page.reload();
+  await expect(page.getByLabel("PV atual", { exact: true })).toHaveValue("40");
+  expect((await readCharacter(page)).ataques[0].nome).toBe("Espada da demo");
+});
+
+test("MVP-05 inventário, moedas e notas persistem após reload", async ({ page }) => {
+  await importCharacter(page);
+  await page.getByRole("tab", { name: "Inventário", exact: true }).click();
+  await page.getByRole("button", { name: "Item personalizado" }).click();
+  await page.getByPlaceholder("Nome do item").fill("Corda da demo");
+  await page.getByLabel("PO", { exact: true }).fill("25");
+  await page.getByRole("tab", { name: "Notas", exact: true }).click();
+  await page.getByPlaceholder("Qualquer outra coisa: contatos, pistas, itens especiais...").fill("Encontrar a torre ao amanhecer.");
+  await waitForSave(page);
+  await page.reload();
+  await page.getByRole("tab", { name: "Inventário", exact: true }).click();
+  await expect(page.getByPlaceholder("Nome do item")).toHaveValue("Corda da demo");
+  await expect(page.getByLabel("PO", { exact: true })).toHaveValue("25");
+  const stored = await readCharacter(page);
+  expect(stored.notas).toBe("Encontrar a torre ao amanhecer.");
+});

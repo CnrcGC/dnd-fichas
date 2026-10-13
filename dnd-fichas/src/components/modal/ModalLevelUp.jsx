@@ -5,6 +5,7 @@ import { useRolagem } from "../../context/useRolagem";
 import { obterHabilidadesPorClasse } from "../../data/habilidadesClasses";
 import { recalcularPv } from "../../utils/progressao";
 import { obterClasse } from "../../data/classes";
+import { obterRaca } from "../../data/racas";
 import { obterSubclassesPorClasse, obterNivelEscolhaSubclasse, obterSubclasse } from "../../data/subclasses";
 import { obterHabilidadesPorSubclasse } from "../../data/habilidadesSubclasses";
 import { MAGIAS } from "../../data/magiasSistema";
@@ -43,6 +44,7 @@ const ROTULOS_ETAPAS = {
 
 export default function ModalLevelUp({
   aberto,
+  returnFocusRef,
   onFechar,
   ficha,
   classe,
@@ -52,6 +54,7 @@ export default function ModalLevelUp({
 }) {
   const { registrarRolagem } = useRolagem();
   const [etapa, setEtapa] = useState(0);
+  const bonusPvRacial = obterRaca(ficha.racaId, ficha.subracaId)?.pvPorNivel ?? 0;
 
   // Todas as classes que dá pra subir: a principal + cada secundária de
   // multiclasse. Cada uma sabe seu próprio dado de vida e nível atual.
@@ -112,7 +115,8 @@ export default function ModalLevelUp({
   const [trocasMagias, setTrocasMagias] = useState([]);
   const dialogRef = useModalA11y(
     aberto && Boolean(classe) && nivelTotalAtual < NIVEL_MAXIMO_PERSONAGEM,
-    fecharEResetar
+    fecharEResetar,
+    returnFocusRef
   );
 
   if (!aberto || !classe || nivelTotalAtual >= NIVEL_MAXIMO_PERSONAGEM) return null;
@@ -687,8 +691,8 @@ export default function ModalLevelUp({
               {modoAsi === "unico" && (
                 <select
                   className="levelup-select"
-                  aria-label="Atributo para receber mais dois"
                   value={atributoAsiUnico}
+                  aria-label="Atributo para aumentar em 2"
                   onChange={(evento) => setAtributoAsiUnico(evento.target.value)}
                 >
                   {ATRIBUTOS.map((a) => (
@@ -703,8 +707,8 @@ export default function ModalLevelUp({
                 <div className="levelup-select-dupla">
                   <select
                     className="levelup-select"
-                    aria-label="Primeiro atributo para receber mais um"
-                    value={atributosAsiDuplo[0]}
+                      value={atributosAsiDuplo[0]}
+                    aria-label="Primeiro atributo para aumentar em 1"
                     onChange={(evento) =>
                       setAtributosAsiDuplo([evento.target.value, atributosAsiDuplo[1]])
                     }
@@ -717,8 +721,8 @@ export default function ModalLevelUp({
                   </select>
                   <select
                     className="levelup-select"
-                    aria-label="Segundo atributo para receber mais um"
-                    value={atributosAsiDuplo[1]}
+                      value={atributosAsiDuplo[1]}
+                    aria-label="Segundo atributo para aumentar em 1"
                     onChange={(evento) =>
                       setAtributosAsiDuplo([atributosAsiDuplo[0], evento.target.value])
                     }
@@ -896,8 +900,8 @@ export default function ModalLevelUp({
                   <strong>{novoNivelTotal}</strong>
                 </li>
                 <li>
-                  Pontos de vida: <strong>+{ganhoPv ?? 0}</strong> ({ficha.status.pvMax} →{" "}
-                  {ficha.status.pvMax + (ganhoPv ?? 0)})
+                  Pontos de vida: <strong>+{(ganhoPv ?? 0) + bonusPvRacial}</strong> ({ficha.status.pvMax} →{" "}
+                  {ficha.status.pvMax + (ganhoPv ?? 0) + bonusPvRacial})
                   {metodoPv === "banked" && " (valor já definido antes, sem reroll)"}
                 </li>
                 {asiJaAplicado && temAsi && (

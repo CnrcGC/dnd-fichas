@@ -10,6 +10,26 @@
         try {
           const theme = localStorage.getItem("rpg-platform:theme");
           if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+          const textSize = localStorage.getItem("rpg-platform:text-size");
+          if (["normal", "large", "extra-large"].includes(textSize)) document.documentElement.dataset.textSize = textSize;
+          const pixels = Number(localStorage.getItem("rpg-platform:text-scale"));
+          if (Number.isInteger(pixels) && pixels >= 16 && pixels <= 28) {
+            document.documentElement.dataset.textPixels = String(pixels);
+            document.documentElement.style.setProperty("--user-text-scale", `${pixels / 16 * 100}%`);
+          }
+          let reading;
+          try { reading = JSON.parse(localStorage.getItem("rpg-platform:reading-preferences")); } catch { /* Ignore damaged preferences. */ }
+          if (reading && typeof reading === "object") {
+            const root = document.documentElement;
+            root.dataset.readingSpacing = String(reading.spacing === true);
+            root.dataset.highContrast = String(reading.highContrast === true);
+            root.dataset.underlineLinks = String(reading.underlineLinks === true);
+            const brightness = typeof reading.lightBrightness === "number" && Number.isFinite(reading.lightBrightness)
+              ? Math.max(80, Math.min(100, Math.round(reading.lightBrightness))) : 100;
+            root.dataset.lightBrightness = String(brightness);
+            root.dataset.lightDimmed = String(brightness < 100);
+            root.style.setProperty("--light-brightness", `${brightness}%`);
+          }
         } catch { /* preferência opcional; a aplicação continua com o tema do sistema */ }
       })();
     </script>

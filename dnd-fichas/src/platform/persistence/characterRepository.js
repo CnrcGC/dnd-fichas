@@ -99,18 +99,21 @@ export class IndexedDbCharacterRepository {
   async put(envelope, { expectedRevision = null, createMutationId } = {}) {
     const transaction = this.transaction(["characters"], "readwrite");
     const completed = transactionResult(transaction);
+    // Um request pode ter sucesso e a transação ainda ser cancelada depois.
+    // Instale o tratamento imediatamente, inclusive para falhas síncronas.
+    completed.catch(() => {});
     const store = transaction.objectStore("characters");
-    const existing = await requestResult(store.get(envelope.id));
-    let prepared;
     try {
-      prepared = prepareEnvelopeWrite(envelope, existing, { expectedRevision, createMutationId });
+      const existing = await requestResult(store.get(envelope.id));
+      const prepared = prepareEnvelopeWrite(envelope, existing, { expectedRevision, createMutationId });
+      await requestResult(store.put(prepared));
+      await completed;
+      return structuredClone(prepared);
     } catch (error) {
-      transaction.abort();
+      try { transaction.abort(); } catch { /* A transação pode já ter sido cancelada. */ }
       await completed.catch(() => {});
       throw error;
     }
-    await Promise.all([requestResult(store.put(prepared)), completed]);
-    return structuredClone(prepared);
   }
 
   async getReceipt(id) { return requestResult(this.transaction(["migrationReceipts"]).objectStore("migrationReceipts").get(id)); }

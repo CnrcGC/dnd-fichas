@@ -3,6 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests-e2e",
   fullyParallel: false,
+  // As análises axe e capturas extensas disputam recursos no ambiente local.
+  // Serializar mantém os mesmos cenários, assertions e limites de tempo.
+  workers: 1,
   retries: 0,
   reporter: "list",
   use: {

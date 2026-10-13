@@ -183,3 +183,12 @@
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
+
+@media (max-width: 640px) {
+  .habilidades-tabela { table-layout: fixed; }
+  .habilidades-tabela th, .habilidades-tabela td { overflow-wrap: anywhere; padding-inline: 2px; }
+  .habilidades-tabela th:first-child, .habilidades-tabela th:last-child { width: 1.5rem; }
+  .habilidades-tabela th:nth-child(4) { width: 2rem; }
+  .habilidades-etiqueta { max-width: 100%; padding-inline: 2px; }
+  .habilidades-nivel-input { width: 100%; min-width: 0; }
+}

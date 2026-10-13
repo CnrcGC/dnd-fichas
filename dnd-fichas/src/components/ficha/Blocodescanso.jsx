@@ -57,10 +57,10 @@ export default function BlocoDescanso({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Descanso</h3>
+      <h2 className="bloco-titulo">Descanso</h2>
 
       <div className="descanso-bloco">
-                <h4 className="descanso-subtitulo">Descanso Curto</h4>
+                <h3 className="descanso-subtitulo">Descanso Curto</h3>
         <div className="descanso-pools">
           {pools.map((pool) => (
             <p key={pool.classeId} className="descanso-texto">
@@ -117,7 +117,7 @@ export default function BlocoDescanso({
       </div>
 
       <div className="descanso-bloco">
-        <h4 className="descanso-subtitulo">Descanso Longo</h4>
+        <h3 className="descanso-subtitulo">Descanso Longo</h3>
         <p className="descanso-texto">
           Restaura todo o PV, todos os espaços de magia, e{" "}
           {Math.max(1, Math.floor(dadosTotais / 2))} dado(s) de vida.

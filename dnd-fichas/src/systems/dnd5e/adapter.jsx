@@ -1,6 +1,6 @@
 import Home from "../../pages/Home";
 import Ficha from "../../pages/Ficha";
-import NovaFicha from "../../pages/NovaFicha";
+import NovaFicha from "../../pages/LazyNovaFicha";
 import { assertSystemAdapter } from "../../platform/systems/adapterContract";
 import { createSystemRoutes } from "../../platform/routing/routes";
 import { dnd5eEngine } from "./engine";

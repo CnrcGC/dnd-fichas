@@ -1,0 +1,112 @@
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { mkdir, readFile } from "node:fs/promises";
+import { Buffer } from "node:buffer";
+import { setTextSize, setRange } from "../tests-e2e/helpers/preferences.js";
+
+test("RELEASE-01 Pages entrega assets e recupera 404 de ficha com query/hash", async ({ page, baseURL, request }) => {
+  const root = new URL(baseURL);
+  expect((await request.get(new URL("favicon.svg", root).href)).status()).toBe(200);
+  const source = JSON.parse(await readFile("docs/demo/03-mago-nivel-4.json", "utf8"));
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(baseURL);
+  await expect(page.getByRole("heading", { name: "Seus personagens", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: /D&D Fichas/ })).toBeVisible();
+  const logo = page.locator(".topbar-dnd-logo");
+  await expect(logo).toBeVisible();
+  await expect(logo).toHaveAttribute("alt", "");
+  expect(await logo.evaluate((image) => image.naturalWidth)).toBeGreaterThan(0);
+  await page.getByLabel("Arquivo JSON da ficha").setInputFiles({ name: "demo.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(source)) });
+  await expect(page.getByRole("heading", { name: `Ficha de ${source.nome}` })).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
+  const direct = page.url() + "?demo=a%26b#notas";
+  const fallback = await request.get(direct, { headers: { Accept: "text/html" } });
+  expect(fallback.status()).toBe(404);
+  expect(await fallback.text()).toContain("__dnd_route");
+  await page.goto(direct);
+  await expect(page.getByRole("heading", { name: `Ficha de ${source.nome}` })).toBeVisible();
+  await expect(page).toHaveURL(direct);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: `Ficha de ${source.nome}` })).toBeVisible();
+  await expect(page).toHaveURL(direct);
+  await page.getByRole("link", { name: "Personagens", exact: true }).click();
+  expect(new URL(page.url()).pathname).toBe(root.pathname + "dnd5e");
+  await page.getByRole("main").getByRole("link", { name: "+ Novo personagem", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Criar personagem D&D 5e", exact: true })).toBeVisible();
+  expect(errors).toEqual([]);
+  const missingAsset = await request.get(new URL("assets/ausente.js", root).href);
+  expect(missingAsset.status()).toBe(404);
+  expect(missingAsset.headers()["content-type"]).toContain("text/plain");
+});
+
+test("RELEASE-01 Pages preserva rotas legadas e página ausente", async ({ page, baseURL }) => {
+  await page.goto(new URL("nova", baseURL).href);
+  await expect(page.getByRole("heading", { name: "Criar personagem D&D 5e" })).toBeVisible();
+  await expect(page).toHaveURL(new URL("dnd5e/characters/new", baseURL).href);
+  await page.goto(new URL("ficha/personagem-legado", baseURL).href);
+  await expect(page).toHaveURL(new URL("dnd5e/characters/personagem-legado", baseURL).href);
+  await expect(page.getByText(/Essa ficha não existe ou foi removida/)).toBeVisible();
+  await page.goto(new URL("endereco-ausente", baseURL).href);
+  await expect(page.getByRole("heading", { name: "Página não encontrada" })).toBeVisible();
+});
+
+test("VIS-G01/02 Chrome: preferências e barra nativa no build de Pages", async ({ page, baseURL }) => {
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+  await page.goto(baseURL);
+  await expect(page.getByLabel("Sistema ativo")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Ativar tema claro" })).toBeVisible();
+  expect(await page.locator("html").evaluate((element) => getComputedStyle(element, "::-webkit-scrollbar").width)).toBe("14px");
+  await mkdir("output/visual-grimoire/preferences", { recursive: true });
+  await page.getByRole("button", { name: "Configurações de acessibilidade", exact: true }).click();
+  await page.screenshot({ path: "output/visual-grimoire/preferences/chrome-painel-dark-normal.png" });
+  await page.keyboard.press("Escape");
+  await setTextSize(page, "extra-large");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-text-size", "extra-large");
+  await page.setViewportSize({ width: 320, height: 500 });
+  await expect(page.getByRole("heading", { name: "Seus personagens", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sua próxima aventura começa aqui" })).toBeVisible();
+  await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" }));
+  const top = page.getByRole("button", { name: "Voltar ao topo" });
+  await expect(top).toBeVisible();
+  await mkdir("output/visual-grimoire/preferences", { recursive: true });
+  await page.screenshot({ path: "output/visual-grimoire/preferences/chrome-rolagem-dark.png" });
+  await top.press("Enter");
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(page.getByRole("heading", { name: "Seus personagens", exact: true })).toBeFocused();
+  await page.emulateMedia({ forcedColors: "active" });
+  expect(await page.locator("html").evaluate((element) => getComputedStyle(element).scrollbarColor)).toBe("auto");
+});
+
+test("Chrome: ajustes de leitura persistem e seguem tema automático", async ({ page, baseURL }) => {
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await page.goto(baseURL);
+  await page.getByRole("button", { name: "Configurações de acessibilidade", exact: true }).click();
+  await setRange(page, "Tamanho do texto", 23);
+  await setRange(page, "Brilho do tema claro", 80);
+  await page.keyboard.press("Escape");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.getByRole("button", { name: "Configurações de acessibilidade", exact: true }).click();
+  for (const name of ["Espaçamento de leitura", "Alto contraste", "Sublinhar todos os links"]) {
+    await page.getByRole("switch", { name, exact: true }).check();
+  }
+  await page.keyboard.press("Escape");
+  await page.reload();
+  await expect(page.locator("html")).toHaveCSS("font-size", "23px");
+  await expect(page.locator("html")).toHaveAttribute("data-high-contrast", "true");
+  await expect(page.getByRole("link", { name: /D&D Fichas/ })).toHaveCSS("text-decoration-line", "underline");
+  const heading = page.getByRole("heading", { name: "Seus personagens", exact: true });
+  await expect(heading).toHaveCSS("color", "rgb(17, 17, 17)");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+  await expect(heading).toHaveCSS("color", "rgb(255, 255, 255)");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await expect(page.getByRole("button", { name: "Ativar tema claro", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Configurações de acessibilidade", exact: true }).click();
+  await page.getByRole("button", { name: "Voltar ao padrão", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("html")).toHaveCSS("font-size", "16px");
+  await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+  await expect(page.locator("html")).toHaveAttribute("data-high-contrast", "false");
+});

@@ -277,7 +277,7 @@
 
 @media (max-width: 640px) {
   .criacao-conteudo { padding: var(--space-3); }
-  .criacao-passos { overflow-x: auto; margin-bottom: var(--space-4); }
+  .criacao-passos { flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
   .criacao-passo { flex: 0 0 auto; }
   .criacao-passo:not(:last-child)::after { width: var(--space-4); flex: 0 0 var(--space-4); }
   .criacao-card { align-items: stretch; flex-direction: column; gap: var(--space-3); padding: var(--space-3); }

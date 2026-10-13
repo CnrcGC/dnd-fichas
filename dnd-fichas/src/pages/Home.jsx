@@ -8,16 +8,13 @@ import { exportarFicha, lerArquivoFicha } from "../utils/backup";
 import "./Home.css";
 
 export default function Home() {
-  const { fichas, fichasExcluidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
+  const { fichas, fichasExcluidas, fichasProtegidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
   const [busca, setBusca] = useState("");
   const [erroImportacao, setErroImportacao] = useState("");
   const navigate = useNavigate();
   const inputArquivoRef = useRef(null);
   const erroImportacaoRef = useRef(null);
-
-  useEffect(() => {
-    if (erroImportacao) erroImportacaoRef.current?.focus();
-  }, [erroImportacao]);
+  useEffect(() => { if (erroImportacao) erroImportacaoRef.current?.focus(); }, [erroImportacao]);
 
   function handleClickImportar() {
     inputArquivoRef.current?.click();
@@ -40,10 +37,8 @@ export default function Home() {
         );
       }
       navigate(`/dnd5e/characters/${encodeURIComponent(novaFicha.id)}`);
-    } catch {
-      setErroImportacao(
-        "Não foi possível importar esse arquivo. Confirme que é um arquivo JSON exportado pelo aplicativo e tente novamente."
-      );
+    } catch (error) {
+      setErroImportacao(`Não foi possível importar: ${error instanceof SyntaxError ? "JSON inválido. Escolha um arquivo .json exportado pelo D&D Fichas." : error.message}`);
     }
   }
 
@@ -54,97 +49,109 @@ export default function Home() {
   }, [fichas, busca]);
 
   function handleRemover(ficha) {
-    if (window.confirm(`Excluir a ficha de ${ficha.nome}?`)) {
+    if (window.confirm(`Mover a ficha de ${ficha.nome} para a lixeira? Você poderá restaurá-la depois.`)) {
       removerFicha(ficha.id);
     }
   }
 
   return (
-    <div>
-      <div className="home-marca">
-        <img src="/logo-dd-fichas.png" alt="D&D Fichas" className="home-logo" />
+    <div className="home-grimoire">
+      <div className="home-cabecalho grimoire-pagina">
+        <div className="home-abertura">
+          <p className="home-sobretitulo">Biblioteca de aventuras</p>
+          <h1 className="home-titulo">Seus personagens</h1>
+          <p className="home-subtitulo">Um lugar para suas próximas aventuras.</p>
+        </div>
+        <div className="home-selo" aria-hidden="true">
+          <Icon name="book" size={64} />
+          <span>D&D 5e</span>
+        </div>
       </div>
-            <div className="home-cabecalho">
-            <h1 className="home-titulo">Personagens D&D: {fichas.length}</h1>
-            <div className="home-cabecalho-acoes">
-              <button
-                type="button"
-                className="home-importar"
-                onClick={handleClickImportar}
-              >
-                Importar ficha
-              </button>
-              <input
-                type="file"
-                accept="application/json"
-                aria-label="Selecionar arquivo JSON para importar"
-                ref={inputArquivoRef}
-                onChange={handleArquivoSelecionado}
-                className="home-input-arquivo-escondido"
-              />
-              <Link to="/dnd5e/characters/new" className="home-nova-ficha">
-                + Novo personagem
-              </Link>
-            </div>
-          </div>
 
-      {erroImportacao && (
-        <p
-          className="home-importacao-erro state-danger"
-          role="alert"
-          tabIndex={-1}
-          ref={erroImportacaoRef}
-        >
-          {erroImportacao}
-        </p>
-      )}
+      <div className="home-ferramentas">
+        <label className="home-busca-label">
+          <span>Buscar ficha</span>
+          <input
+            type="search"
+            className="home-busca grimoire-campo"
+            aria-label="Buscar ficha"
+            placeholder="Nome do personagem"
+            value={busca}
+            onChange={(evento) => setBusca(evento.target.value)}
+          />
+        </label>
+        <div className="home-cabecalho-acoes">
+          <button type="button" className="home-importar" onClick={handleClickImportar}>
+            <Icon name="import" />
+            Importar ficha
+          </button>
+          <input
+            type="file"
+            accept="application/json"
+            ref={inputArquivoRef}
+            onChange={handleArquivoSelecionado}
+            className="home-input-arquivo-escondido"
+            aria-label="Arquivo JSON da ficha"
+            aria-describedby={erroImportacao ? "home-erro-importacao" : undefined}
+          />
+          <Link to="/dnd5e/characters/new" className="home-nova-ficha">
+            + Novo personagem
+          </Link>
+        </div>
+      </div>
+      {erroImportacao && <p className="home-erro grimoire-aviso" id="home-erro-importacao" role="alert" ref={erroImportacaoRef} tabIndex={-1}>{erroImportacao}</p>}
 
-      <input
-        type="text"
-        className="home-busca"
-        aria-label="Buscar ficha"
-        placeholder="Buscar ficha..."
-        value={busca}
-        onChange={(evento) => setBusca(evento.target.value)}
-      />
-      <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
-        {fichasFiltradas.length} {fichasFiltradas.length === 1 ? "ficha encontrada" : "fichas encontradas"}.
-      </p>
+      <div className="home-colecao-cabecalho">
+        <h2 className="home-colecao-titulo">Sua coleção</h2>
+        <p className="home-contagem">{fichas.length} {fichas.length === 1 ? "personagem" : "personagens"}</p>
+      </div>
 
       {fichas.length === 0 ? (
-        <p className="home-vazio">
-          Você ainda não tem nenhuma ficha. <Link to="/dnd5e/characters/new">Crie a primeira</Link>.
-        </p>
+        <section className="home-vazio grimoire-pagina" aria-labelledby="home-vazio-titulo">
+          <span className="home-vazio-simbolo"><Icon name="book" size={40} /></span>
+          <h3 id="home-vazio-titulo">Sua próxima aventura começa aqui</h3>
+          <p>Você ainda não tem nenhuma ficha.</p>
+          <p>Crie seu primeiro personagem ou importe uma ficha.</p>
+          <Link className="home-vazio-criar" to="/dnd5e/characters/new">Crie a primeira <Icon name="chevron" /></Link>
+        </section>
       ) : fichasFiltradas.length === 0 ? (
-        <p className="home-vazio">Nenhuma ficha encontrada para "{busca}".</p>
+        <p className="home-sem-resultados grimoire-pagina">Nenhuma ficha encontrada para "{busca}".</p>
       ) : (
         <div className="home-grid">
           {fichasFiltradas.map((ficha) => {
             const classe = obterClasse(ficha.classeId);
             return (
-              <div key={ficha.id} className="ficha-card">
-                                <button
-                  type="button"
-                  className="ficha-card-exportar"
-                  onClick={() => exportarFicha(ficha)}
-                  aria-label={`Exportar ${ficha.nome}`}
-                  title="Exportar como backup (.json)"
-                >
-                  <Icon name="export" />
-                </button>
-                <button
-                  type="button"
-                  className="ficha-card-remover"
-                  onClick={() => handleRemover(ficha)}
-                  aria-label={`Excluir ${ficha.nome}`}
-                  title="Excluir ficha"
-                >
-                  <Icon name="remove" />
-                </button>
+              <article key={ficha.id} className="ficha-card grimoire-capa">
+                <div className="ficha-card-cabecalho">
+                  <span className="ficha-card-nivel">Nível {calcularNivelTotal(ficha)}</span>
+                  <div className="ficha-card-acoes">
+                    <button
+                      type="button"
+                      className="ficha-card-exportar"
+                      onClick={() => exportarFicha(ficha)}
+                      aria-label={`Exportar ${ficha.nome}`}
+                      title="Exportar como backup (.json)"
+                    >
+                      <Icon name="export" />
+                    </button>
+                    <button
+                      type="button"
+                      className="ficha-card-remover"
+                      onClick={() => handleRemover(ficha)}
+                      aria-label={`Excluir ${ficha.nome}`}
+                      title="Mover para a lixeira"
+                    >
+                      <Icon name="remove" />
+                    </button>
+                  </div>
+                </div>
                 <div className="ficha-card-corpo">
-                  <span className="ficha-card-nome">{ficha.nome}</span>
+                  <span className="ficha-card-simbolo">
+                    <Icon name={["mago", "feiticeiro", "bruxo"].includes(ficha.classeId) ? "spell" : ["guerreiro", "paladino", "clerigo"].includes(ficha.classeId) ? "shield" : "book"} size={32} />
+                  </span>
+                  <h3 className="ficha-card-nome">{ficha.nome}</h3>
                   <span className="ficha-card-classe">
-                    {classe ? classe.nome : "Sem classe"} · Nível {calcularNivelTotal(ficha)}
+                    {classe ? classe.nome : "Sem classe"}
                   </span>
                   <span className="ficha-card-data">
                     {ficha.criadoEm
@@ -152,24 +159,32 @@ export default function Home() {
                       : "Ficha antiga"}
                   </span>
                 </div>
-                <Link to={`/dnd5e/characters/${encodeURIComponent(ficha.id)}`} className="ficha-card-acessar">
+                <Link to={`/dnd5e/characters/${encodeURIComponent(ficha.id)}`} className="ficha-card-acessar" aria-label={`Acessar ficha de ${ficha.nome}`}>
                   Acessar ficha
+                  <Icon name="chevron" />
                 </Link>
-              </div>
+              </article>
             );
           })}
         </div>
       )}
 
+      {fichasProtegidas.length > 0 && (
+        <section className="home-protegidas grimoire-aviso" aria-labelledby="home-protegidas-titulo">
+          <h2 id="home-protegidas-titulo">Registros preservados</h2>
+          <p>Estas fichas precisam de uma versão compatível ou de recuperação. Seus dados originais não foram alterados.</p>
+          <ul>{fichasProtegidas.map((ficha) => <li key={ficha.id}><Link to={`/characters/${encodeURIComponent(ficha.id)}`}>{ficha.nome} — verificar registro</Link></li>)}</ul>
+        </section>
+      )}
       {fichasExcluidas.length > 0 && (
-        <section className="home-lixeira" aria-labelledby="home-lixeira-titulo">
+        <section className="home-lixeira grimoire-pagina" aria-labelledby="home-lixeira-titulo">
           <h2 id="home-lixeira-titulo">Lixeira</h2>
           <p>As fichas excluídas continuam salvas neste dispositivo e podem ser restauradas.</p>
           <ul>
             {fichasExcluidas.map((ficha) => (
               <li key={ficha.id}>
                 <span>{ficha.nome}</span>
-                <button type="button" onClick={() => restaurarFicha(ficha.id)}>
+                <button type="button" onClick={() => restaurarFicha(ficha.id)} aria-label={`Restaurar ${ficha.nome}`}>
                   Restaurar
                 </button>
               </li>

@@ -65,16 +65,16 @@ export default function BlocoProficiencias({
   return (
     <>
       <section>
-        <h3 className="bloco-titulo">Idiomas</h3>
+        <h2 className="bloco-titulo">Idiomas</h2>
         <p className="proficiencias-nota">
           Idiomas, ferramentas e proficiências de criação são aplicados automaticamente.
           Você ainda pode registrar concessões manuais ou de regra da mesa aqui.
         </p>
 
-        <h4 className="proficiencias-subtitulo">Padrão</h4>
+        <h3 className="proficiencias-subtitulo">Padrão</h3>
         <div className="idiomas-grid">{renderChipsIdiomas(IDIOMAS_PADRAO)}</div>
 
-        <h4 className="proficiencias-subtitulo">Exóticos</h4>
+        <h3 className="proficiencias-subtitulo">Exóticos</h3>
         <div className="idiomas-grid">{renderChipsIdiomas(IDIOMAS_EXOTICOS)}</div>
 
         {IDIOMAS_SECRETOS.some((idioma) => idiomas.includes(idioma.id)) && (
@@ -86,14 +86,14 @@ export default function BlocoProficiencias({
 
         {idiomasLegados.length > 0 && (
           <>
-            <h4 className="proficiencias-subtitulo">Legados e personalizados</h4>
+            <h3 className="proficiencias-subtitulo">Legados e personalizados</h3>
             <div className="idiomas-grid">{renderChipsIdiomas(idiomasLegados)}</div>
           </>
         )}
       </section>
 
       <section>
-        <h3 className="bloco-titulo">Proficiências de combate</h3>
+        <h2 className="bloco-titulo">Proficiências de combate</h2>
         <p className="proficiencias-nota">
           Armas: {proficienciasArmas.length ? proficienciasArmas.join(", ") : "nenhuma registrada"}.<br />
           Armaduras: {proficienciasArmaduras.length ? proficienciasArmaduras.join(", ") : "nenhuma registrada"}.<br />
@@ -102,7 +102,7 @@ export default function BlocoProficiencias({
       </section>
 
       <section>
-        <h3 className="bloco-titulo">Ferramentas</h3>
+        <h2 className="bloco-titulo">Ferramentas</h2>
         <p className="proficiencias-nota">
           Proficiência com ferramentas, separada do inventário: marque aqui
           mesmo que o item físico ainda não tenha sido comprado na aba
@@ -148,6 +148,7 @@ export default function BlocoProficiencias({
                   type="button"
                   className="ferramenta-rolar-botao"
                   onClick={() => handleRolarFerramenta(ferramenta, proficiente)}
+                  aria-label={`Rolar ${ferramenta.nome}`}
                   title={`Rolar ${ferramenta.nome} (d20${formatarModificador(modificador)})`}
                 >
                   <Icon name="dice" /> {formatarModificador(modificador)}

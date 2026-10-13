@@ -1,0 +1,83 @@
+{
+  "base": "main a708251",
+  "date": "2026-10-13",
+  "cases": 10,
+  "expected": 10,
+  "unexpected": 0,
+  "runs": [
+    "output/validation/main-pages.json",
+    "output/validation/main-pages-corrections.json"
+  ],
+  "results": [
+    {
+      "file": "demo.spec.js",
+      "title": "MVP-08/DEMO-01/RELEASE-01 ensaio 2: 02-guerreiro-nivel-4",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "pages.spec.js",
+      "title": "VIS-G01/02 Chrome: preferências e barra nativa no build de Pages",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages-corrections.json"
+    },
+    {
+      "file": "pages.spec.js",
+      "title": "RELEASE-01 Pages preserva rotas legadas e página ausente",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "demo.spec.js",
+      "title": "MVP-08/DEMO-01/RELEASE-01 ensaio 2: 03-mago-nivel-4",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "demo.spec.js",
+      "title": "MVP-08/DEMO-01/RELEASE-01 ensaio 1: 01-guerreiro-nivel-1",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "pages.spec.js",
+      "title": "Chrome: ajustes de leitura persistem e seguem tema automático",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "pages.spec.js",
+      "title": "RELEASE-01 Pages entrega assets e recupera 404 de ficha com query/hash",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "demo.spec.js",
+      "title": "MVP-08/DEMO-01/RELEASE-01 ensaio 1: 03-mago-nivel-4",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "demo.spec.js",
+      "title": "MVP-08/DEMO-01/RELEASE-01 ensaio 2: 01-guerreiro-nivel-1",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    },
+    {
+      "file": "demo.spec.js",
+      "title": "MVP-08/DEMO-01/RELEASE-01 ensaio 1: 02-guerreiro-nivel-4",
+      "project": "pages-chrome",
+      "status": "expected",
+      "evidence": "output/validation/main-pages.json"
+    }
+  ]
+}

@@ -1,0 +1,1399 @@
+{
+  "base": "main a708251",
+  "date": "2026-10-13",
+  "cases": 198,
+  "expected": 198,
+  "unexpected": 0,
+  "runs": [
+    "output/validation/main-e2e.json",
+    "output/validation/main-e2e-corrections.json"
+  ],
+  "results": [
+    {
+      "file": "accessibility.spec.js",
+      "title": "/characters/new não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02D substitui um ASI por talento e persiste suas escolhas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "navegação ativa oferece somente fluxos D&D disponíveis",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02D substitui um ASI por talento e persiste suas escolhas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/yusong não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-library.spec.js",
+      "title": "VIS-G01/02 biblioteca light: capas, reflow e exclusão recuperável",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 level up usa somente controles visíveis e fecha por Escape",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 abas lazy usam ativação manual e permanecem visíveis por teclado",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02B persiste escolha inicial de classe na criação guiada",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 reload usa a edição IndexedDB mesmo com bootstrap legado desatualizado",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Leitura light: sliders, switches, persistência e padrão",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 Guerreiro marco 2→3 preserva PV e atualiza progressão",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 Guerreiro marco 2→3 preserva PV e atualiza progressão",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04A mantém o leitor de exportação v8 na biblioteca D&D",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 390px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "library.spec.js",
+      "title": "MVP-03 JSON inválido informa correção e preserva a biblioteca",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "edita atributos e recursos enquanto derivados permanecem calculados pelo engine",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "preferência antiga de texto funciona com JSON de leitura corrompido",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 escolhas incompletas explicam correção e permitem rascunho explícito",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet.spec.js",
+      "title": "MVP-05 inventário, moedas e notas persistem após reload",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Elfo / Mago com escolhas e dados pessoais",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "refresh direto mantém seção, título e landmark",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 ficha mantém reflow em 320 px e passa axe nas seções atuais",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/settings não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 só confirma put após commit e rejeita aborto após sucesso do request",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 modal mantém foco, torna o fundo inerte e devolve foco ao acionador",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet.spec.js",
+      "title": "MVP-05 PV, morte, recursos, descansos e ataque persistem",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "bloqueia edição no modo de apresentação e persiste a preferência de som",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04C carrega sob demanda as seções pesadas e o level-up D&D",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Leitura light: sliders, switches, persistência e padrão",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "IndexedDB aplica revisão otimista e rollback atômico de importação",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Ficha light: leitura ampliada a 28px com espaçamento e contraste",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 biblioteca, criação e level up funcionam somente com teclado e movimento reduzido",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 390px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-library.spec.js",
+      "title": "VIS-G01/02 biblioteca dark: capas, reflow e exclusão recuperável",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02A exige sub-raça e persiste seus bônus na criação guiada",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 nível total 20 bloqueia o assistente",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Anão / Clérigo com escolhas e dados pessoais",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 1280px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet.spec.js",
+      "title": "MVP-05 PV, morte, recursos, descansos e ataque persistem",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "edita atributos e recursos enquanto derivados permanecem calculados pelo engine",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "rotas D&D legadas redirecionam sem perder o identificador",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Criação com texto máximo e opções de leitura mantém escolhas acessíveis",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "navegação ativa oferece somente fluxos D&D disponíveis",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operáveis sem som",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 criação anuncia etapas, move foco e mantém campos nomeados",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "edita as sete regiões, recupera membro inutilizado e redistribui dados",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/dnd5e não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 level up usa somente controles visíveis e fecha por Escape",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "importa e lista Pilares de Atlas sem apagar a origem legada",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 320px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "entrada abre D&D mesmo quando a preferência legada aponta para outro sistema",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "cria e edita a identidade de Pilares de Atlas com persistência após reload",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "gerencia itens do sistema, itens personalizados e notas com persistência",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "spells.spec.js",
+      "title": "MVP-06 magias, slots, concentração, dano e descanso da demo",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e-corrections.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 importação, gravação e rolagem possuem feedback acessível",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Meio-Elfo / Clérigo com escolhas e dados pessoais",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "aplica as seis identidades de academia com rótulo e contraste em claro e escuro",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "exporta uma carteirinha PNG original, offline e acessível",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/settings não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 só confirma put após commit e rejeita aborto após sucesso do request",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/missing-route não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "preferência antiga de texto funciona com JSON de leitura corrompido",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/ não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "aplica as seis identidades de academia com rótulo e contraste em claro e escuro",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "rota genérica diferencia sistema desconhecido, corrupção e versão futura",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Leitura dark: sliders, switches, persistência e padrão",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "bloqueia edição no modo de apresentação e persiste a preferência de som",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "gera um personagem aleatório acessível e o salva sem buscar avatar externo",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Ficha light: leitura ampliada a 28px com espaçamento e contraste",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "filtra o catálogo original e adiciona Talento com persistência",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 trocar sub-raça na ficha recalcula PV e mantém dano após reabrir",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "edita Perícias e aplica Condições às rolagens com persistência",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "library.spec.js",
+      "title": "MVP-03 JSON inválido informa correção e preserva a biblioteca",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04B preserva o aviso visível quando a gravação durável falha",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "rota genérica diferencia sistema desconhecido, corrupção e versão futura",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 768px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "edita Perícias e aplica Condições às rolagens com persistência",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 anuncia falha, recupera a gravação e reabre a edição durável",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/ não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04B exclui para a lixeira e restaura após recarregar",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04B exclui para a lixeira e restaura após recarregar",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 duas rolagens iguais atualizam o anúncio acessível",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 rolagem é anunciada em texto e criação lazy recebe foco",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04D preserva criação guiada, multiclasse, level-up e PDF",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "aliases genéricos de ferramentas apontam somente para D&D",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04A cria, edita, espelha e prepara impressão D&D",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "filtra o catálogo original e adiciona Talento com persistência",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "mantém IndexedDB como fonte de verdade e oferece exclusão recuperável",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 abas lazy usam ativação manual e permanecem visíveis por teclado",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "FE-01 entrada e criação genéricas encaminham diretamente para D&D",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-preferences.spec.js",
+      "title": "Preferências do grimório: sistema dark, teclado, reflow e persistência",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "skip link e botão de tema funcionam por teclado",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operáveis sem som",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04A cria, edita, espelha e prepara impressão D&D",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "armor.spec.js",
+      "title": "MVP-05 CA manual persiste e pode voltar ao cálculo",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-library.spec.js",
+      "title": "VIS-G01/02 biblioteca light: capas, reflow e exclusão recuperável",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 importação, gravação e rolagem possuem feedback acessível",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet.spec.js",
+      "title": "MVP-05 inventário, moedas e notas persistem após reload",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "rotas D&D legadas redirecionam sem perder o identificador",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 importar versão futura mostra erro e não cria nem altera fichas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02B persiste escolha inicial de classe na criação guiada",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Anão / Clérigo com escolhas e dados pessoais",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 320px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-preferences.spec.js",
+      "title": "Preferências do grimório: sistema light, teclado, reflow e persistência",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "cria e edita a identidade de Pilares de Atlas com persistência após reload",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "skip link e botão de tema funcionam por teclado",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 rolagem é anunciada em texto e criação lazy recebe foco",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02C persiste escolha de subclasse na fronteira do nível 10",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "FE-01 entrada e criação genéricas encaminham diretamente para D&D",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "usa composição B2 no desktop e navegação local no mobile",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04A mantém o leitor de exportação v8 na biblioteca D&D",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "entrada abre D&D mesmo quando a preferência legada aponta para outro sistema",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 ficha mantém reflow em 320 px e passa axe nas seções atuais",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/feiticeiros-maldicoes não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "IndexedDB aplica revisão otimista e rollback atômico de importação",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/characters/new não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02C persiste escolha de subclasse na fronteira do nível 10",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "armor.spec.js",
+      "title": "MVP-05 CA manual persiste e pode voltar ao cálculo",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-preferences.spec.js",
+      "title": "Voltar ao topo aparece após rolar e devolve o foco ao título",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04D preserva criação guiada, multiclasse, level-up e PDF",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 anuncia falha, recupera a gravação e reabre a edição durável",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/feiticeiros-maldicoes não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 Guerreiro XP 4→5 preserva PV e atualiza progressão",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 nível total 20 bloqueia o assistente",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "gera um personagem aleatório acessível e o salva sem buscar avatar externo",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "aliases genéricos de ferramentas apontam somente para D&D",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Ficha dark: leitura ampliada a 28px com espaçamento e contraste",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Humano / Guerreiro com escolhas e dados pessoais",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "spells.spec.js",
+      "title": "MVP-06 magias, slots, concentração, dano e descanso da demo",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e-corrections.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Ficha dark: leitura ampliada a 28px com espaçamento e contraste",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 escolhas incompletas explicam correção e permitem rascunho explícito",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-preferences.spec.js",
+      "title": "Preferências do grimório: sistema dark, teclado, reflow e persistência",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "refresh direto mantém seção, título e landmark",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 reload usa a edição IndexedDB mesmo com bootstrap legado desatualizado",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Elfo / Mago com escolhas e dados pessoais",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Meio-Elfo / Clérigo com escolhas e dados pessoais",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "rota genérica ausente mostra estado explícito",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "mantém IndexedDB como fonte de verdade e oferece exclusão recuperável",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "edita as sete regiões, recupera membro inutilizado e redistribui dados",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 abas aceitam setas, Home e End; catálogo prende e devolve foco",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 768px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-preferences.spec.js",
+      "title": "Preferências do grimório: sistema light, teclado, reflow e persistência",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "gerencia itens do sistema, itens personalizados e notas com persistência",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-preferences.spec.js",
+      "title": "Voltar ao topo aparece após rolar e devolve o foco ao título",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 Guerreiro XP 4→5 preserva PV e atualiza progressão",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 Mago marco 4→5 preserva PV e atualiza progressão",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 cria Humano / Guerreiro com escolhas e dados pessoais",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "level-up.spec.js",
+      "title": "MVP-07 Mago marco 4→5 preserva PV e atualiza progressão",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "library.spec.js",
+      "title": "MVP-03 biblioteca busca, exporta e importa uma cópia sem sobrescrever",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Leitura dark: sliders, switches, persistência e padrão",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e-corrections.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04B preserva o aviso visível quando a gravação durável falha",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 duas rolagens iguais atualizam o anúncio acessível",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "grimoire-library.spec.js",
+      "title": "VIS-G01/02 biblioteca dark: capas, reflow e exclusão recuperável",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/dnd5e não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "importa e lista Pilares de Atlas sem apagar a origem legada",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "usa Talento e mantém CRUD personalizado de Genius com custo de Stamina",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 abas aceitam setas, Home e End; catálogo prende e devolve foco",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 1280px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "persistence.spec.js",
+      "title": "MVP-02 importar versão futura mostra erro e não cria nem altera fichas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "system-routing.spec.js",
+      "title": "rota genérica ausente mostra estado explícito",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "reading-preferences.spec.js",
+      "title": "Criação com texto máximo e opções de leitura mantém escolhas acessíveis",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "creation.spec.js",
+      "title": "MVP-04 trocar sub-raça na ficha recalcula PV e mantém dano após reabrir",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/yusong não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "library.spec.js",
+      "title": "MVP-03 biblioteca busca, exporta e importa uma cópia sem sobrescrever",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 criação anuncia etapas, move foco e mantém campos nomeados",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 biblioteca, criação e level up funcionam somente com teclado e movimento reduzido",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "usa Talento e mantém CRUD personalizado de Genius com custo de Stamina",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "FE-04C carrega sob demanda as seções pesadas e o level-up D&D",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/missing-route não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "dnd5e-adapter.spec.js",
+      "title": "ME-02A exige sub-raça e persiste seus bônus na criação guiada",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 modal mantém foco, torna o fundo inerte e devolve foco ao acionador",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "exporta uma carteirinha PNG original, offline e acessível",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "usa composição B2 no desktop e navegação local no mobile",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "evidence": "output/validation/main-e2e.json"
+    }
+  ]
+}

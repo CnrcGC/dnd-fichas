@@ -1,6 +1,9 @@
 import "./Icon.css";
 
 const paths = {
+  sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></>,
+  book: <><path d="M12 6C9 3.5 5.5 3.5 2 5v14c3.5-1.5 7-1.5 10 1 3-2.5 6.5-2.5 10-1V5c-3.5-1.5-7-1.5-10 1Z"/><path d="M12 6v14M5 8h3M5 11h3M16 8h3M16 11h3"/></>,
+  shield: <><path d="m12 3 8 3v6c0 4-4 7-8 9-4-2-8-5-8-9V6l8-3Z"/><path d="M12 7v9M8 11h8"/></>,
   dice: <><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/></>,
   add: <><path d="M12 5v14M5 12h14"/></>,
   remove: <><path d="M6 6l12 12M18 6 6 18"/></>,

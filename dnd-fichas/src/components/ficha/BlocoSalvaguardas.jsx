@@ -13,7 +13,7 @@ export default function BlocoSalvaguardas({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Salvaguardas</h3>
+      <h2 className="bloco-titulo">Salvaguardas</h2>
       {!salvaguardasProficientes && (
         <p className="salvaguardas-aviso">
           Escolha uma classe para ver as salvaguardas proficientes.
@@ -52,6 +52,7 @@ export default function BlocoSalvaguardas({
                 type="button"
                 className="salvaguarda-modificador-botao"
                 onClick={handleRolar}
+                aria-label={`Rolar salvaguarda de ${atributo.label} (${formatarModificador(modificador)})`}
                 title={`Rolar salvaguarda de ${atributo.label} (d20${formatarModificador(modificador)})`}
               >
                 <Icon name="dice" /> {formatarModificador(modificador)}

@@ -1,5 +1,20 @@
 # Estado da implementação — D&D 5e
 
+## Integração local na main 1.21 — 2026-10-12/13
+
+Por decisão explícita do proprietário, o trabalho atual ocorre somente na `main`, na cópia `Área de Trabalho/Jogo/dnd-fichas`, sobre `a708251`. As correções da candidata `5ea5e3b` foram conciliadas com as regras mais recentes; o histórico abaixo não representa os resultados desta nova integração. Em 2026-10-13, o proprietário aprovou a biblioteca e autorizou o commit pelo GitHub Desktop. A revisão não foi publicada.
+
+- **IMPLEMENTADO:** hidratação antes de edição, proteção de registros futuros/corrompidos, fila com snapshots independentes, confirmação do commit IndexedDB, falha explícita e repetição, lixeira e restauração; import/export e impressão do MVP.
+- **IMPLEMENTADO:** grimório na biblioteca/cabeçalho, entrada somente D&D, engrenagem, botão de tema automático/claro/escuro, slider de texto 16–28 px, espaçamento, alto contraste, sublinhado de links, brilho claro 80–100%, preferências persistentes, scrollbar própria e voltar ao topo.
+- **PRESERVADO:** raças/sub-raças e ancestralidades, classes, subclasses, talentos, ataques/equipamentos e perfis de escolhas mais recentes da 1.21; IDs, dados, adapters e migrações existentes.
+- **CORRIGIDO:** iniciativa não soma Destreza duas vezes na criação; PV da Colina acompanham nível/troca de sub-raça; concentração encerra em condições de incapacidade; CA manual permanece após reabrir; foco dos diálogos combina restauração, fundo inerte e suporte a diálogos sobrepostos; foco inicial da criação não é roubado pelo StrictMode; idiomas escolhidos em sub-raça/antecedente não se repetem.
+- **PARCIAL:** validação humana de NVDA, zoom nativo 200% e dispositivo móvel real. Não há declaração de conformidade WCAG.
+- **ADIADO:** backend/sync, criaturas, encontros, VTT e expansão de catálogo; VIS-G03 ainda não foi iniciada.
+
+Resultados desta cópia e arquivos envolvidos: [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md). Os registros abaixo conservam a auditoria e as etapas anteriores.
+
+## Histórico da auditoria e evolução anterior
+
 Base: `CnrcGC/dnd-fichas`, branch padrão `main`, commit `f0d01c459bed86b89eb11f8487a6d979329dca53`, de 2026-09-29. Auditoria estática em 2026-10-03 UTC. Caminhos abaixo são relativos à raiz do repositório. Não foram executados testes, lint, build, axe, Playwright ou migrations.
 
 **Implementado** significa código funcionalmente estruturado encontrado; **Parcial** indica cobertura/integração incompleta; **Ausente** indica ausência da capacidade nos caminhos e árvore auditados. **Preservar**, **Adiado** e **Obsoleto pelo novo escopo** são decisões de tratamento, não resultados de execução. Políticas: PD-001 a PD-011.
@@ -23,7 +38,7 @@ Base: `CnrcGC/dnd-fichas`, branch padrão `main`, commit `f0d01c459bed86b89eb11f
 | Envelope, migração e recuperação | Implementado / Preservar | `platform/persistence/{envelope,legacyImport,migrationPolicy,characterRepository}.js`: revisão, recibos, backups e quarentena. Gateway de legado para v8 existe; cadeia histórica detalhada não deve ser inventada. |
 | Exportação JSON e impressão/PDF | Implementado / Preservar | `utils/backup.js`, `FichaImpressao.jsx`, `window.print()` em `Ficha.jsx`; PDF é a saída do navegador. Não planejar troca de engine de PDF sem necessidade concreta. |
 | Acessibilidade | VA-01 implementado e suíte-alvo aprovada / Preservar | Skip link/main, foco/títulos por rota, tokens/focus/reduced motion e tema claro/escuro/sistema existem. VA-01 cobre modais e abas por teclado, foco/restauração e fundo inerte; nomes/estados de controles; foco na criação e em erros; feedback de importação, gravação e rolagem; explicações para ações indisponíveis; contagens de catálogos; reflow, alvos mínimos e forced colors. O proprietário aprovou em 2026-10-04 os casos finais de rota e de importação/gravação; a matriz manual continua separada e conformidade AA não é alegada. |
-| Preferências | Parcial | Tema em `platform/preferences/theme.js`; `/settings` é placeholder. Tabela SQL existe; endpoint de preferências e sync não. |
+| Preferências locais | Implementado | Engrenagem reúne texto, espaçamento, contraste, links e brilho; tema alterna por botão e inicia no padrão do sistema. Persistência local; `/settings` continua placeholder legado. Endpoint de preferências e sync não implementados. |
 | Backend de personagens/autenticação | Parcial / Preservar | `server/src/{app,auth,systems}.js`, `modules/characters/`, `migrations/001_platform.sql`; Fastify, Better Auth, cookies, signup desabilitado, CRUD por dono, revisão/idempotência e health checks. Integração real/PostgreSQL/hospedagem não verificadas nesta tarefa. |
 | Sincronização frontend-servidor | Ausente | Não há cliente API, outbox durável, pull paginado com tombstones ou UI de conflito. A fila local em `characterStore` não é sync. |
 | Backup/restore operacional servidor | Ausente como processo verificado | Backup de migração local existe; não substitui backup PostgreSQL e exercício de restore. |

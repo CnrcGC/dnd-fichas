@@ -29,7 +29,7 @@ export default function BlocoPericias({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Perícias</h3>
+      <h2 className="bloco-titulo">Perícias</h2>
       <ul className="pericias-lista">
         {PERICIAS.map((pericia) => {
           const proficiente = Boolean(pericias[pericia.chave]);
@@ -76,6 +76,7 @@ export default function BlocoPericias({
                   type="button"
                   className="pericia-modificador-botao"
                   onClick={handleRolar}
+                  aria-label={`Rolar ${pericia.label} (${formatarModificador(modificador)})`}
                   title={`Rolar ${pericia.label} (d20${formatarModificador(modificador)})`}
                 >
                   <Icon name="dice" /> {formatarModificador(modificador)}

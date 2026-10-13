@@ -5,16 +5,20 @@ export function applyTheme(theme, { root = document.documentElement, storage = l
   if (!THEMES.includes(theme)) throw new TypeError(`Tema inválido: ${theme}.`);
   if (theme === "system") {
     delete root.dataset.theme;
-    storage.removeItem(THEME_STORAGE_KEY);
   } else {
     root.dataset.theme = theme;
-    storage.setItem(THEME_STORAGE_KEY, theme);
   }
+  try {
+    if (theme === "system") storage.removeItem(THEME_STORAGE_KEY);
+    else storage.setItem(THEME_STORAGE_KEY, theme);
+  } catch { /* Theme remains available in this session when storage is blocked. */ }
   return theme;
 }
 
 export function readTheme({ root = document.documentElement, storage = localStorage } = {}) {
-  const stored = storage.getItem(THEME_STORAGE_KEY);
+  let stored;
+  try { stored = storage.getItem(THEME_STORAGE_KEY); }
+  catch { /* Restore the session value below. */ }
   if (stored === "light" || stored === "dark") return stored;
   return root.dataset.theme === "light" || root.dataset.theme === "dark" ? root.dataset.theme : "system";
 }

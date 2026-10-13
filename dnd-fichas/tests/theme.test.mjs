@@ -33,3 +33,13 @@ test("FE-09 rejeita preferência desconhecida", () => {
   assert.throws(() => theme.applyTheme("sepia", fixtures()), /Tema inválido/);
 });
 
+test("tema e restauração continuam disponíveis quando storage está bloqueado", () => {
+  const fixture = { root: { dataset: {} }, storage: {
+    getItem() { throw Error("bloqueado"); }, setItem() { throw Error("bloqueado"); }, removeItem() { throw Error("bloqueado"); },
+  } };
+  assert.equal(theme.applyTheme("dark", fixture), "dark");
+  assert.equal(theme.readTheme(fixture), "dark");
+  assert.equal(theme.applyTheme("system", fixture), "system");
+  assert.equal(theme.readTheme(fixture), "system");
+});
+

@@ -53,7 +53,7 @@ export default function FichaImpressao({
   percepcaoPassiva,
   investigacaoPassiva,
 }) {
-  const raca = obterRaca(ficha.racaId);
+  const raca = obterRaca(ficha.racaId, ficha.subracaId);
   const antecedente = obterAntecedente(ficha.antecedenteId);
   const classes = [
     { classeId: ficha.classeId, subclasseId: ficha.subclasseId, nivel: ficha.nivel },
@@ -67,7 +67,7 @@ export default function FichaImpressao({
   const espacos = Object.entries(ficha.espacosMagia ?? {}).filter(([, espaco]) => espaco.total > 0);
 
   return (
-    <article className="ficha-impressao" aria-hidden="true">
+    <article className="ficha-impressao">
       <header className="ficha-impressao-cabecalho">
         <div>
           <p className="ficha-impressao-marca">D&amp;D Fichas</p>

@@ -1,7 +1,7 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useFichas } from "../context/useFichas";
-import { obterBonusRaciais, obterDeslocamentoRacial } from "../data/racas";
+import { obterRaca, obterBonusRaciais, obterDeslocamentoRacial } from "../data/racas";
 import { obterClasse } from "../data/classes";
 import {
   sincronizarFichaComSubclasses,
@@ -130,6 +130,7 @@ export default function Ficha() {
   const [abaAtiva, setAbaAtiva] = useState("combate");
   const [abaComFoco, setAbaComFoco] = useState("combate");
   const [modalLevelUpAberto, setModalLevelUpAberto] = useState(false);
+  const levelUpTriggerRef = useRef(null);
   const [avisoConcentracao, setAvisoConcentracao] = useState(null); // { cd } | null   NOVO
 
   const bonusRacial = calcularBonusRacialFicha(ficha);
@@ -152,7 +153,7 @@ export default function Ficha() {
     : 0;
 
   useEffect(() => {
-    if (!ficha || caCalculada === null || ficha.status.ca === caCalculada) return;
+    if (!ficha || ficha.status.caManual || caCalculada === null || ficha.status.ca === caCalculada) return;
     atualizarFicha(id, (fichaAtual) => ({
       status: { ...fichaAtual.status, ca: caCalculada },
     }));
@@ -292,7 +293,7 @@ function avisarTesteConcentracao(danoRecebido) {
   atualizarFicha(id, (fichaAtual) => {
     const status = atualizarStatus(fichaAtual.status, chave, novoValor);
     return {
-      status,
+      status: { ...status, caManual: chave === "ca" ? true : chave === "caManual" ? Boolean(novoValor) : fichaAtual.status.caManual },
       ...(chave === "pvAtual" && concentracaoTerminaPorStatus(status)
         ? { concentracao: null }
         : {}),
@@ -375,6 +376,7 @@ function handleChangeRaca(novoRacaId) {
     );
     return {
       ...fichaComRaca,
+      ...((obterRaca(fichaAtual.racaId, fichaAtual.subracaId)?.pvPorNivel ?? 0) > 0 ? recalcularPv(fichaComRaca, obterClasse(fichaComRaca.classeId), modificadores.constituicao, calcularNivelTotal(fichaComRaca)) : {}),
       recursos: sincronizarRecursosDaFicha(fichaComRaca, modificadores),
     };
   });
@@ -392,7 +394,13 @@ function handleChangeSubraca(novaSubracaId) {
       fichaComSubraca.atributos,
       calcularBonusRacialFicha(fichaComSubraca)
     );
-    return { ...fichaComSubraca, recursos: sincronizarRecursosDaFicha(fichaComSubraca, modificadores) };
+    const bonusPvAnterior = obterRaca(fichaAtual.racaId, fichaAtual.subracaId)?.pvPorNivel ?? 0;
+    const bonusPvNovo = obterRaca(fichaComSubraca.racaId, novaSubracaId)?.pvPorNivel ?? 0;
+    return {
+      ...fichaComSubraca,
+      ...(bonusPvAnterior !== bonusPvNovo ? recalcularPv(fichaComSubraca, obterClasse(fichaComSubraca.classeId), modificadores.constituicao, calcularNivelTotal(fichaComSubraca)) : {}),
+      recursos: sincronizarRecursosDaFicha(fichaComSubraca, modificadores),
+    };
   });
 }
 
@@ -927,7 +935,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 
   return (
     <>
-      <h1>Ficha de {ficha.nome || "personagem sem nome"}</h1>
+      <h1 className="ficha-titulo">Ficha de {ficha.nome || "personagem sem nome"}</h1>
       <button type="button" className="ficha-imprimir-botao" onClick={handleImprimirFicha}>
         Imprimir / Salvar em PDF
       </button>
@@ -1000,6 +1008,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
 <button
   type="button"
   className="ficha-levelup-botao"
+  ref={levelUpTriggerRef}
   onClick={() => setModalLevelUpAberto(true)}
   disabled={!classe || !podeSubirPorXp}
   title={motivoLevelUpBloqueado || undefined}
@@ -1017,6 +1026,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
             <ModalLevelUp
               key={`${ficha.id}-${nivelTotal}`}
               aberto
+              returnFocusRef={levelUpTriggerRef}
               onFechar={() => setModalLevelUpAberto(false)}
               ficha={ficha}
               classe={classe}
@@ -1214,7 +1224,7 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
           {abaAtiva === "notas" && (
             <>
               <section>
-                <h3 className="bloco-titulo">Personagem</h3>
+                <h2 className="bloco-titulo">Personagem</h2>
                 <label className="ficha-campo-texto">
                   <span className="ficha-campo-texto-label">Jogador</span>
                   <input
@@ -1273,10 +1283,11 @@ function handleChangeAtributoFerramenta(ferramentaId, atributoChave) {
               </section>
 
               <section>
-                <h3 className="bloco-titulo">Anotações livres</h3>
+                <h2 className="bloco-titulo">Anotações livres</h2>
                 <textarea
                   className="ficha-notas-textarea"
                   placeholder="Qualquer outra coisa: contatos, pistas, itens especiais..."
+                  aria-label="Anotações livres"
                   value={ficha.notas ?? ""}
                   onChange={(evento) =>
                     handleChangeCampoTexto("notas", evento.target.value)

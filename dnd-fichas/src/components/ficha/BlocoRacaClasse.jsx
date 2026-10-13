@@ -113,7 +113,7 @@ export default function BlocoRacaClasse({
 
   return (
     <section>
-      <h3 className="bloco-titulo">Raça e classe</h3>
+      <h2 className="bloco-titulo">Raça e classe</h2>
       <div className="raca-classe-grid">
                 <label className="raca-classe-campo">
           <span className="raca-classe-label">Raça</span>
@@ -198,7 +198,7 @@ export default function BlocoRacaClasse({
           </div>
         )}
 
-            
+
 
                 <label className="raca-classe-campo">
           <span className="raca-classe-label">Classe</span>
@@ -263,7 +263,7 @@ export default function BlocoRacaClasse({
             ))}
           </select>
         </label>
-        
+
             </div>
 
       {classeId && (
@@ -429,7 +429,7 @@ export default function BlocoRacaClasse({
       <EscolhasCriacao classe={classe} raca={racaSelecionada} subraca={subracaSelecionada} antecedente={antecedente} escolhas={escolhasCriacao} onChange={onChangeEscolhasCriacao} />
       <EscolhasClasse ficha={ficha} onChange={onChangeEscolhaClasse} />
       <EscolhasSubclasse ficha={ficha} onChange={onChangeEscolhaSubclasse} />
-      
+
     </section>
   );
 }

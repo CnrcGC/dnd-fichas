@@ -81,6 +81,10 @@ test("FE-04D preserva criação guiada, multiclasse, level-up e PDF", async ({ p
   await page.getByRole("button", { name: "Próximo" }).click();
   await page.getByPlaceholder("Nome do personagem").fill("Tália Horizonte");
   await page.getByPlaceholder("Nome do jogador").fill("Teste FE-04D");
+  const requiredChoices = page.locator(".criacao-escolhas select");
+  for (let index = 0; index < await requiredChoices.count(); index++) {
+    await requiredChoices.nth(index).selectOption({ index: 1 });
+  }
   await page.getByRole("button", { name: "Finalizar" }).click();
 
   await expect(page.getByRole("heading", { name: "Ficha de Tália Horizonte" })).toBeVisible();
@@ -124,6 +128,13 @@ test("FE-04D preserva criação guiada, multiclasse, level-up e PDF", async ({ p
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
 
+async function completeRequiredCreationChoices(page) {
+  const selects = page.locator(".criacao-escolhas select");
+  for (let index = 0; index < await selects.count(); index++) {
+    if (!await selects.nth(index).inputValue()) await selects.nth(index).selectOption({ index: 1 });
+  }
+}
+
 test("ME-02A exige sub-raça e persiste seus bônus na criação guiada", async ({ page }) => {
   await page.goto("/dnd5e/characters/new");
   const cardElfo = page.getByRole("heading", { name: "Elfo", exact: true }).locator("..").locator("..");
@@ -137,6 +148,7 @@ test("ME-02A exige sub-raça e persiste seus bônus na criação guiada", async 
   await chooseCreationCard(page, "Soldado");
   await page.getByRole("button", { name: "Próximo" }).click();
   await page.getByPlaceholder("Nome do personagem").fill("Lía da Floresta");
+  await completeRequiredCreationChoices(page);
   await page.getByRole("button", { name: "Finalizar" }).click();
 
   const id = decodeURIComponent(new URL(page.url()).pathname.split("/").at(-1));
@@ -159,6 +171,7 @@ test("ME-02B persiste escolha inicial de classe na criação guiada", async ({ p
   await page.getByRole("button", { name: "Próximo" }).click();
   await page.getByLabel("Estilo de Combate, escolha 1 de 1").selectOption("defesa");
   await page.getByPlaceholder("Nome do personagem").fill("Mara Defensora");
+  await completeRequiredCreationChoices(page);
   await page.getByRole("button", { name: "Finalizar" }).click();
 
   const id = decodeURIComponent(new URL(page.url()).pathname.split("/").at(-1));
@@ -216,18 +229,21 @@ test("FE-04B exclui para a lixeira e restaura após recarregar", async ({ page }
   await page.goto("/dnd5e/characters/new");
   await page.getByRole("button", { name: "Pular e criar ficha em branco" }).click();
   await page.getByLabel("Editar nome do personagem").fill("Ficha Recuperável");
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
   await page.goto("/dnd5e");
 
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Excluir Ficha Recuperável" }).click();
   await expect(page.getByText("Ficha Recuperável")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Restaurar" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Restaurar Ficha Recuperável" })).toBeVisible();
+
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
 
   await page.reload();
-  await expect(page.getByRole("button", { name: "Restaurar" })).toBeVisible();
-  await page.getByRole("button", { name: "Restaurar" }).click();
+  await expect(page.getByRole("button", { name: "Restaurar Ficha Recuperável" })).toBeVisible();
+  await page.getByRole("button", { name: "Restaurar Ficha Recuperável" }).click();
   await expect(page.getByRole("link", { name: "Acessar ficha" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Restaurar" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /Restaurar/ })).toHaveCount(0);
 });
 
 test("FE-04B preserva o aviso visível quando a gravação durável falha", async ({ page }) => {

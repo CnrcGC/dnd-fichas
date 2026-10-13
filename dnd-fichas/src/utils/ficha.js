@@ -5,6 +5,7 @@ import { normalizarNiveisFicha } from "./niveis";
 import { normalizarInventario } from "./itensMagicos";
 import { concentracaoTerminaPorStatus, normalizarCondicoes } from "./efeitos";
 import { normalizarMoedas } from "./moedas";
+import { podeManterConcentracao } from "./concentracao";
 
 export function criarFichaVazia(nome) {
   return {
@@ -168,7 +169,7 @@ export function normalizarFicha(ficha) {
   const normalizada = {
     ...base,
     status,
-    concentracao: concentracaoTerminaPorStatus(status) ? null : base.concentracao,
+    concentracao: concentracaoTerminaPorStatus(status) || !podeManterConcentracao({ ...base, status }) ? null : base.concentracao,
     espacosMagia,
     espacosMagiaPacto,
     recursos,

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Navigate, Routes, Route, useLocation } from "react-router-dom";
 import Topbar from "./components/layout/Topbar";
+import BackToTop from "./components/layout/BackToTop";
 import Footer from "./components/layout/Footer";
 import PainelRolagens from "./components/rolagem/PainelRolagens";
 import AvisoPersistencia from "./components/layout/AvisoPersistencia";
@@ -57,6 +58,7 @@ export default function App() {
       </main>
       <Footer />
       <PainelRolagens />
+      {activeSystem === "dnd5e" && <BackToTop />}
     </div>
   );
 }
