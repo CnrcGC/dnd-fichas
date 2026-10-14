@@ -1,14 +1,14 @@
 # Estado da implementação — D&D 5e
 
-## Hospedagem e lixeira — 2026-10-13
+## Hospedagem e lixeira — 2026-10-13/14
 
 - **IMPLEMENTADO:** exclusão permanente individual na lixeira, com confirmação, retorno de foco, aviso acessível, commit IndexedDB antes de remover da lista, remoção de recuperação interna associada e reserva mínima do ID para impedir ressurreição por snapshot antigo. Fontes legadas/exportações e demais fichas preservadas.
-- **VERIFICADO:** site existente em `cnrcgc.github.io/dnd-fichas/`, HTTP 200, publicação `gh-pages`/legacy; a main atual está em `33fdad4` e o build hospedado é anterior.
-- **PARCIAL:** workflow para publicar a main após validação preparado; o proprietário autorizou commit, push e publicação por GitHub Pages. Ativação e validação remotas em execução. Ver [HOSPEDAGEM_E_LIXEIRA.md](./HOSPEDAGEM_E_LIXEIRA.md).
+- **IMPLEMENTADO E PUBLICADO:** site em `cnrcgc.github.io/dnd-fichas/`, HTTP 200 e HTTPS obrigatório, publicação automática da main por GitHub Actions. Execução `38504802668` aprovada, 275 unitários/11 ensaios Chrome e lint/build/budgets passando. Seis fluxos completos e quatro verificações adicionais passaram no domínio real. Ver [HOSPEDAGEM_E_LIXEIRA.md](./HOSPEDAGEM_E_LIXEIRA.md).
+- **CORRIGIDO:** peers opcionais ausentes no lockfile para `npm ci` do runner e capitalização de `BlocoDescanso.jsx/css` nos nomes registrados no Git; sem mudança de versões existentes ou conteúdo dos componentes.
 
 ## Integração local na main 1.21 — 2026-10-12/13
 
-Por decisão explícita do proprietário, o trabalho atual ocorre somente na `main`, na cópia `Área de Trabalho/Jogo/dnd-fichas`, sobre `a708251`. As correções da candidata `5ea5e3b` foram conciliadas com as regras mais recentes; o histórico abaixo não representa os resultados desta nova integração. Em 2026-10-13, o proprietário aprovou a biblioteca e autorizou o commit pelo GitHub Desktop. A revisão não foi publicada.
+Por decisão explícita do proprietário, o trabalho atual ocorre somente na `main`, na cópia `Área de Trabalho/Jogo/dnd-fichas`, sobre `a708251`. As correções da candidata `5ea5e3b` foram conciliadas com as regras mais recentes; o histórico abaixo não representa os resultados desta nova integração. Em 2026-10-13, o proprietário aprovou a biblioteca e autorizou o commit pelo GitHub Desktop. A integração e as entregas visuais seguintes foram publicadas em 2026-10-14, junto da correção da lixeira.
 
 - **IMPLEMENTADO:** hidratação antes de edição, proteção de registros futuros/corrompidos, fila com snapshots independentes, confirmação do commit IndexedDB, falha explícita e repetição, lixeira e restauração; import/export e impressão do MVP.
 - **IMPLEMENTADO:** grimório na biblioteca/cabeçalho, entrada somente D&D, engrenagem, botão de tema automático/claro/escuro, slider de texto 16–28 px, espaçamento, alto contraste, sublinhado de links, brilho claro 80–100%, preferências persistentes, scrollbar própria e voltar ao topo.
