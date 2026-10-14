@@ -1,6 +1,11 @@
 name: Publicar D&D Fichas
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'dnd-fichas/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -14,6 +19,7 @@ concurrency:
 
 jobs:
   publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

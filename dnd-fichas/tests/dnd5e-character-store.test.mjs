@@ -189,3 +189,55 @@ test("FE-04B mantém tombstones reservados contra nova importação", async () =
   assert.equal((await repository.get(fixture.id)).deletedAt, NOW);
 });
 
+test("lixeira remove registro e recuperação, preserva outras fichas e impede snapshot antigo", async () => {
+  const storage = memoryStorage();
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage, repository, now: () => NOW });
+  const snapshot = await store.initialize();
+  const originalLegacy = storage.getItem("pilares-de-atlas:fichas");
+  const other = { ...snapshot[0], id: "preservada", nome: "Outra ficha" };
+  await store.save([...snapshot, other]).durable;
+  await repository.putMigrationBackup({ id: "outra-recuperacao", recordId: other.id, systemId: "dnd5e", original: other });
+  await store.remove(fixture.id).durable;
+  await store.deletePermanently(fixture.id).durable;
+  assert.equal(await repository.get(fixture.id), undefined);
+  assert.deepEqual(await store.listDeleted(), []);
+  assert.equal((await store.listDurable())[0].id, other.id);
+  assert.equal([...repository.migrationBackups.values()].some((backup) => backup.recordId === fixture.id), false);
+  assert.equal((await repository.getMigrationBackup("outra-recuperacao")).recordId, other.id);
+  const receipt = await repository.getReceipt(repositoryModule.permanentDeletionReceiptId(fixture.id));
+  assert.deepEqual(Object.keys(receipt).sort(), ["deletedAt", "id", "recordId", "systemId"]);
+  assert.equal(storage.getItem("pilares-de-atlas:fichas"), originalLegacy);
+  await assert.rejects(store.save(snapshot).durable, { code: "permanently-deleted-character-id" });
+  assert.equal(await repository.get(fixture.id), undefined);
+  const reopened = characterStoreModule.createDnd5eCharacterStore({ storage, repository, now: () => NOW });
+  assert.equal((await reopened.initialize()).length, 1);
+});
+
+test("lixeira recusa exclusão permanente de ficha ativa, outro sistema ou versão futura", async () => {
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage: memoryStorage(), repository, now: () => NOW });
+  await store.initialize();
+  await assert.rejects(store.deletePermanently(fixture.id).durable, { code: "character-not-in-trash" });
+  await store.remove(fixture.id).durable;
+  const deleted = await repository.get(fixture.id);
+  repository.characters.set(fixture.id, { ...deleted, systemId: "yusong" });
+  await assert.rejects(store.deletePermanently(fixture.id).durable, { code: "character-not-in-trash" });
+  repository.characters.set(fixture.id, { ...deleted, schemaVersion: 999 });
+  await assert.rejects(store.deletePermanently(fixture.id).durable);
+  assert.equal((await repository.get(fixture.id)).schemaVersion, 999);
+  assert.equal(await repository.getReceipt(repositoryModule.permanentDeletionReceiptId(fixture.id)), undefined);
+});
+
+test("lixeira detecta restauração/revisão concorrente antes da exclusão definitiva", async () => {
+  const repository = new repositoryModule.MemoryCharacterRepository();
+  const store = characterStoreModule.createDnd5eCharacterStore({ storage: memoryStorage(), repository, now: () => NOW });
+  await store.initialize();
+  await store.remove(fixture.id).durable;
+  const deleted = await repository.get(fixture.id);
+  await assert.rejects(repository.deletePermanently(fixture.id, { systemId: "dnd5e", expectedRevision: deleted.revision - 1 }), { code: "revision-conflict" });
+  await store.restore(fixture.id).durable;
+  await assert.rejects(repository.deletePermanently(fixture.id, { systemId: "dnd5e", expectedRevision: deleted.revision }), { code: "character-not-in-trash" });
+  assert.equal((await repository.get(fixture.id)).deletedAt, null);
+});
+

@@ -20,7 +20,7 @@ O frontend fica em [`dnd-fichas/`](./dnd-fichas). O serviço em [`server/`](./se
 - Segredos Mágicos de Bardo/Colégio do Conhecimento e origens especiais por talento, item ou regra da mesa.
 - Validação para a mesa: erros bloqueantes, escolhas pendentes, avisos e estado de rascunho ou ficha pronta.
 - Combate, ataques, recursos, concentração, descansos, inventário, moedas e rolagens.
-- Persistência automática em IndexedDB, lixeira recuperável e importação/exportação JSON; dados legados de `localStorage` são preservados durante o bootstrap.
+- Persistência automática em IndexedDB, lixeira com restauração e exclusão permanente individual, e importação/exportação JSON; dados legados de `localStorage` são preservados durante o bootstrap.
 - Impressão A4 com ficha própria para PDF; arquivos de demonstração em [`docs/demo`](./dnd-fichas/docs/demo) e roteiro em [`DEMO.md`](./dnd-fichas/docs/DEMO.md).
 - Tema automático com botão claro/escuro, configurações na engrenagem, texto de 16 a 28 px por slider, espaçamento de leitura, alto contraste, links sublinhados e brilho do tema claro de 80% a 100%. Preferências salvas localmente. Skip link, abas e modais por teclado, feedback textual e redução de movimento seguem disponíveis. NVDA e zoom nativo continuam pendentes; não há declaração formal de conformidade WCAG.
 
@@ -57,6 +57,8 @@ npm run demo:prepare            # recria somente os JSONs de demonstração
 Endereço escolhido para apresentação: **https://cnrcgc.github.io/dnd-fichas/**. A publicação anterior usa o build da candidata em `gh-pages`. Por decisão do proprietário, o desenvolvimento atual ocorre somente na **`main`**, sobre a versão 1.21, com as correções do MVP e o visual de grimório integrados localmente. Biblioteca e preferências aprovadas pelo proprietário em 2026-10-13; esta revisão ainda não foi publicada. Validação atual em [`MAIN_INTEGRATION.md`](./dnd-fichas/docs/MAIN_INTEGRATION.md); histórico em [`DEPLOY.md`](./dnd-fichas/docs/DEPLOY.md) e [`MVP_VALIDATION.md`](./dnd-fichas/docs/MVP_VALIDATION.md).
 
 ## Dados e privacidade
+
+O site público já responde em [GitHub Pages](https://cnrcgc.github.io/dnd-fichas/), com uma versão anterior. A publicação automática da main foi preparada e aguarda ativação por GitHub Actions/commit/push. Estado verificado e entrega da lixeira em [HOSPEDAGEM_E_LIXEIRA.md](./dnd-fichas/docs/HOSPEDAGEM_E_LIXEIRA.md). As fichas continuam locais ao navegador; exporte/import JSON para levar dados de localhost ao domínio público.
 
 IndexedDB é a fonte de verdade das fichas D&D após o bootstrap legado. Os registros originais de `localStorage` não são apagados nem usados para sobrescrever edições mais recentes. A interface aguarda a hidratação antes de editar, confirma o commit antes de anunciar salvamento e informa falhas com opção de tentar novamente. Registros futuros/incompatíveis são preservados e não entram na edição normal. Exporte JSONs como cópias externas; armazenamento do navegador é específico do dispositivo e domínio.
 

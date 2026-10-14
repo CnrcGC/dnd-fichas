@@ -1,5 +1,11 @@
 # Estado da implementação — D&D 5e
 
+## Hospedagem e lixeira — 2026-10-13
+
+- **IMPLEMENTADO:** exclusão permanente individual na lixeira, com confirmação, retorno de foco, aviso acessível, commit IndexedDB antes de remover da lista, remoção de recuperação interna associada e reserva mínima do ID para impedir ressurreição por snapshot antigo. Fontes legadas/exportações e demais fichas preservadas.
+- **VERIFICADO:** site existente em `cnrcgc.github.io/dnd-fichas/`, HTTP 200, publicação `gh-pages`/legacy; a main atual está em `33fdad4` e o build hospedado é anterior.
+- **PARCIAL:** workflow para publicar a main após validação preparado; o proprietário autorizou commit, push e publicação por GitHub Pages. Ativação e validação remotas em execução. Ver [HOSPEDAGEM_E_LIXEIRA.md](./HOSPEDAGEM_E_LIXEIRA.md).
+
 ## Integração local na main 1.21 — 2026-10-12/13
 
 Por decisão explícita do proprietário, o trabalho atual ocorre somente na `main`, na cópia `Área de Trabalho/Jogo/dnd-fichas`, sobre `a708251`. As correções da candidata `5ea5e3b` foram conciliadas com as regras mais recentes; o histórico abaixo não representa os resultados desta nova integração. Em 2026-10-13, o proprietário aprovou a biblioteca e autorizou o commit pelo GitHub Desktop. A revisão não foi publicada.

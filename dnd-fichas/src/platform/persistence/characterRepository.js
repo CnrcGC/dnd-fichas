@@ -3,6 +3,18 @@ import { validateEnvelope } from "./envelope";
 export const DATABASE_NAME = "rpg-platform";
 export const DATABASE_VERSION = 2;
 
+export function permanentDeletionReceiptId(id) { return `permanent-deletion:${id}`; }
+
+function assertDeletable(record, { systemId, expectedRevision }) {
+  if (record.systemId !== systemId || !record.deletedAt) throw persistenceError("A ficha precisa estar na lixeira para ser excluída permanentemente.", "character-not-in-trash");
+  if (record.revision !== expectedRevision) throw persistenceError("A ficha foi alterada em outra aba. Recarregue a biblioteca.", "revision-conflict");
+  if (!validateEnvelope(record).ok) throw persistenceError("O registro incompatível foi preservado.", "invalid-envelope");
+}
+
+function assertNotPurged(receipt) {
+  if (receipt) throw persistenceError("O identificador pertence a uma ficha excluída permanentemente.", "permanently-deleted-character-id");
+}
+
 function requestResult(request) {
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result);
@@ -97,13 +109,14 @@ export class IndexedDbCharacterRepository {
   }
 
   async put(envelope, { expectedRevision = null, createMutationId } = {}) {
-    const transaction = this.transaction(["characters"], "readwrite");
+    const transaction = this.transaction(["characters", "migrationReceipts"], "readwrite");
     const completed = transactionResult(transaction);
     // Um request pode ter sucesso e a transação ainda ser cancelada depois.
     // Instale o tratamento imediatamente, inclusive para falhas síncronas.
     completed.catch(() => {});
     const store = transaction.objectStore("characters");
     try {
+      assertNotPurged(await requestResult(transaction.objectStore("migrationReceipts").get(permanentDeletionReceiptId(envelope.id))));
       const existing = await requestResult(store.get(envelope.id));
       const prepared = prepareEnvelopeWrite(envelope, existing, { expectedRevision, createMutationId });
       await requestResult(store.put(prepared));
@@ -117,6 +130,28 @@ export class IndexedDbCharacterRepository {
   }
 
   async getReceipt(id) { return requestResult(this.transaction(["migrationReceipts"]).objectStore("migrationReceipts").get(id)); }
+  async deletePermanently(id, { systemId, expectedRevision, deletedAt = new Date().toISOString() }) {
+    const transaction = this.transaction(["characters", "migrationBackups", "migrationReceipts"], "readwrite");
+    const completed = transactionResult(transaction);
+    completed.catch(() => {});
+    try {
+      const characters = transaction.objectStore("characters");
+      const record = await requestResult(characters.get(id));
+      if (!record) { await completed; return false; }
+      assertDeletable(record, { systemId, expectedRevision });
+      const backups = transaction.objectStore("migrationBackups");
+      const related = (await requestResult(backups.getAll())).filter((backup) => backup.recordId === id && backup.systemId === systemId);
+      await requestResult(characters.delete(id));
+      for (const backup of related) await requestResult(backups.delete(backup.id));
+      await requestResult(transaction.objectStore("migrationReceipts").put({ id: permanentDeletionReceiptId(id), systemId, recordId: id, deletedAt }));
+      await completed;
+      return true;
+    } catch (error) {
+      try { transaction.abort(); } catch { /* A transação pode já ter sido cancelada. */ }
+      await completed.catch(() => {});
+      throw error;
+    }
+  }
   async putReceipt(receipt) {
     const transaction = this.transaction(["migrationReceipts"], "readwrite");
     await committedRequest(transaction, transaction.objectStore("migrationReceipts").put(receipt));
@@ -154,6 +189,7 @@ export class IndexedDbCharacterRepository {
     const receipts = transaction.objectStore("migrationReceipts");
     try {
       for (const { envelope, recovery } of records) {
+        assertNotPurged(await requestResult(receipts.get(permanentDeletionReceiptId(envelope.id))));
         const prepared = prepareEnvelopeWrite(envelope, null, { createMutationId: () => `legacy:${receipt.id}:${envelope.id}` });
         characters.add(prepared);
         backups.add(structuredClone(recovery));
@@ -179,11 +215,21 @@ export class MemoryCharacterRepository {
   }
   async get(id) { const value = this.characters.get(id); return value ? structuredClone(value) : undefined; }
   async put(envelope, { expectedRevision = null, createMutationId } = {}) {
+    assertNotPurged(this.receipts.get(permanentDeletionReceiptId(envelope.id)));
     const existing = this.characters.get(envelope.id);
     const prepared = prepareEnvelopeWrite(envelope, existing, { expectedRevision, createMutationId });
     this.characters.set(envelope.id, prepared); return structuredClone(prepared);
   }
   async getReceipt(id) { return this.receipts.get(id); }
+  async deletePermanently(id, { systemId, expectedRevision, deletedAt = new Date().toISOString() }) {
+    const record = this.characters.get(id);
+    if (!record) return false;
+    assertDeletable(record, { systemId, expectedRevision });
+    this.characters.delete(id);
+    for (const [key, backup] of this.migrationBackups) if (backup.recordId === id && backup.systemId === systemId) this.migrationBackups.delete(key);
+    this.receipts.set(permanentDeletionReceiptId(id), { id: permanentDeletionReceiptId(id), systemId, recordId: id, deletedAt });
+    return true;
+  }
   async putReceipt(receipt) { this.receipts.set(receipt.id, structuredClone(receipt)); return receipt; }
   async quarantine(record) { this.quarantined.set(record.id, structuredClone(record)); return record; }
   async getQuarantine(id) { const value = this.quarantined.get(id); return value ? structuredClone(value) : undefined; }
@@ -204,6 +250,7 @@ export class MemoryCharacterRepository {
     try {
       let step = 0;
       for (const { envelope, recovery } of records) {
+        assertNotPurged(this.receipts.get(permanentDeletionReceiptId(envelope.id)));
         if (this.characters.has(envelope.id)) throw persistenceError("ID ocupado durante a importação.", "import-id-collision", { id: envelope.id });
         const prepared = prepareEnvelopeWrite(envelope, null, { createMutationId: () => `legacy:${receipt.id}:${envelope.id}` });
         this.characters.set(prepared.id, prepared);

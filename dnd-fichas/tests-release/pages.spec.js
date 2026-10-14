@@ -4,6 +4,36 @@ import { mkdir, readFile } from "node:fs/promises";
 import { Buffer } from "node:buffer";
 import { setTextSize, setRange } from "../tests-e2e/helpers/preferences.js";
 
+test("Pages Chrome: exclusão permanente confirma e persiste após reabrir", async ({ page, baseURL }) => {
+  const source = JSON.parse(await readFile("docs/demo/01-guerreiro-nivel-1.json", "utf8"));
+  await page.goto(baseURL);
+  await page.getByLabel("Arquivo JSON da ficha").setInputFiles({ name: "trash-demo.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(source)) });
+  await expect(page.getByRole("heading", { name: `Ficha de ${source.nome}`, exact: true })).toBeVisible();
+  const id = new URL(page.url()).pathname.split("/").at(-1);
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
+  await page.getByRole("link", { name: "Personagens", exact: true }).click();
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: `Excluir ${source.nome}`, exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Alterações salvas neste dispositivo." })).toBeVisible();
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: `Excluir permanentemente ${source.nome}`, exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "foi excluída permanentemente" })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Seus personagens", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Lixeira", exact: true })).toHaveCount(0);
+  const record = await page.evaluate((recordId) => new Promise((resolve, reject) => {
+    const request = indexedDB.open("rpg-platform");
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      const query = db.transaction("characters").objectStore("characters").get(recordId);
+      query.onsuccess = () => { resolve(query.result); db.close(); };
+      query.onerror = () => { reject(query.error); db.close(); };
+    };
+  }), id);
+  expect(record).toBeUndefined();
+});
+
 test("RELEASE-01 Pages entrega assets e recupera 404 de ficha com query/hash", async ({ page, baseURL, request }) => {
   const root = new URL(baseURL);
   expect((await request.get(new URL("favicon.svg", root).href)).status()).toBe(200);

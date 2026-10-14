@@ -165,12 +165,19 @@ export function FichasProvider({ children, characterStore: injectedStore = null 
     return fichas.find((ficha) => ficha.id === id);
   }
 
+  async function excluirFichaPermanentemente(id) {
+    if (hidratacao !== "pronto") throw new Error("Aguarde o carregamento das fichas.");
+    await characterStore.deletePermanently(id).durable;
+    setFichasExcluidas((atuais) => atuais.filter((ficha) => ficha.id !== id));
+  }
+
   const valor = {
     fichas,
     criarFicha,
     atualizarFicha,
     removerFicha,
     restaurarFicha,
+    excluirFichaPermanentemente,
     fichasExcluidas,
     fichasProtegidas,
     hidratacao,

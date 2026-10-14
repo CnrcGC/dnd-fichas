@@ -8,9 +8,16 @@ import { exportarFicha, lerArquivoFicha } from "../utils/backup";
 import "./Home.css";
 
 export default function Home() {
-  const { fichas, fichasExcluidas, fichasProtegidas, removerFicha, restaurarFicha, criarFicha } = useFichas();
+  const { fichas, fichasExcluidas, fichasProtegidas, removerFicha, restaurarFicha, excluirFichaPermanentemente, criarFicha } = useFichas();
   const [busca, setBusca] = useState("");
   const [erroImportacao, setErroImportacao] = useState("");
+  const [exclusaoEmCurso, setExclusaoEmCurso] = useState(null);
+  const [erroLixeira, setErroLixeira] = useState("");
+  const [avisoLixeira, setAvisoLixeira] = useState("");
+  const tituloRef = useRef(null);
+  const tituloLixeiraRef = useRef(null);
+  const erroLixeiraRef = useRef(null);
+  useEffect(() => { if (erroLixeira) erroLixeiraRef.current?.focus(); }, [erroLixeira]);
   const navigate = useNavigate();
   const inputArquivoRef = useRef(null);
   const erroImportacaoRef = useRef(null);
@@ -54,12 +61,26 @@ export default function Home() {
     }
   }
 
+  async function handleExcluirPermanentemente(ficha) {
+    if (exclusaoEmCurso || !window.confirm(`Excluir permanentemente a ficha de ${ficha.nome}?\n\nEla sairá da lixeira e não poderá ser restaurada por ela. Esta ação não pode ser desfeita. Arquivos JSON exportados não serão apagados.`)) return;
+    setExclusaoEmCurso(ficha.id);
+    setErroLixeira("");
+    setAvisoLixeira("");
+    try {
+      await excluirFichaPermanentemente(ficha.id);
+      setAvisoLixeira(`A ficha de ${ficha.nome} foi excluída permanentemente deste navegador.`);
+      requestAnimationFrame(() => (tituloLixeiraRef.current ?? tituloRef.current)?.focus());
+    } catch {
+      setErroLixeira(`Não foi possível excluir a ficha de ${ficha.nome}. Ela permanece na lixeira. Tente novamente; se outra aba a alterou, recarregue a biblioteca.`);
+    } finally { setExclusaoEmCurso(null); }
+  }
+
   return (
     <div className="home-grimoire">
       <div className="home-cabecalho grimoire-pagina">
         <div className="home-abertura">
           <p className="home-sobretitulo">Biblioteca de aventuras</p>
-          <h1 className="home-titulo">Seus personagens</h1>
+          <h1 className="home-titulo" ref={tituloRef} tabIndex={-1}>Seus personagens</h1>
           <p className="home-subtitulo">Um lugar para suas próximas aventuras.</p>
         </div>
         <div className="home-selo" aria-hidden="true">
@@ -100,6 +121,8 @@ export default function Home() {
         </div>
       </div>
       {erroImportacao && <p className="home-erro grimoire-aviso" id="home-erro-importacao" role="alert" ref={erroImportacaoRef} tabIndex={-1}>{erroImportacao}</p>}
+      {erroLixeira && <p className="home-erro grimoire-aviso" role="alert" ref={erroLixeiraRef} tabIndex={-1}>{erroLixeira}</p>}
+      <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">{avisoLixeira}</p>
 
       <div className="home-colecao-cabecalho">
         <h2 className="home-colecao-titulo">Sua coleção</h2>
@@ -178,15 +201,20 @@ export default function Home() {
       )}
       {fichasExcluidas.length > 0 && (
         <section className="home-lixeira grimoire-pagina" aria-labelledby="home-lixeira-titulo">
-          <h2 id="home-lixeira-titulo">Lixeira</h2>
+          <h2 id="home-lixeira-titulo" ref={tituloLixeiraRef} tabIndex={-1}>Lixeira</h2>
           <p>As fichas excluídas continuam salvas neste dispositivo e podem ser restauradas.</p>
           <ul>
             {fichasExcluidas.map((ficha) => (
               <li key={ficha.id}>
                 <span>{ficha.nome}</span>
-                <button type="button" onClick={() => restaurarFicha(ficha.id)} aria-label={`Restaurar ${ficha.nome}`}>
+                <div className="home-lixeira-acoes">
+                <button type="button" disabled={Boolean(exclusaoEmCurso)} onClick={() => restaurarFicha(ficha.id)} aria-label={`Restaurar ${ficha.nome}`}>
                   Restaurar
                 </button>
+                <button type="button" className="home-lixeira-excluir" disabled={Boolean(exclusaoEmCurso)} onClick={() => handleExcluirPermanentemente(ficha)} aria-label={`Excluir permanentemente ${ficha.nome}`}>
+                  {exclusaoEmCurso === ficha.id ? "Excluindo…" : "Excluir permanentemente"}
+                </button>
+                </div>
               </li>
             ))}
           </ul>

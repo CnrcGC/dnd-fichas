@@ -1,6 +1,6 @@
 # RELEASE-01 — Endereço e publicação da apresentação
 
-**Estado do desenvolvimento atual:** o proprietário determinou que os próximos ajustes ocorram somente na `main` 1.21. As correções do MVP e o visual foram integrados localmente; não houve nova publicação. Este documento conserva o histórico da release hospedada. Validação da integração: [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md).
+**Estado atual em 2026-10-13:** `https://cnrcgc.github.io/dnd-fichas/` respondeu HTTP 200. A API confirmou `status: built`, `build_type: legacy` e fonte `gh-pages` → `/`; a publicação ainda é a candidata anterior, não a main 1.22 (`33fdad4`). O workflow local foi preparado para push na main e acionamento manual, com testes/lint/budgets/Chrome antes de publicar. Sua ativação exige mudar a fonte de Pages para **GitHub Actions** e enviar o workflow; nenhuma configuração remota, commit ou push foi alterado nesta entrega. Ver [HOSPEDAGEM_E_LIXEIRA.md](./HOSPEDAGEM_E_LIXEIRA.md). As issues visuais seguintes aguardam essas pendências.
 
 Endereço escolhido: **https://cnrcgc.github.io/dnd-fichas/**, em GitHub Pages, sem domínio pago nem backend. Navegador: **Google Chrome**. **Publicado e validado em 2026-10-12**, com HTTPS obrigatório. A consulta inicial encontrou `has_pages: false`; a criação de `gh-pages` ativou Pages automaticamente. A API confirmou publicação por branch e o workflow de Pages concluiu com sucesso.
 
@@ -22,7 +22,7 @@ Resultado de 2026-10-12: **8/8 testes de Pages passaram no Chrome**, incluindo o
 
 ## Publicação autorizada e preservação da cópia local
 
-O workflow `.github/workflows/pages.yml` já está preparado na raiz Git. Ele roda por acionamento manual, valida testes/lint, builds e orçamento, executa os ensaios de Pages no Chrome e publica somente `dnd-fichas/dist-pages`. Não publica `server`, JSONs reais do usuário ou arquivos locais de backup.
+O workflow `.github/workflows/pages.yml` está preparado na raiz Git. Na versão atual, roda por push de arquivos do frontend/workflow na main ou acionamento manual da main; valida testes/lint, builds e orçamento, executa os ensaios de Pages no Chrome e publica somente `dnd-fichas/dist-pages`. Não publica `server`, JSONs reais do usuário ou arquivos locais de backup. A publicação automática depende da fonte **GitHub Actions**, ainda pendente de ativação. Os parágrafos seguintes descrevem a publicação histórica de 2026-10-12 por branch.
 
 Em 2026-10-12 o usuário autorizou explicitamente commit, tag, push e publicação. O fetch encontrou a versão 1.20 em `main` remoto (`be9fef14cbc2c02f71a2fc78a1675cba1ef48f02`), enquanto o MVP foi implementado e validado sobre a cópia local 1.19. Para preservar ambas as versões, o código da apresentação fica em **`codex/mvp-apresentacao`**, sem reset, merge ou force push de `main`.
 

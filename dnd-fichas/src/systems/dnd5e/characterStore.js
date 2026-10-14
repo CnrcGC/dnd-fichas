@@ -128,6 +128,18 @@ export function createDnd5eCharacterStore({
       });
       return { ok: true, erro: null, durable: writeQueue };
     },
+    deletePermanently(id) {
+      writeQueue = writeQueue.catch(() => {}).then(async () => {
+        await initialize();
+        const durableRepository = await getRepository();
+        const current = await durableRepository.get(id);
+        if (!current) return false;
+        if (current.systemId !== "dnd5e" || !current.deletedAt) throw Object.assign(new Error("A ficha precisa estar na lixeira para ser excluída permanentemente."), { code: "character-not-in-trash" });
+        await assertWritable(current);
+        return durableRepository.deletePermanently(id, { systemId: "dnd5e", expectedRevision: current.revision, deletedAt: now() });
+      });
+      return { ok: true, erro: null, durable: writeQueue };
+    },
     async listDurable() {
       await initialize();
       const durableRepository = await getRepository();
