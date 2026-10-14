@@ -26,6 +26,8 @@ Escopo de dados: exclusão do registro corrente e recuperação interna vinculad
 
 Publicação autorizada em 2026-10-14: commit `5a9fbe0` enviado à main; Pages alterado para `build_type: workflow`, preservando HTTPS. A primeira execução remota falhou antes dos testes no `npm ci`: faltavam peers opcionais `@emnapi/core` e `@emnapi/runtime` no lockfile. O arquivo foi corrigido com npm 11.19.0 (mesma versão do runner), sem alterar versões existentes ou `package.json`; `npm ci --dry-run` com Linux/x64/glibc passou. O workflow completo será executado novamente antes de publicar.
 
+A execução seguinte confirmou a instalação e encontrou diferença de maiúsculas nos nomes de `Blocodescanso.jsx/css`, incompatível com os imports `BlocoDescanso` no Linux. Ambos foram renomeados no Git para `BlocoDescanso.jsx/css`, sem mudança de conteúdo. A inspeção dos imports relativos de `src` encontrou somente essas duas diferenças; os testes e builds remotos continuam obrigatórios.
+
 - `npm test`: 275 passaram, zero falhas/skips. Três testes adicionados cobrem exclusão/recuperação, outros registros, reabertura, snapshot antigo e proteções de sistema/versão/revisão.
 - E2E de `trash.spec.js` e `library.spec.js`: 10 passaram em desktop/mobile. Cancelamento, confirmação por teclado, foco, reload, falha depois do request de exclusão com abort da transação, preservação de backup e nova tentativa; outra ficha restaurável; texto 28 px/reflow e axe cobertos. [Relatório](../output/validation/trash-e2e.json).
 - `npm run lint`: passou.
