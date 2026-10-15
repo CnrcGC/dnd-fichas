@@ -1,3 +1,9 @@
+.proficiencia-retratil { border: 1px solid var(--color-line); border-radius: var(--radius-sm); padding: var(--space-3); margin-block: var(--space-3); min-width: 0; }
+.proficiencia-retratil > summary { cursor: pointer; min-height: 44px; color: var(--color-ink); }
+.proficiencia-retratil > summary .bloco-titulo { display: inline; }
+.proficiencia-retratil[open] > summary { margin-bottom: var(--space-3); }
+.proficiencia-retratil > summary:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
+
 .proficiencias-nota {
   margin: 0 0 var(--space-2);
   font-size: var(--text-sm);

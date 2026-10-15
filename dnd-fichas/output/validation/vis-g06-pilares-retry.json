@@ -1,0 +1,171 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "test-results/vis-g06-pilares.config.mjs",
+      "--grep",
+      "aplica as seis identidades",
+      "--output=test-results/vis-g06-pilares-retry",
+      "--reporter=list,json"
+    ],
+    "configFile": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\test-results\\vis-g06-pilares.config.mjs",
+    "rootDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/tests-e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/test-results/vis-g06-pilares-retry",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/tests-e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "pilares-library.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/test-results/vis-g06-pilares-retry",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-mobile",
+        "name": "chromium-mobile",
+        "testDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/tests-e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "pilares-library.spec.js"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "pilares-library.spec.js",
+      "file": "pilares-library.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "aplica as seis identidades de academia com rótulo e contraste em claro e escuro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9944,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T15:41:37.622Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7c7a1336f8808859765c-377bf416f718844dcdfe",
+          "file": "pilares-library.spec.js",
+          "line": 395,
+          "column": 1
+        },
+        {
+          "title": "aplica as seis identidades de academia com rótulo e contraste em claro e escuro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6413,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T15:41:50.080Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7c7a1336f8808859765c-46e5bf40b36727d11ac9",
+          "file": "pilares-library.spec.js",
+          "line": 395,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-14T15:41:35.097Z",
+    "duration": 21983.218,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

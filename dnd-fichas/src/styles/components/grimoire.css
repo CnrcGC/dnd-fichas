@@ -67,3 +67,149 @@
   border-inline-start: 4px solid var(--color-warning);
   border-radius: var(--grimoire-radius);
 }
+
+/* VIS-G05: papel, campos e marcadores comuns às ações de mesa do D&D. */
+@media screen {
+  [data-system="dnd5e"] .ficha-grimoire :is(.magias-resumo-item, .espaco-magia-campo, .recurso-item) {
+    background: var(--grimoire-cover);
+    border-color: var(--grimoire-rule);
+    border-radius: var(--grimoire-radius);
+  }
+  [data-system="dnd5e"] .ficha-grimoire :is(.magias-resumo-valor, .inventario-peso, .recurso-usos) {
+    font-variant-numeric: tabular-nums;
+  }
+  [data-system="dnd5e"] .ficha-grimoire :is(.recursos-vazio, .magias-vazio, .inventario-vazio) {
+    padding: var(--space-3);
+    border-inline-start: 3px solid var(--grimoire-binding);
+    background: var(--grimoire-cover);
+  }
+  [data-system="dnd5e"] .recurso-item { padding: var(--space-3); border-inline-start: 4px solid var(--grimoire-binding); }
+  [data-system="dnd5e"] .recurso-identidade { flex: 1 1 12rem; min-width: min(100%, 12rem); gap: var(--space-1); }
+  [data-system="dnd5e"] .recurso-usos { color: var(--color-ink); font-size: var(--text-xs); font-weight: 600; }
+  [data-system="dnd5e"] .ficha-grimoire :is(.magias-resumo-label, .espaco-magia-nivel, .recurso-identidade small, .recurso-campo-pequeno) { color: var(--color-ink); }
+  [data-system="dnd5e"] .recurso-campo-pequeno { min-width: 0; }
+  [data-system="dnd5e"] .recurso-campo-pequeno:has(select) { flex: 1 1 12rem; }
+  [data-system="dnd5e"] .recurso-campo-pequeno select { width: 100%; }
+  [data-system="dnd5e"] .recurso-pip {
+    display: inline-flex;
+    width: 44px; min-width: 44px; height: 44px; min-height: 44px;
+    background: var(--grimoire-paper);
+    border: 1px solid var(--color-ink-soft);
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  [data-system="dnd5e"] .recurso-pip.is-gasto {
+    background: var(--color-ink-soft);
+    color: var(--color-bg-raised);
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+  }
+  [data-system="dnd5e"] .ficha-grimoire :is(.recurso-nome, .recurso-campo-pequeno input, .recurso-campo-pequeno select, .inventario-tabela input:not([type="checkbox"]), .inventario-tabela select, .magias-tabela input:not([type="checkbox"]), .magias-tabela select) {
+    min-width: 0;
+    min-height: 44px;
+    padding: var(--space-1) var(--space-2);
+    background: var(--grimoire-paper);
+    border: 1px solid var(--color-ink-soft);
+    border-radius: var(--grimoire-radius);
+  }
+  [data-system="dnd5e"] .ficha-grimoire :is(.inventario-tabela, .magias-tabela) :is(input, select):disabled {
+    background: var(--color-disabled-bg);
+    color: var(--color-ink-soft);
+    border-style: dashed;
+  }
+  [data-system="dnd5e"] .ficha-grimoire .espaco-magia-input {
+    width: calc(3ch + 16px + 0.2em);
+    flex: 0 0 auto;
+    min-width: 0;
+    min-height: 44px;
+    padding: var(--space-1) 4px;
+    background: var(--grimoire-paper);
+    border: 1px solid var(--color-ink-soft);
+    border-radius: var(--grimoire-radius);
+    font-variant-numeric: tabular-nums;
+    appearance: textfield;
+  }
+  [data-system="dnd5e"] .espaco-magia-input::-webkit-inner-spin-button,
+  [data-system="dnd5e"] .espaco-magia-input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+  [data-system="dnd5e"] .ficha-grimoire :is(.inventario-tabela, .magias-tabela) th {
+    padding-block: var(--space-2);
+    font-weight: 700;
+    border-bottom: 2px solid var(--grimoire-rule);
+  }
+  [data-system="dnd5e"] .ficha-grimoire :is(.inventario-tabela, .magias-tabela) td { padding-block: var(--space-2); }
+  [data-system="dnd5e"] .inventario-cabecalho { flex-wrap: wrap; border-bottom-color: var(--grimoire-rule); }
+  [data-system="dnd5e"] .ficha-grimoire :is(.recursos-adicionar, .inventario-adicionar, .magias-adicionar, .magias-abrir-catalogo, .inventario-abrir-catalogo) {
+    min-height: 44px;
+    border-radius: var(--grimoire-radius);
+  }
+  [data-system="dnd5e"] .modal-catalogo {
+    background: var(--grimoire-paper);
+    border: 1px solid var(--color-ink-soft);
+    border-inline-start: 5px solid var(--grimoire-binding);
+    border-radius: var(--grimoire-radius);
+  }
+  [data-system="dnd5e"] .modal-catalogo-cabecalho {
+    gap: var(--space-3);
+    background: var(--grimoire-cover);
+    border-bottom: 1px solid var(--grimoire-rule);
+  }
+  [data-system="dnd5e"] .modal-catalogo-fechar { flex-shrink: 0; width: 44px; min-width: 44px; height: 44px; min-height: 44px; border: 1px solid var(--color-ink-soft); border-radius: var(--grimoire-radius); }
+  [data-system="dnd5e"] .modal-catalogo :is(.modal-catalogo-lista, .levelup-corpo) { min-height: 0; }
+  [data-system="dnd5e"] .modal-catalogo :is(.modal-catalogo-busca, .levelup-select) { border-color: var(--color-ink-soft); border-radius: var(--grimoire-radius); min-height: 44px; }
+  [data-system="dnd5e"] .item-catalogo { background: var(--grimoire-paper); border-color: var(--grimoire-rule); border-radius: var(--grimoire-radius); box-shadow: none; }
+  [data-system="dnd5e"] .item-catalogo-cabecalho { min-height: calc(32px + 2 * var(--space-1)); padding-block: var(--space-1); padding-inline-end: calc(32px + 2 * var(--space-2)); }
+  [data-system="dnd5e"] .item-catalogo .item-catalogo-adicionar { top: var(--space-1); width: 32px; min-width: 32px; height: 32px; min-height: 32px; }
+  [data-system="dnd5e"] .item-catalogo-adicionar .ui-icon { width: 18px; height: 18px; }
+  [data-system="dnd5e"] .item-catalogo-resumo { white-space: normal; overflow: visible; }
+  [data-system="dnd5e"] .modal-catalogo-aba { min-height: 44px; border-bottom-width: 3px; }
+  [data-system="dnd5e"] .modal-catalogo-aba.is-ativa { background: var(--grimoire-cover); font-weight: 700; text-decoration: underline; text-underline-offset: 0.2em; }
+  [data-system="dnd5e"] .levelup-navegacao { flex-wrap: wrap; gap: var(--space-2); border-top: 1px solid var(--grimoire-rule); margin-top: var(--space-3); background: var(--grimoire-cover); }
+  [data-system="dnd5e"] .levelup-navegacao button { min-height: 44px; }
+
+  [data-system="dnd5e"] .painel-rolagens {
+    width: min(24rem, calc(100% - 2 * var(--space-4)));
+    max-height: calc(100dvh - 2 * var(--space-4));
+    overflow-y: auto;
+    padding: var(--space-2);
+  }
+  [data-system="dnd5e"] .painel-rolagens-toggle {
+    width: 100%;
+    min-height: 44px;
+    flex-wrap: wrap;
+    background: var(--grimoire-cover);
+    border: 1px solid var(--color-ink-soft);
+    border-inline-start: 4px solid var(--grimoire-binding);
+    border-radius: var(--grimoire-radius);
+  }
+  [data-system="dnd5e"] .painel-rolagens-chamada { flex: 1 1 6rem; }
+  [data-system="dnd5e"] .painel-rolagens :is(.painel-rolagens-legenda, .item-rolagem-tipo, .rolagem-detalhe-texto) { color: var(--color-ink); }
+  [data-system="dnd5e"] .painel-rolagens-titulo { max-width: none; white-space: normal; color: var(--color-ink); font-weight: 600; }
+  [data-system="dnd5e"] .rolagem-resumo { flex-wrap: wrap; }
+  [data-system="dnd5e"] .rolagem-estado.is-desastre { color: var(--color-danger); }
+  [data-system="dnd5e"] .painel-rolagens-lista { width: 100%; max-height: min(48dvh, 26rem); background: var(--grimoire-paper); border-color: var(--color-ink-soft); border-radius: var(--grimoire-radius); }
+  [data-system="dnd5e"] .painel-rolagens-heading { padding-bottom: var(--space-2); border-bottom: 1px solid var(--grimoire-rule); }
+  [data-system="dnd5e"] .painel-rolagens-modo { border-color: var(--color-ink-soft); border-radius: var(--grimoire-radius); }
+  [data-system="dnd5e"] .painel-rolagens-modo label { min-height: 44px; padding-inline: var(--space-1); }
+  [data-system="dnd5e"] .item-rolagem { padding: var(--space-2); background: var(--grimoire-cover); border-inline-start: 3px solid var(--grimoire-binding); }
+  [data-system="dnd5e"] .painel-rolagens-limpar { min-height: 44px; padding: var(--space-2); border: 1px solid var(--color-ink-soft); border-radius: var(--grimoire-radius); }
+  [data-system="dnd5e"] .persistencia-status:not(:empty) { display: flex; align-items: center; gap: var(--space-2); padding-block: var(--space-2); background: var(--grimoire-paper); border-bottom: 1px solid var(--grimoire-rule); color: var(--color-ink); }
+  [data-system="dnd5e"] .persistencia-status .ui-icon { flex-shrink: 0; }
+  [data-system="dnd5e"] .persistencia-status[data-persistence-status="salvo"] .ui-icon { color: var(--color-success-soft); border: 1px solid currentColor; border-radius: 50%; }
+  [data-system="dnd5e"] .persistencia-status[data-persistence-status="salvando"] .ui-icon { color: var(--color-accent); }
+  [data-system="dnd5e"] .persistencia-status[data-persistence-status="falhou"] .ui-icon { color: var(--color-danger-soft); }
+  [data-system="dnd5e"] .aviso-persistencia { align-items: start; flex-wrap: wrap; justify-content: space-between; border-inline-start: 4px solid var(--color-danger-soft); background: var(--grimoire-paper); border-bottom-color: var(--color-danger-soft); }
+  [data-system="dnd5e"] .aviso-persistencia-texto { flex: 1 1 24rem; min-width: 0; }
+  [data-system="dnd5e"] .aviso-persistencia-acoes { flex-wrap: wrap; flex-direction: row; }
+  [data-system="dnd5e"] .aviso-persistencia-acoes button { min-height: 44px; border: 1px solid var(--color-danger-soft); border-radius: var(--grimoire-radius); }
+}
+@media screen and (max-width: 640px) {
+  [data-system="dnd5e"] .back-to-top { bottom: var(--dice-panel-clearance, calc(var(--space-4) + 6rem)); }
+  [data-system="dnd5e"] .painel-rolagens { width: auto; max-height: calc(100dvh - 2 * var(--space-2)); }
+  [data-system="dnd5e"] .modal-catalogo-cabecalho { padding: var(--space-2); gap: var(--space-2); }
+  [data-system="dnd5e"]:has(.painel-rolagens.is-expandido) .back-to-top { visibility: hidden; }
+}
+@media screen and (pointer: coarse) {
+  [data-system="dnd5e"] .item-catalogo-cabecalho { min-height: calc(44px + 2 * var(--space-1)); padding-inline-end: calc(44px + 2 * var(--space-2)); }
+  [data-system="dnd5e"] .item-catalogo .item-catalogo-adicionar { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
+}

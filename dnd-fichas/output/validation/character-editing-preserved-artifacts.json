@@ -1,0 +1,470 @@
+{
+  "allHashesMatch": true,
+  "count": 116,
+  "files": [
+    {
+      "path": "pdf/01-guerreiro-nivel-1.pdf",
+      "sha256": "868dd90a5632331d29a7f626639cd3c5f6ed1901694e617f927dbbd800224935"
+    },
+    {
+      "path": "pdf/02-guerreiro-nivel-4.pdf",
+      "sha256": "831dc7c5caf0e95f3233419de36a6ba8599f1a40e63521335a5f5da5b0e75c41"
+    },
+    {
+      "path": "pdf/03-mago-nivel-4.pdf",
+      "sha256": "2c7ffbcdd199664a44e7bf17fb2f7cafe8fed54a787a32cb64cfa135c2266378"
+    },
+    {
+      "path": "screenshots/biblioteca-1280.png",
+      "sha256": "a7f1636be7efa085976161b30413d7ed7ea83921d3653cc8f83add261ae789ca"
+    },
+    {
+      "path": "screenshots/biblioteca-390.png",
+      "sha256": "caa62b8a2ed66529499f9b58ad6cf7c910504f2ede947f74e6bbce5e08d31f10"
+    },
+    {
+      "path": "screenshots/criacao-1280.png",
+      "sha256": "325754004a802b2049ea566e7b5ca78d0ad2dfdf40209cd2aa838aa70259f672"
+    },
+    {
+      "path": "screenshots/criacao-390.png",
+      "sha256": "96bfa95f57c6738b0937def0e16ddaeedd68e99078bd60757aba416a714ece2f"
+    },
+    {
+      "path": "screenshots/ficha-1280.png",
+      "sha256": "663c4217c3d228cd30479a69499328a533d32ff19907386f1f4b2d4e3bf99406"
+    },
+    {
+      "path": "screenshots/ficha-390.png",
+      "sha256": "4348eeb37dc8214e2af2ede973f5544a9f2fc64201fd518c2d9c141f0bfe49fb"
+    },
+    {
+      "path": "screenshots/release-publicada.jpg",
+      "sha256": "c552fa37a9135880b997eb1a09a9e50e36053ed0c053379d0ce09de3f21391d5"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-colecao-1280.png",
+      "sha256": "156cc91441a4c32f1e96fc95a53029e84ab61b27010f932ba128b20a16f8869d"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-colecao-390.png",
+      "sha256": "95ada6894d17ed5d0f9dd1a928f94d0848dc0432e7ae654b0093fb7ad9e0bd6c"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-texto-150-1280.png",
+      "sha256": "a2820060cf8621de41a36a2e5dbf70bb951912d5526db9782992e3507dc1722b"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-texto-150-390.png",
+      "sha256": "9821fe3cdceb7c0c1d52ead4b1939c2732152193bd27133fb8c1dcd5611599f3"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-uma-capa-1280.png",
+      "sha256": "9ab88cbf2fd43862b03d1072dea2fd140cb07fb6849b10b82982aff9c4039cc5"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-uma-capa-390.png",
+      "sha256": "b8dda4cea081d8c1b8e64b5a2d3ce5f099e422e737f430938fe5e2758a1590ab"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-vazia-1280.png",
+      "sha256": "8b0060c254c110c8a80ea97dc8bdb1c719a4281c04fca54f2103dcbe083b7a73"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-dark-vazia-390.png",
+      "sha256": "8b13d546dff6095cf365d58bcaf22e20efcf18de8762545b593b64b4b2699c13"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-colecao-1280.png",
+      "sha256": "f911cf7f3fa7c7dbcdb6c1f686fd74d44e76c8931ff96976a1d7a7e0c257ec62"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-colecao-390.png",
+      "sha256": "4925eb7dd8eed7ea7f1e08887ba8b53ee1f5f336046a3d173241d598fbeef93c"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-texto-150-1280.png",
+      "sha256": "53f01dff40aac905630859005f6b7e3cd70bd18bbe35bdef35e4fcbb123f4cb3"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-texto-150-390.png",
+      "sha256": "1fbabfc36e22ddf9950ce38f29121e0f59adab096c9701d0e945b048fcda2c2f"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-uma-capa-1280.png",
+      "sha256": "aa7ea8b4909b15c0e763ad2859e0160d0b621f49586f3e0438339f5ccb0651eb"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-uma-capa-390.png",
+      "sha256": "d10cf807fc692536b1133cab74f372e9433db386700b378556c4cbe96f74d4f0"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-vazia-1280.png",
+      "sha256": "935e07323c875625aab879e66cfbec9b9e10017897d67455276d41cd06c80976"
+    },
+    {
+      "path": "visual-grimoire/biblioteca-light-vazia-390.png",
+      "sha256": "c426e2ad83dc135c66bd70dbdbda83433546ad10b3b29411ba3892f688f3b514"
+    },
+    {
+      "path": "visual-grimoire/creation/pendencias-dark-chromium-desktop.png",
+      "sha256": "d0abe661966e9d5091e08fe8462c10f5b35777da0e2c4d44b976c5d66834ffc5"
+    },
+    {
+      "path": "visual-grimoire/creation/pendencias-dark-chromium-mobile.png",
+      "sha256": "724e4b005aa680a2cd16fb61cd44e08be4f3d0b768c924f4eb9510ed335670b5"
+    },
+    {
+      "path": "visual-grimoire/creation/pendencias-light-chromium-desktop.png",
+      "sha256": "656a0063fc0285b3babbbe0574ad4b08f03d2f107a7ef6dcf734779dc23797b3"
+    },
+    {
+      "path": "visual-grimoire/creation/pendencias-light-chromium-mobile.png",
+      "sha256": "31d0c47b31e460783c03b05a192b75288dd64272d401b50469d469c7026f7752"
+    },
+    {
+      "path": "visual-grimoire/creation/raca-dark-chromium-desktop.png",
+      "sha256": "0202ac05e4be844aa0a8f2f439c6282d71752b8def945877bd21f0e047ca8689"
+    },
+    {
+      "path": "visual-grimoire/creation/raca-dark-chromium-mobile.png",
+      "sha256": "efedbd3d6ef2b5e5942653344756268a7c6b381777e11b57fe1e6347463db666"
+    },
+    {
+      "path": "visual-grimoire/creation/raca-light-chromium-desktop.png",
+      "sha256": "4c254178203bd1e44101cb238a12f8663188ee3f24217330b1d290e2cb893547"
+    },
+    {
+      "path": "visual-grimoire/creation/raca-light-chromium-mobile.png",
+      "sha256": "dd77ebf1a2c64fa8a19f245f7ebc9606e94af0a9383b71b62d0c54c5fafc2e07"
+    },
+    {
+      "path": "visual-grimoire/main-reflow/biblioteca-1280.png",
+      "sha256": "b0d870a94c37f7c3218323b013ad9eb5b08e641e8296060f119c588d50132550"
+    },
+    {
+      "path": "visual-grimoire/main-reflow/biblioteca-390.png",
+      "sha256": "1303c4f857c8e9ccbf5274c82bc7a58278c4cce4d66f99f35e6c656e7d6031c1"
+    },
+    {
+      "path": "visual-grimoire/main-reflow/criacao-1280.png",
+      "sha256": "c7fe6a74b115670904b154f8d096c0785071cee407569ed240a57db9098af735"
+    },
+    {
+      "path": "visual-grimoire/main-reflow/criacao-390.png",
+      "sha256": "0a7bf9019ac1ed3d163f461558da41d1a37546ecd280c42475bb964a68754f1d"
+    },
+    {
+      "path": "visual-grimoire/main-reflow/ficha-1280.png",
+      "sha256": "3e49f15a1886b7d8ba89b4e3aa28cf5cb72c33cbf70afa554d26cc51a40e07ff"
+    },
+    {
+      "path": "visual-grimoire/main-reflow/ficha-390.png",
+      "sha256": "39738739e34e359b0188bac668dd797775a46a4884c68b0fdaf6548e605b05fd"
+    },
+    {
+      "path": "visual-grimoire/preferences/biblioteca-dark-1280.png",
+      "sha256": "242ca67d41c9f2caaacc02467c9e7fac62b31c7ab6763697bcb0d100e0d13143"
+    },
+    {
+      "path": "visual-grimoire/preferences/biblioteca-dark-390.png",
+      "sha256": "fbbdf2f125fb35b183d2be3a716974fede5cc3a86afde0b0a721e788e9bd06d8"
+    },
+    {
+      "path": "visual-grimoire/preferences/biblioteca-light-1280.png",
+      "sha256": "730f15bf593f0374195007a48d5e4521d4306fbc974e2a2b33af5918b7268f85"
+    },
+    {
+      "path": "visual-grimoire/preferences/biblioteca-light-390.png",
+      "sha256": "9c0b60003497d51555cd427d4bb50bb8f488658536e8f3cb5d0ef58e365d46d1"
+    },
+    {
+      "path": "visual-grimoire/preferences/chrome-painel-dark-normal.png",
+      "sha256": "b6ebbd035dace741f908ae80089ea9bff54a3d08c0337d2d9cafd4213646ddc7"
+    },
+    {
+      "path": "visual-grimoire/preferences/chrome-rolagem-dark.png",
+      "sha256": "cc9f74ffa36c0c95bf9c665c9297e7671c4114e3b69eeb8aafc1f9cd839f458e"
+    },
+    {
+      "path": "visual-grimoire/preferences/painel-dark-1280.png",
+      "sha256": "9ef48cfa7597ea5daac56d4f95da2245b88eccb50eb7cc607bf07390cb7dd7d8"
+    },
+    {
+      "path": "visual-grimoire/preferences/painel-dark-390.png",
+      "sha256": "597962a90349588d2f6a6243e30fd52584f3e7cde2907b0f7125eca71891cff5"
+    },
+    {
+      "path": "visual-grimoire/preferences/painel-light-1280.png",
+      "sha256": "3e3a8d5a5960825b0fc93620db51d5200f0e7e04cf37e85a8edfaf5e3664f0c8"
+    },
+    {
+      "path": "visual-grimoire/preferences/painel-light-390.png",
+      "sha256": "0d5ca45dec79d9cb82fdb487ea811d964a1c8432f844c768e5fb79bd7cf13308"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-dark-1280.png",
+      "sha256": "1b7525aa3f1283da68a61fd13626dd5ec3340caada87f4b5b52e5b36226ab814"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-dark-390.png",
+      "sha256": "9b12db286995ea9a9c68abb55138bca6169c9fb0ebeba0b628b5dfc54afb96b9"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-light-1280.png",
+      "sha256": "eb17020748462393b814d3050a01863eadfbe29df9c6b2a14b228e9c8316dfb9"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-light-390.png",
+      "sha256": "f9f1c227c499031ecb0be8afe69cf07bf413910c0c96cff58ba922366a89b7e3"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-padrao-dark-1280.png",
+      "sha256": "0edfa1eb271ea53f46bcf4e3b5fdd7351bda9e972be605fc4cb5623516701f3c"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-padrao-dark-390.png",
+      "sha256": "16f2b4a2cec262dfafb62f1e2329fb87bff6cbf040b8cff9259929a3e58df625"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-padrao-light-1280.png",
+      "sha256": "cc0c61e9280018b4f90fadc3fbcae0be1d8526e1bd3d5ee4c8e87ac48e80471a"
+    },
+    {
+      "path": "visual-grimoire/reading/painel-padrao-light-390.png",
+      "sha256": "033f5bc4ff4554c7d7c779d806fbaff2eeafbb4cd5ed64639118f34f0c7205bd"
+    },
+    {
+      "path": "visual-grimoire/sheet/abertura-dark-chromium-desktop.png",
+      "sha256": "24a391a8e9df20a5f0d1206d99322aeb2a8b8e33edbebec51928cf48343fd841"
+    },
+    {
+      "path": "visual-grimoire/sheet/abertura-dark-chromium-mobile.png",
+      "sha256": "522736f037eee739cbb43a1659a6383c912089ab3fa0bf4c07d1f1dc04122482"
+    },
+    {
+      "path": "visual-grimoire/sheet/abertura-light-chromium-desktop.png",
+      "sha256": "79099be50b3e0d37f8434bd893116aed6ef3b5f11c2fdd8ae67ee0ee90532e38"
+    },
+    {
+      "path": "visual-grimoire/sheet/abertura-light-chromium-mobile.png",
+      "sha256": "a72d43b8f66fd2faa0a8700918e1770e003a547e9aae9639dc38c631c5e93b9c"
+    },
+    {
+      "path": "visual-grimoire/sheet/dark-chromium-desktop.png",
+      "sha256": "27991e784ee5347f183f71270602d2491b9057ef4aa8769174d9214776ab2887"
+    },
+    {
+      "path": "visual-grimoire/sheet/dark-chromium-mobile.png",
+      "sha256": "14de814656a3fa7ae1676ae5298beefc19ce8530a9e44f319b9254bcb23fd123"
+    },
+    {
+      "path": "visual-grimoire/sheet/impressao-chromium-desktop.png",
+      "sha256": "b147fabbd250cb9c0cd3ae2a8b6b0a2772fd2d1e0529e7942087a49584aa2dfb"
+    },
+    {
+      "path": "visual-grimoire/sheet/impressao-chromium-mobile.png",
+      "sha256": "f80d2413788e4f02d5116189c51ba916bc1ff39f07230704b946abe3007d6271"
+    },
+    {
+      "path": "visual-grimoire/sheet/light-chromium-desktop.png",
+      "sha256": "5ab610fe131393f15a384c5d065a9e2aa6e29719f858db45724501c28327bd53"
+    },
+    {
+      "path": "visual-grimoire/sheet/light-chromium-mobile.png",
+      "sha256": "16a99e0f6a13590364ff49f9c198d30adcadb213cafc022d3a2f93ce86a33cfd"
+    },
+    {
+      "path": "visual-grimoire/table/antes-modal-dark.png",
+      "sha256": "f29c9b574c444693177db3397e01c4a8742ae05bd950f2f03abb95e0d7b07d7e"
+    },
+    {
+      "path": "visual-grimoire/table/antes-modal-light.png",
+      "sha256": "03ebaa2aee24c6a873b74441e173be2f1b54b931f03b84845771c8998c52665d"
+    },
+    {
+      "path": "visual-grimoire/table/antes-rolagens-dark.png",
+      "sha256": "921431cf73b219405c40f2bd6110e4a29965e7af20e75091e3b63f63c04732c2"
+    },
+    {
+      "path": "visual-grimoire/table/antes-rolagens-light.png",
+      "sha256": "5d623fd5f5acb1df694a681c39f8980fd8928bb282fc5ff6d6dfbdbeabb380cb"
+    },
+    {
+      "path": "visual-grimoire/table/falha-chromium-desktop.png",
+      "sha256": "a5c81cdfe51246907145cb1482d530374058275294a4d870f2b4c2483333c54f"
+    },
+    {
+      "path": "visual-grimoire/table/falha-chromium-mobile.png",
+      "sha256": "308f96db11bb6d0d43b38a29f6d65e1668613c842f37e55237c5109a9ec0e5c7"
+    },
+    {
+      "path": "visual-grimoire/table/modal-itens-dark-chromium-desktop.png",
+      "sha256": "97693fe59d7e5c3ce93ac09cc1e0d2b5a14813184c5d93fe673b2e7926c77722"
+    },
+    {
+      "path": "visual-grimoire/table/modal-itens-dark-chromium-mobile.png",
+      "sha256": "b50ff745af9fa5ca39ab9a7418e59d831d1469c12b392f30ac72045ba6bb72e3"
+    },
+    {
+      "path": "visual-grimoire/table/modal-itens-light-chromium-desktop.png",
+      "sha256": "80d18c9054884acc85aeb574d6f75dfea15937011d8279548a7e533f5fc38d77"
+    },
+    {
+      "path": "visual-grimoire/table/modal-itens-light-chromium-mobile.png",
+      "sha256": "2cdd52df6332c35d4dfc2c94a11f4fbe4bb9d7d9a15353ff968adfab1160c23c"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-1280-28px-chromium-desktop.png",
+      "sha256": "1b38563b08ffc54acf9cd4f75d14741885553980193484041e741a24f08f70a2"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-1280-28px-chromium-mobile.png",
+      "sha256": "3373b3c91c00bfe04f4b3abeeb12539861e8e9065abe09a9c1d28456965c757e"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-320-28px-chromium-desktop.png",
+      "sha256": "be1b1d1a9e3616b605237744cfb66e9c62439b856726a318cca497a1691b7609"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-320-28px-chromium-mobile.png",
+      "sha256": "b94d9aa4782efdaae2a85f3d5ad25e1a70efbe492aa50f2b830ce17f3978666a"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-390-28px-chromium-desktop.png",
+      "sha256": "3c6a3f867cf44f92aecf0c56a7c205e6fd56c91a9d3b4b78060079bff39170f9"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-390-28px-chromium-mobile.png",
+      "sha256": "592da3caffe1ac2b0fd93d6bcd2256faaa97e1b404a7cbf895eff41ea4944691"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-768-28px-chromium-desktop.png",
+      "sha256": "10d9c025d8fc4df0d4969e4c8d96e8cf478e0a3ebc5e7b7dc224315d6e180e1f"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-dark-768-28px-chromium-mobile.png",
+      "sha256": "948188a3e7ecbdb0e0eb62032fb39e78755e558b2bdfe08ff7f349eacc7d6942"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-1280-28px-chromium-desktop.png",
+      "sha256": "00235f66142fd9a71277b6720c22a1e5083c7120ec6d8ca45f2e1fa42c3c007e"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-1280-28px-chromium-mobile.png",
+      "sha256": "3bdc0bf72330b346d977dd2ea1fc928bb642a5edce8dd5e1c54b85e50509ae5d"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-320-28px-chromium-desktop.png",
+      "sha256": "3aa985d5536547d05ddde357e23603f063224da7a06de02414e13fd26b47829e"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-320-28px-chromium-mobile.png",
+      "sha256": "0ab8bfd2efad6ae7b230379a305aaca9f34bdbb7643f3bf5d109963bd7576cdd"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-390-28px-chromium-desktop.png",
+      "sha256": "bb7cd2170325415fef55d7b48b32dfbb48db9f4eb6ac8e1660d7d2591932838e"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-390-28px-chromium-mobile.png",
+      "sha256": "f8d896b9f305b4c91e33ec617a8f1eebb9c440469ea9edb25a0db2106401d520"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-768-28px-chromium-desktop.png",
+      "sha256": "d8e7e11e4a353df23f12e7f3050408d81a8889580a5e08eb671c28d71b75324b"
+    },
+    {
+      "path": "visual-grimoire/table/modal-magias-light-768-28px-chromium-mobile.png",
+      "sha256": "dd5c59e79bcbb8fbb5d5e3b777cde57608cc300a39fdac14d9129ea5aaee06d1"
+    },
+    {
+      "path": "visual-grimoire/table/recursos-dark-chromium-desktop.png",
+      "sha256": "4a08b19c28d6e8353719047eb73e3c6c34c9d848eefa695dcfc8d08a02a9bd84"
+    },
+    {
+      "path": "visual-grimoire/table/recursos-dark-chromium-mobile.png",
+      "sha256": "1e885d54c3094b933b98fddd7f7fe7278f6f7217b55ef0c0c6ec2184c767c508"
+    },
+    {
+      "path": "visual-grimoire/table/recursos-light-chromium-desktop.png",
+      "sha256": "b567ac499501cb6adf2d313f91f910bbefa11500ce60692c760526dff9c1e5a1"
+    },
+    {
+      "path": "visual-grimoire/table/recursos-light-chromium-mobile.png",
+      "sha256": "383aec1e978e39e5abd90fe6279c460e4b521abd891d6e389841f98cbe069814"
+    },
+    {
+      "path": "visual-grimoire/table/rolagens-dark-chromium-desktop.png",
+      "sha256": "73e2c0a90a5bde1fcc000d67421662849f36ead17aac9a599d9b7f89ffd6fcf5"
+    },
+    {
+      "path": "visual-grimoire/table/rolagens-dark-chromium-mobile.png",
+      "sha256": "274c2337025dfc17970476639351445b64a97a2dc9e02c7cfcfad409beed8d2e"
+    },
+    {
+      "path": "visual-grimoire/table/rolagens-light-chromium-desktop.png",
+      "sha256": "2f71aa246ed41f55b1ca5d5529b29d7953f17b977478d21426480fc994741712"
+    },
+    {
+      "path": "visual-grimoire/table/rolagens-light-chromium-mobile.png",
+      "sha256": "fdbf0e5c5dfb0f17dca5e877d95783675c70036d1c3c2653d61c55a5916dd28a"
+    },
+    {
+      "path": "visual-grimoire/table/salvando-chromium-desktop.png",
+      "sha256": "23d4f3ebfc5d6cbaaaa7370c2bb23ef51407a4355a1ecb22864529fae1ecdc46"
+    },
+    {
+      "path": "visual-grimoire/table/salvando-chromium-mobile.png",
+      "sha256": "d8e82700cfba150441179c39edc60614321935065aa9991fa231ca35519022b2"
+    },
+    {
+      "path": "visual-grimoire/creation/reflow/biblioteca-1280.png",
+      "sha256": "1b7491d62d943bc7f70858af663d86e00cee43c91c283b713a09c59ebe3bbc74"
+    },
+    {
+      "path": "visual-grimoire/creation/reflow/biblioteca-390.png",
+      "sha256": "1884b7bb6a476aeaac540577369d5e08f5934bbd01ad48d7be065bfb0d260a45"
+    },
+    {
+      "path": "visual-grimoire/creation/reflow/criacao-1280.png",
+      "sha256": "61efa7d4dd88a89ea9504c64973984af37daa386058b2956ab78b3ee509fc9d3"
+    },
+    {
+      "path": "visual-grimoire/creation/reflow/criacao-390.png",
+      "sha256": "22b0b9d79bc607634cedb84562bd7de800747bbe74cff89a7452f1fdd6cfc5cc"
+    },
+    {
+      "path": "visual-grimoire/creation/reflow/ficha-1280.png",
+      "sha256": "7f5b093ccd88229e164e3987e70d5a76e30960cc037288e7cda30e765667f2bb"
+    },
+    {
+      "path": "visual-grimoire/creation/reflow/ficha-390.png",
+      "sha256": "b1f968db449ba5031d425be8c768072d1eac9e4effaf17deb59b498e459d2e9c"
+    },
+    {
+      "path": "visual-grimoire/sheet/reflow/biblioteca-1280.png",
+      "sha256": "1b7491d62d943bc7f70858af663d86e00cee43c91c283b713a09c59ebe3bbc74"
+    },
+    {
+      "path": "visual-grimoire/sheet/reflow/biblioteca-390.png",
+      "sha256": "1884b7bb6a476aeaac540577369d5e08f5934bbd01ad48d7be065bfb0d260a45"
+    },
+    {
+      "path": "visual-grimoire/sheet/reflow/criacao-1280.png",
+      "sha256": "c7fe6a74b115670904b154f8d096c0785071cee407569ed240a57db9098af735"
+    },
+    {
+      "path": "visual-grimoire/sheet/reflow/criacao-390.png",
+      "sha256": "0a7bf9019ac1ed3d163f461558da41d1a37546ecd280c42475bb964a68754f1d"
+    },
+    {
+      "path": "visual-grimoire/sheet/reflow/ficha-1280.png",
+      "sha256": "e259bae302a219188c3cdfc03bfc218875b4692694699a1241793baa4dcbf5cb"
+    },
+    {
+      "path": "visual-grimoire/sheet/reflow/ficha-390.png",
+      "sha256": "e9ba741460a6910c5619942fb52db7e5e650f80812238cd93d74ee9788b6946f"
+    }
+  ]
+}

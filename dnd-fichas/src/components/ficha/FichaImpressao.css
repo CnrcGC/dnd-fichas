@@ -1,3 +1,5 @@
+.ficha-impressao-retrato { width: 20mm; height: 20mm; object-fit: contain; flex-shrink: 0; }
+
 .ficha-impressao {
   display: none;
 }

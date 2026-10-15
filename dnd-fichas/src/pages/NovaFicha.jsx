@@ -31,6 +31,8 @@ import {
   valoresDaEscolha,
 } from "../utils/escolhasClasses";
 import "./NovaFicha.css";
+import { rolarAtributos, trocarDistribuicao } from "../utils/atributos";
+import RetratoPersonagem from "../components/ficha/RetratoPersonagem";
 
 const ETAPAS = [
   { chave: "raca", label: "Raça" },
@@ -58,6 +60,7 @@ export default function NovaFicha() {
   const etapaAnteriorRef = useRef(0);
   const erroRef = useRef(null);
   const [errosCriacao, setErrosCriacao] = useState([]);
+  const [processandoRetrato, setProcessandoRetrato] = useState(false);
   const [rascunho, setRascunho] = useState(() => ({
     nomePersonagem: "",
     racaId: null,
@@ -68,6 +71,9 @@ export default function NovaFicha() {
     classeId: null,
     antecedenteId: null,
     atributos: distribuicaoInicial(),
+    metodoAtributos: "arranjo-padrao",
+    rolagensAtributos: null,
+    retrato: "",
     jogador: "",
     aparencia: "",
     personalidade: "",
@@ -164,7 +170,36 @@ export default function NovaFicha() {
     setRascunho((atual) => ({ ...atual, [campo]: valor }));
   }
 
+  function handleRolarAtributos() {
+    const resultados = rolarAtributos();
+    setRascunho((atual) => ({
+      ...atual,
+      rolagensAtributos: { resultados, distribuicao: [0, 1, 2, 3, 4, 5] },
+      atributos: Object.fromEntries(ATRIBUTOS.map((atributo, indice) => [atributo.chave, resultados[indice].total])),
+    }));
+  }
+
+  function handleDistribuirRolagem(posicao, resultado) {
+    setRascunho((atual) => {
+      const registro = atual.rolagensAtributos;
+      const distribuicao = trocarDistribuicao(registro.distribuicao, posicao, resultado);
+      return { ...atual, rolagensAtributos: { ...registro, distribuicao },
+        atributos: Object.fromEntries(ATRIBUTOS.map((atributo, indice) => [atributo.chave, registro.resultados[distribuicao[indice]].total])) };
+    });
+  }
+
+  function handleMetodoAtributos(metodo) {
+    setRascunho((atual) => ({
+      ...atual, metodoAtributos: metodo,
+      atributos: metodo === "rolagem" && atual.rolagensAtributos
+        ? Object.fromEntries(ATRIBUTOS.map((atributo, indice) => [atributo.chave, atual.rolagensAtributos.resultados[atual.rolagensAtributos.distribuicao[indice]].total]))
+        : distribuicaoInicial(),
+    }));
+  }
+
   function handleFinalizar(comoRascunho = false) {
+    if (processandoRetrato) return;
+    if (rascunho.metodoAtributos === "rolagem" && !rascunho.rolagensAtributos) { setErrosCriacao(["Role os seis atributos antes de criar a ficha."]); return; }
     const pendencias = escolhasObrigatoriasCriacao(rascunho).map((item) => item.mensagem);
     if (racaEscolhida?.atributosEscolhaLivre && new Set(rascunho.bonusRacialEscolhido.filter(Boolean)).size !== racaEscolhida.atributosEscolhaLivre) {
       pendencias.push(`Bônus racial: escolha ${racaEscolhida.atributosEscolhaLivre} atributos diferentes para +1.`);
@@ -196,7 +231,9 @@ export default function NovaFicha() {
       classeId: rascunho.classeId,
       antecedenteId: rascunho.antecedenteId,
       atributos: rascunho.atributos,
-      metodoAtributos: "arranjo-padrao",
+      metodoAtributos: rascunho.metodoAtributos,
+      rolagensAtributos: rascunho.metodoAtributos === "rolagem" ? rascunho.rolagensAtributos : null,
+      retrato: rascunho.retrato,
       escolhasCriacao: rascunho.escolhasCriacao,
       bonusRacialEscolhido: rascunho.bonusRacialEscolhido,
       jogador: rascunho.jogador,
@@ -348,14 +385,34 @@ export default function NovaFicha() {
         {etapa === 3 && (
           <section>
             <h2 className="criacao-titulo" data-etapa-titulo tabIndex={-1}>Distribua seus Atributos</h2>
+            <label className="criacao-metodo">
+              Método dos atributos
+              <select value={rascunho.metodoAtributos} onChange={(evento) => handleMetodoAtributos(evento.target.value)}>
+                <option value="arranjo-padrao">Arranjo padrão</option>
+                <option value="rolagem">Rolagem de dados (4d6, descarta o menor)</option>
+              </select>
+            </label>
             <p className="criacao-texto">
-              Distribua os valores {ARRANJO_PADRAO.join(", ")} entre os seis
-              atributos (arranjo padrão — cada valor só pode ser usado uma
-              vez). Bônus raciais entram à parte, automaticamente.
+              {rascunho.metodoAtributos === "arranjo-padrao"
+                ? `Distribua os valores ${ARRANJO_PADRAO.join(", ")} entre os seis atributos, usando cada valor uma vez.`
+                : "Role quatro dados de seis faces e some os três maiores. Repita seis vezes e distribua os resultados. Ao trocar uma escolha, as posições são permutadas."}
+              {" "}Bônus raciais entram à parte, automaticamente.
             </p>
+            {rascunho.metodoAtributos === "rolagem" && <>
+              <button type="button" className="criacao-botao-avancar" onClick={handleRolarAtributos}>
+                {rascunho.rolagensAtributos ? "Rolar novamente os seis atributos" : "Rolar os seis atributos"}
+              </button>
+              <div role="status" aria-live="polite" className="criacao-rolagens">
+                {rascunho.rolagensAtributos && <ol aria-label="Resultados das rolagens de atributos">
+                  {rascunho.rolagensAtributos.resultados.map((resultado, indice) => <li key={indice}>
+                    Rolagem {indice + 1}: {resultado.dados.join(" + ")}; descarta {resultado.dados[resultado.descartado]}; total <strong>{resultado.total}</strong>.
+                  </li>)}
+                </ol>}
+              </div>
+            </>}
 
             <div className="criacao-atributos-grid">
-              {ATRIBUTOS.map((atributo) => {
+              {ATRIBUTOS.map((atributo, indice) => {
                 const bonusRacial = obterBonusRaciais(rascunho.racaId, rascunho.subracaId, rascunho.bonusRacialEscolhido)[atributo.chave] ?? 0;
                 const valorBase = rascunho.atributos[atributo.chave];
                 const valorFinal = valorBase + bonusRacial;
@@ -364,19 +421,17 @@ export default function NovaFicha() {
                     <span className="criacao-atributo-label">{atributo.label}</span>
                     <select
                       aria-label={`Valor base de ${atributo.label}`}
-                      value={valorBase}
-                      onChange={(evento) =>
-                        handleChangeAtributoValor(
-                          atributo.chave,
-                          Number(evento.target.value)
-                        )
-                      }
+                      disabled={rascunho.metodoAtributos === "rolagem" && !rascunho.rolagensAtributos}
+                      value={rascunho.metodoAtributos === "rolagem" ? rascunho.rolagensAtributos?.distribuicao[indice] ?? "" : valorBase}
+                      onChange={(evento) => rascunho.metodoAtributos === "rolagem"
+                        ? handleDistribuirRolagem(indice, Number(evento.target.value))
+                        : handleChangeAtributoValor(atributo.chave, Number(evento.target.value))}
                     >
-                      {ARRANJO_PADRAO.map((valor) => (
-                        <option key={valor} value={valor}>
-                          {valor}
-                        </option>
-                      ))}
+                      {rascunho.metodoAtributos === "rolagem"
+                        ? rascunho.rolagensAtributos
+                          ? rascunho.rolagensAtributos.resultados.map((resultado, posicao) => <option key={posicao} value={posicao}>{resultado.total} — rolagem {posicao + 1}</option>)
+                          : <option value="">Role os dados primeiro</option>
+                        : ARRANJO_PADRAO.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
                     </select>
                     {bonusRacial !== 0 && (
                       <span className="criacao-atributo-bonus">
@@ -395,7 +450,7 @@ export default function NovaFicha() {
               <button type="button" className="criacao-botao-voltar" onClick={() => irPara(etapa - 1)}>
                 Voltar
               </button>
-              <button type="button" className="criacao-botao-avancar" onClick={() => irPara(etapa + 1)}>
+              <button type="button" className="criacao-botao-avancar" disabled={rascunho.metodoAtributos === "rolagem" && !rascunho.rolagensAtributos} onClick={() => irPara(etapa + 1)}>
                 Próximo
               </button>
             </div>
@@ -412,6 +467,7 @@ export default function NovaFicha() {
               envolvente.
             </p>
 
+            <RetratoPersonagem valor={rascunho.retrato} nome={rascunho.nomePersonagem} onChange={(valor) => handleChangeCampo("retrato", valor)} onProcessando={setProcessandoRetrato} />
             <EscolhasDeCriacao
               mostrarErros={errosCriacao.length > 0}
               rascunho={rascunho}
@@ -509,7 +565,7 @@ export default function NovaFicha() {
               <button type="button" className="criacao-botao-voltar" onClick={() => irPara(etapa - 1)}>
                 Voltar
               </button>
-              <button type="button" className="criacao-botao-finalizar" onClick={() => handleFinalizar()}>
+              <button type="button" className="criacao-botao-finalizar" disabled={processandoRetrato} onClick={() => handleFinalizar()}>
                 Finalizar
               </button>
             </div>
@@ -539,6 +595,7 @@ function EscolhasDeCriacao({ rascunho, raca, subraca, classe, antecedente, onCha
           }}
         >
           <option value="">Selecione...</option>
+          {valores[indice] && (!opcoes.includes(valores[indice]) || bloqueadas.includes(valores[indice])) && <option value={valores[indice]}>Escolha a corrigir: {rotulos[valores[indice]] ?? valores[indice]}</option>}
           {opcoes.filter((id) => !bloqueadas.includes(id) && (!valores.includes(id) || valores[indice] === id)).map((id) => <option key={id} value={id}>{rotulos[id] ?? id}</option>)}
         </select>
       ))}

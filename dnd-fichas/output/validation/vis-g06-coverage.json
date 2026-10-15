@@ -1,0 +1,36 @@
+{
+  "fullRun": {
+    "startTime": "2026-10-14T15:19:43.342Z",
+    "duration": 3587086.597,
+    "expected": 236,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "recheck": {
+    "startTime": "2026-10-14T16:17:16.586Z",
+    "duration": 107764.647,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "timeoutCases": [
+    {
+      "file": "pilares-library.spec.js",
+      "title": "aplica as seis identidades de academia com rótulo e contraste em claro e escuro",
+      "project": "chromium-desktop",
+      "status": "timedOut"
+    },
+    {
+      "file": "pilares-library.spec.js",
+      "title": "VA-07 mantém biblioteca, criação e ficha responsivas, lineares e operáveis sem som",
+      "project": "chromium-mobile",
+      "status": "timedOut"
+    }
+  ],
+  "coveredWithPassingResult": 238,
+  "a11yInFullRun": 70,
+  "sourceChangedBetweenRunAndRecheck": false,
+  "note": "O relatório integral mantém os dois timeouts; os mesmos casos passaram isoladamente sem mudar assertions ou limites."
+}

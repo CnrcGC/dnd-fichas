@@ -1,0 +1,98 @@
+{
+  "pagesAsset": "assets/index-BKRbAPlQ.js",
+  "branch": "main",
+  "pagesBytes": 277302,
+  "head": "b001bd8502963193e3632fcc97fee148d30d322d",
+  "mainAsset": "assets/index-BaZIHfQm.js",
+  "date": "2026-10-14/15",
+  "budgets": {
+    "main": 435200,
+    "adapter": 102400
+  },
+  "mainBytes": 277269,
+  "publishedByThisTask": false,
+  "sourceFingerprint": [
+    {
+      "path": "scripts/capture-visual-review.mjs",
+      "sha256": "0C998A8796332AB78976E9DEF2C4F945FB1BCA0FB68B1BCCA251985AE3E0C7BC"
+    },
+    {
+      "path": "src/components/ficha/BlocoRecursos.jsx",
+      "sha256": "8C204A567DE7E5D42F5C4918FADFB45470473E2F298CDA391BE81EBACC66DA26"
+    },
+    {
+      "path": "src/components/layout/AvisoPersistencia.jsx",
+      "sha256": "6DC0F786C64D67A685EB008E130B4E2EC2B4C953A200F7502FDC6E9E55B184C8"
+    },
+    {
+      "path": "src/components/layout/BackToTop.jsx",
+      "sha256": "DA1CE2DA23ECC0D0F5E9BDB45DB2F08E6D165B48F1D72AD5CAE86A3A125F6C7F"
+    },
+    {
+      "path": "src/components/layout/RouteAccessibility.jsx",
+      "sha256": "258A299B27EBEEBAEB911E92E575196890E5345DF9E38E6E2D36190F559D797E"
+    },
+    {
+      "path": "src/components/modal/ModalCatalogoItens.jsx",
+      "sha256": "81B38690D7232C6B987CB55B575CC4345FDBED9C0B6044D9B65A92AE331318EA"
+    },
+    {
+      "path": "src/components/rolagem/PainelRolagens.css",
+      "sha256": "3B0FC642ED50B222508F1C3B35D8F6E80369F3C24FE84B505217BF1D61E5D1CD"
+    },
+    {
+      "path": "src/components/rolagem/PainelRolagens.jsx",
+      "sha256": "CDCE581B60D8DFDE33164AFF17F79BB08B6E8A305ACDA003D18A07239B73B7CF"
+    },
+    {
+      "path": "src/hooks/useModalA11y.js",
+      "sha256": "13D4D78B03885368F102DAD367D30DB3D1AC382043CF5E7CBBEF6728FFDD0A57"
+    },
+    {
+      "path": "src/pages/NovaFicha.css",
+      "sha256": "2C4CCDEF31C69BED5E4AEA2E9FE044F5577E28AB9C5A506B0514890DD571238C"
+    },
+    {
+      "path": "src/styles/components/grimoire.css",
+      "sha256": "D08F2FFD314FF4E6E8DE1F2DAA87FCDC8C62E09D2E99534D56316B3E25728319"
+    },
+    {
+      "path": "tests-e2e/accessibility.spec.js",
+      "sha256": "4787B341AF4CE98D8C29FEAEC56D05733F2B4319A3F146BAC9252CBFE30149E1"
+    },
+    {
+      "path": "tests-e2e/fixtures/route-focus.html",
+      "sha256": "4E2D279D6EF6E2194BB46EF1FEB078378E1F0E27D487B538572017135ACFE175"
+    },
+    {
+      "path": "tests-e2e/fixtures/route-focus.jsx",
+      "sha256": "5E7D1D8AA4BE5CACFC827EF7259DB9369F26B2D33E3933DA8A25E5E9D035CECD"
+    },
+    {
+      "path": "tests-e2e/grimoire-creation.spec.js",
+      "sha256": "8D778AA1494E92BCCE4C25780531E897E1E8B08B6C36C6A951C94B01C6B33C3F"
+    },
+    {
+      "path": "tests-e2e/grimoire-preferences.spec.js",
+      "sha256": "66958979377BA6642906D0E8AF09EB1D5C6D1D13B78163AB2323B0411E5577D3"
+    },
+    {
+      "path": "tests-e2e/grimoire-table.spec.js",
+      "sha256": "025052A17EF0BC61895DEC8EFF9B885651F7A8E4B70732229A41512D2B4160EA"
+    },
+    {
+      "path": "tests-e2e/helpers/preferences.js",
+      "sha256": "4F3B1FFD34B64761431D631D03743E2748D5B6DB38110E8A7B1EDBC4E792C68A"
+    },
+    {
+      "path": "tests-e2e/modal-reflow.spec.js",
+      "sha256": "F7059DF66724C0117BD0103DAAB2FB5FB200EF38351F301E7051DFBE1A5463FA"
+    },
+    {
+      "path": "tests-e2e/route-focus.spec.js",
+      "sha256": "E8B346FA90FB3564427059984FAD7D8237549D48B960EC16EABC54EAB995DF2F"
+    }
+  ],
+  "adapterBytes": 93854,
+  "validationSummary": "vis-g06-final-summary.json"
+}

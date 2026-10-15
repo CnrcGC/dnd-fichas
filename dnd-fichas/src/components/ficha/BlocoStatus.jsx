@@ -94,6 +94,10 @@ export default function BlocoStatus({
               type="number"
               className="status-input"
               value={status[campo.chave] ?? 0}
+              readOnly={campo.chave === "pvMax"}
+              aria-describedby={campo.chave === "pvMax" ? "pv-maximo-ajuda" : undefined}
+              min={campo.chave === "pvAtual" || campo.chave === "pvTemp" ? 0 : undefined}
+              max={campo.chave === "pvAtual" ? status.pvMax : undefined}
               onChange={(evento) => handleChange(campo.chave, evento)}
             />
           </label>
@@ -121,6 +125,8 @@ export default function BlocoStatus({
           />
         </div>
       </div>
+
+      <p id="pv-maximo-ajuda" className="status-nota">PV máximo é atualizado pela progressão do personagem e não pode ser editado diretamente.</p>
 
       <div className="status-passivas">
         <span>

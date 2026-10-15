@@ -73,6 +73,7 @@ export default function ModalCatalogoItens({ aberto, onFechar, onAdicionarItem }
                   : "modal-catalogo-aba"
               }
               onClick={() => setAbaAtiva(grupo)}
+              aria-pressed={abaAtiva === grupo}
             >
               {grupo}
             </button>

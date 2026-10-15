@@ -101,7 +101,24 @@ export function useModalA11y(aberto, onFechar, returnFocusRef) {
 
     function handleFocusIn(evento) {
       if (dialogs.at(-1) !== dialog) return;
-      if (dialog.contains(evento.target)) return;
+      if (dialog.contains(evento.target)) {
+        const alvo = evento.target;
+        if (!(alvo instanceof HTMLElement)) return;
+        // O foco nativo pode deixar parte de um botão cortada em uma faixa rolável.
+        // Revelar o controle inteiro sem mudar a ordem nem mover o foco.
+        for (let regiao = alvo.parentElement; regiao && regiao !== dialog; regiao = regiao.parentElement) {
+          if (!["auto", "scroll"].includes(getComputedStyle(regiao).overflowX)) continue;
+          const caixa = regiao.getBoundingClientRect();
+          const foco = alvo.getBoundingClientRect();
+          const esquerda = caixa.left + regiao.clientLeft;
+          const direita = esquerda + regiao.clientWidth;
+          if (foco.left < esquerda || foco.right > direita) {
+            alvo.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+            break;
+          }
+        }
+        return;
+      }
       (elementos()[0] ?? dialog).focus();
     }
 

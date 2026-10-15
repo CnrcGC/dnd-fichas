@@ -1,0 +1,65 @@
+{
+  "firstRun": {
+    "startTime": "2026-10-15T16:15:57.396Z",
+    "duration": 341416.756,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  },
+  "finalTargetedRun": {
+    "startTime": "2026-10-15T16:22:41.957Z",
+    "duration": 163371.78,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "casesWithPassingResultAcrossStages": 22,
+  "note": "The first run had 18 passes and 4 failures. Final targeted run passed all 10 cases, including corrections. Not a single all-green full run.",
+  "sourceFiles": [
+    {
+      "path": "src/components/ficha/RetratoPersonagem.css",
+      "sha256": "ab960781a688ae4fdc7a5de71f59c759f6fa2d9490e50cc10b24ce1d4f7cbe1e"
+    },
+    {
+      "path": "src/components/ficha/RetratoPersonagem.jsx",
+      "sha256": "2ecf8a4d6f76073ce62f9b896a69409c2d0d3c2cd212c65056998cc8d635b0e5"
+    },
+    {
+      "path": "src/pages/Home.css",
+      "sha256": "9a10582cd72dea34afdf4646aed09d193ffd418c59fd7e5e1c0058123ac442eb"
+    },
+    {
+      "path": "src/pages/Home.jsx",
+      "sha256": "af087dc0cf1e80b434a30e0a08d29a707dfee49edd931344fc9b61cb9dc623dc"
+    },
+    {
+      "path": "src/styles/components/grimoire.css",
+      "sha256": "c90de6975d43d2e31fde15a3ed25f95df5afbac9305df01aec6f1fa18f00fe3b"
+    }
+  ],
+  "deletedSourceFiles": [],
+  "readingRun": {
+    "startTime": "2026-10-15T16:26:48.854Z",
+    "duration": 101434.887,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "builds": {
+    "dist": {
+      "mainBytes": 277354,
+      "adapterBytes": 94225
+    },
+    "dist-pages": {
+      "mainBytes": 277387,
+      "adapterBytes": 94225
+    }
+  },
+  "branch": "main",
+  "head": "b001bd8502963193e3632fcc97fee148d30d322d",
+  "publishedByThisTask": false,
+  "committedByThisTask": false
+}

@@ -8,6 +8,10 @@ export async function setTheme(page, theme) {
   }
   await target.click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+  // Medir a paleta final, sem capturar cores intermediárias da troca de tema.
+  await page.evaluate(() => Promise.all(document.getAnimations()
+    .filter((animation) => animation instanceof CSSTransition)
+    .map((animation) => animation.finished.catch(() => {}))));
 }
 
 export async function setTextSize(page, size) {

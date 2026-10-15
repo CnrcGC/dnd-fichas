@@ -1,3 +1,4 @@
+import { retratoLocalValido } from "../../utils/retrato";
 import { obterAntecedente } from "../../data/antecedentes";
 import { obterClasse } from "../../data/classes";
 import { PERICIAS } from "../../data/pericias";
@@ -69,6 +70,7 @@ export default function FichaImpressao({
   return (
     <article className="ficha-impressao">
       <header className="ficha-impressao-cabecalho">
+        {retratoLocalValido(ficha.retrato) && <img className="ficha-impressao-retrato" src={ficha.retrato} alt={`Retrato de ${ficha.nome || "personagem"}`} width="72" height="72" />}
         <div>
           <p className="ficha-impressao-marca">D&amp;D Fichas</p>
           <h1>{ficha.nome || "Personagem sem nome"}</h1>

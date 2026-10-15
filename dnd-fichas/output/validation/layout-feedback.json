@@ -1,0 +1,1002 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests-e2e/layout-feedback.spec.js",
+      "tests-e2e/character-editing.spec.js",
+      "--reporter=list,json",
+      "--output",
+      "C:\\Users\\crist\\AppData\\Local\\Temp/dnd-layout-feedback-traces"
+    ],
+    "configFile": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\playwright.config.js",
+    "rootDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/tests-e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/crist/AppData/Local/Temp/dnd-layout-feedback-traces",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/tests-e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/crist/AppData/Local/Temp/dnd-layout-feedback-traces",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-mobile",
+        "name": "chromium-mobile",
+        "testDir": "C:/Users/crist/OneDrive - Academico - Secretaria do Estado da Educação de São Paulo/Área de Trabalho/Jogo/dnd-fichas/dnd-fichas/tests-e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev -- --host 127.0.0.1 --port 4173",
+      "url": "http://127.0.0.1:4173",
+      "reuseExistingServer": false
+    }
+  },
+  "suites": [
+    {
+      "title": "character-editing.spec.js",
+      "file": "character-editing.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "rolagem distribui resultados repetidos e salva a geração ao criar/reabrir",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12456,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:16:07.161Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-90339711c4e70e10b5ac",
+          "file": "character-editing.spec.js",
+          "line": 9,
+          "column": 1
+        },
+        {
+          "title": "atributos limitados a total 30, PV máximo protegido e idiomas reversíveis",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25673,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:16:24.317Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-52e7f1d812edeae813c9",
+          "file": "character-editing.spec.js",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "idioma de criação pode ser limpo ou substituído sem ressurgir",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3908,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:16:50.037Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-b63d0e1720ea24f4c5a6",
+          "file": "character-editing.spec.js",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "Instinto Selvagem exige sete níveis de Bárbaro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8244,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:16:53.984Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-24d3b55ccd1db4344647",
+          "file": "character-editing.spec.js",
+          "line": 87,
+          "column": 1
+        },
+        {
+          "title": "retrato local valida arquivo, persiste, exporta/importa, imprime e remove",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 14564,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) resolved to 2 elements:\n    1) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).first()\n    2) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) resolved to 2 elements:\n    1) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).first()\n    2) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\u001b[22m\n\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js:134:24",
+                    "location": {
+                      "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js",
+                      "column": 24,
+                      "line": 134
+                    },
+                    "snippet": "  132 |   expect(exported.retrato).toBe(original);\n  133 |   await page.getByLabel(\"Arquivo JSON da ficha\").setInputFiles({ name: \"retrato.json\", mimeType: \"application/json\", buffer: Buffer.from(JSON.stringify(exported)) });\n> 134 |   await expect(imagem).toBeVisible(); await waitForSave(page);\n      |                        ^\n  135 |   expect((await readCharacter(page)).retrato).toBe(original);\n  136 |   await page.getByRole(\"button\", { name: \"Remover imagem\", exact: true }).click();\n  137 |   await expect(imagem).toHaveCount(0); await waitForSave(page);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js",
+                        "column": 24,
+                        "line": 134
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) resolved to 2 elements:\n    1) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).first()\n    2) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\u001b[22m\n\n\n  132 |   expect(exported.retrato).toBe(original);\n  133 |   await page.getByLabel(\"Arquivo JSON da ficha\").setInputFiles({ name: \"retrato.json\", mimeType: \"application/json\", buffer: Buffer.from(JSON.stringify(exported)) });\n> 134 |   await expect(imagem).toBeVisible(); await waitForSave(page);\n      |                        ^\n  135 |   expect((await readCharacter(page)).retrato).toBe(original);\n  136 |   await page.getByRole(\"button\", { name: \"Remover imagem\", exact: true }).click();\n  137 |   await expect(imagem).toHaveCount(0); await waitForSave(page);\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js:134:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:17:02.269Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\character-editing-retrato--36983-ta-importa-imprime-e-remove-chromium-desktop\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\character-editing-retrato--36983-ta-importa-imprime-e-remove-chromium-desktop\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js",
+                    "column": 24,
+                    "line": 134
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-8a76e9222f0f9b43a092",
+          "file": "character-editing.spec.js",
+          "line": 104,
+          "column": 1
+        },
+        {
+          "title": "rolagem distribui resultados repetidos e salva a geração ao criar/reabrir",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:18:46.830Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-93934b3a3fbb683967da",
+          "file": "character-editing.spec.js",
+          "line": 9,
+          "column": 1
+        },
+        {
+          "title": "atributos limitados a total 30, PV máximo protegido e idiomas reversíveis",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19447,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:18:52.345Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-056bb1e338f569f60860",
+          "file": "character-editing.spec.js",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "idioma de criação pode ser limpo ou substituído sem ressurgir",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5920,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:19:11.863Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-c0c7e90e78a012308e70",
+          "file": "character-editing.spec.js",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "Instinto Selvagem exige sete níveis de Bárbaro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8100,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:19:17.870Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-91d894a19f939e5e9277",
+          "file": "character-editing.spec.js",
+          "line": 87,
+          "column": 1
+        },
+        {
+          "title": "retrato local valida arquivo, persiste, exporta/importa, imprime e remove",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 9288,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) resolved to 2 elements:\n    1) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).first()\n    2) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) resolved to 2 elements:\n    1) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).first()\n    2) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\u001b[22m\n\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js:134:24",
+                    "location": {
+                      "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js",
+                      "column": 24,
+                      "line": 134
+                    },
+                    "snippet": "  132 |   expect(exported.retrato).toBe(original);\n  133 |   await page.getByLabel(\"Arquivo JSON da ficha\").setInputFiles({ name: \"retrato.json\", mimeType: \"application/json\", buffer: Buffer.from(JSON.stringify(exported)) });\n> 134 |   await expect(page.getByRole(\"heading\", { name: \"Ficha de Personagem de teste\", exact: true })).toBeVisible();\n      |                        ^\n  135 |   await expect(imagem).toBeVisible(); await waitForSave(page);\n  136 |   expect((await readCharacter(page)).retrato).toBe(original);\n  137 |   await page.getByRole(\"button\", { name: \"Remover imagem\", exact: true }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js",
+                        "column": 24,
+                        "line": 134
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\nExpected: visible\nError: strict mode violation: getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) resolved to 2 elements:\n    1) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).first()\n    2) <img width=\"160\" height=\"160\" loading=\"lazy\" decoding=\"async\" class=\"ficha-card-retrato\" alt=\"Retrato de Personagem de teste\" src=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZ…/> aka getByRole('img', { name: 'Retrato de Personagem de teste' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('img', { name: 'Retrato de Personagem de teste', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('img', { name: 'Retrato de Personagem de teste', exact: true })\u001b[22m\n\n\n  132 |   expect(exported.retrato).toBe(original);\n  133 |   await page.getByLabel(\"Arquivo JSON da ficha\").setInputFiles({ name: \"retrato.json\", mimeType: \"application/json\", buffer: Buffer.from(JSON.stringify(exported)) });\n> 134 |   await expect(page.getByRole(\"heading\", { name: \"Ficha de Personagem de teste\", exact: true })).toBeVisible();\n      |                        ^\n  135 |   await expect(imagem).toBeVisible(); await waitForSave(page);\n  136 |   expect((await readCharacter(page)).retrato).toBe(original);\n  137 |   await page.getByRole(\"button\", { name: \"Remover imagem\", exact: true }).click();\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js:134:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:19:26.015Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\character-editing-retrato--36983-ta-importa-imprime-e-remove-chromium-mobile\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\character-editing-retrato--36983-ta-importa-imprime-e-remove-chromium-mobile\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\character-editing.spec.js",
+                    "column": 24,
+                    "line": 134
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "5f31004858a7efc15ed2-4918a50e9dd96672d8b9",
+          "file": "character-editing.spec.js",
+          "line": 104,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "layout-feedback.spec.js",
+      "file": "layout-feedback.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Feedback: espaços de magia mostram números completos / light",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6699,
+                  "error": {
+                    "message": "Error: 1280px / texto 16\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 20\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 9\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 9\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: 1280px / texto 16\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 20\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 9\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 9\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js:39:56",
+                    "location": {
+                      "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js",
+                      "column": 56,
+                      "line": 39
+                    },
+                    "snippet": "  37 |           return disponivel + 0.5 < texto;\n  38 |         }).map((input) => input.getAttribute(\"aria-label\")));\n> 39 |         expect(cortados, `${width}px / texto ${size}`).toEqual([]);\n     |                                                        ^\n  40 |       }\n  41 |     }\n  42 |     await expect(page.getByLabel(\"Espaços usados de nível 1\", { exact: true })).toHaveValue(\"10\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js",
+                        "column": 56,
+                        "line": 39
+                      },
+                      "message": "Error: 1280px / texto 16\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 20\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 9\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 9\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  37 |           return disponivel + 0.5 < texto;\n  38 |         }).map((input) => input.getAttribute(\"aria-label\")));\n> 39 |         expect(cortados, `${width}px / texto ${size}`).toEqual([]);\n     |                                                        ^\n  40 |       }\n  41 |     }\n  42 |     await expect(page.getByLabel(\"Espaços usados de nível 1\", { exact: true })).toHaveValue(\"10\");\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js:39:56"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:17:21.339Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\layout-feedback-Feedback-e-78ffb-ram-números-completos-light-chromium-desktop\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\layout-feedback-Feedback-e-78ffb-ram-números-completos-light-chromium-desktop\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js",
+                    "column": 56,
+                    "line": 39
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-985dc2b4311cd9f2bebb",
+          "file": "layout-feedback.spec.js",
+          "line": 19,
+          "column": 3
+        },
+        {
+          "title": "Feedback: ações de catálogo compactas sem sobreposição / light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16971,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:17:31.318Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-e01eaae1915c13db3c2d",
+          "file": "layout-feedback.spec.js",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "Feedback: seletor Imagem por teclado e retrato na biblioteca / light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12474,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:17:48.607Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-f9bde9f58dc082185943",
+          "file": "layout-feedback.spec.js",
+          "line": 80,
+          "column": 3
+        },
+        {
+          "title": "Feedback: espaços de magia mostram números completos / dark",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5002,
+                  "error": {
+                    "message": "Error: 1280px / texto 16\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 20\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 9\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 9\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: 1280px / texto 16\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 20\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 9\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 9\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js:39:56",
+                    "location": {
+                      "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js",
+                      "column": 56,
+                      "line": 39
+                    },
+                    "snippet": "  37 |           return disponivel + 0.5 < texto;\n  38 |         }).map((input) => input.getAttribute(\"aria-label\")));\n> 39 |         expect(cortados, `${width}px / texto ${size}`).toEqual([]);\n     |                                                        ^\n  40 |       }\n  41 |     }\n  42 |     await expect(page.getByLabel(\"Espaços usados de nível 1\", { exact: true })).toHaveValue(\"10\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js",
+                        "column": 56,
+                        "line": 39
+                      },
+                      "message": "Error: 1280px / texto 16\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 20\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 1\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 2\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 3\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 4\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 5\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 6\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 7\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 8\",\u001b[39m\n\u001b[31m+   \"Espaços usados de nível 9\",\u001b[39m\n\u001b[31m+   \"Espaços totais de nível 9\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  37 |           return disponivel + 0.5 < texto;\n  38 |         }).map((input) => input.getAttribute(\"aria-label\")));\n> 39 |         expect(cortados, `${width}px / texto ${size}`).toEqual([]);\n     |                                                        ^\n  40 |       }\n  41 |     }\n  42 |     await expect(page.getByLabel(\"Espaços usados de nível 1\", { exact: true })).toHaveValue(\"10\");\n    at C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js:39:56"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:18:01.128Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\layout-feedback-Feedback-e-d9bca-tram-números-completos-dark-chromium-desktop\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\crist\\AppData\\Local\\Temp\\dnd-layout-feedback-traces\\layout-feedback-Feedback-e-d9bca-tram-números-completos-dark-chromium-desktop\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\crist\\OneDrive - Academico - Secretaria do Estado da Educação de São Paulo\\Área de Trabalho\\Jogo\\dnd-fichas\\dnd-fichas\\tests-e2e\\layout-feedback.spec.js",
+                    "column": 56,
+                    "line": 39
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-412070e806efe8f344e2",
+          "file": "layout-feedback.spec.js",
+          "line": 19,
+          "column": 3
+        },
+        {
+          "title": "Feedback: ações de catálogo compactas sem sobreposição / dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18235,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:18:08.244Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-f208c44616742816043a",
+          "file": "layout-feedback.spec.js",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "Feedback: seletor Imagem por teclado e retrato na biblioteca / dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17138,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:18:26.716Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-f9b0c665fae24be8ebc4",
+          "file": "layout-feedback.spec.js",
+          "line": 80,
+          "column": 3
+        },
+        {
+          "title": "Feedback: espaços de magia mostram números completos / light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19570,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:19:37.977Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-c276d5149084819d7c8d",
+          "file": "layout-feedback.spec.js",
+          "line": 19,
+          "column": 3
+        },
+        {
+          "title": "Feedback: ações de catálogo compactas sem sobreposição / light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 26160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:19:57.907Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-e70ead25cfcb8fc9d9f1",
+          "file": "layout-feedback.spec.js",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "Feedback: seletor Imagem por teclado e retrato na biblioteca / light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10703,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:20:24.124Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-f10bff954351ee7c9dfb",
+          "file": "layout-feedback.spec.js",
+          "line": 80,
+          "column": 3
+        },
+        {
+          "title": "Feedback: espaços de magia mostram números completos / dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19477,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:20:34.883Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-bff68b10381032badabc",
+          "file": "layout-feedback.spec.js",
+          "line": 19,
+          "column": 3
+        },
+        {
+          "title": "Feedback: ações de catálogo compactas sem sobreposição / dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 22477,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:20:54.461Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-32a388fcd6a10cb84993",
+          "file": "layout-feedback.spec.js",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "Feedback: seletor Imagem por teclado e retrato na biblioteca / dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13810,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:21:16.984Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34ac5f6b1c8574387b5d-9a747a143a52f7bb6750",
+          "file": "layout-feedback.spec.js",
+          "line": 80,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-15T16:15:57.396Z",
+    "duration": 341416.756,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

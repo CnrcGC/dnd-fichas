@@ -18,8 +18,9 @@ for (const path of ["/", "/characters/new", "/dnd5e", "/yusong", "/feiticeiros-m
 
 test("skip link e botão de tema funcionam por teclado", async ({ page }) => {
   await page.goto("/");
-  await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: "Pular para o conteúdo principal" });
+  await expect(skip).toBeAttached();
+  await page.keyboard.press("Tab");
   await expect(skip).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.locator("main")).toBeFocused();
@@ -161,7 +162,7 @@ test("VA-01 ficha mantém reflow em 320 px e passa axe nas seções atuais", asy
   await page.goto("/dnd5e/characters/new");
   await page.getByRole("button", { name: "Pular e criar ficha em branco" }).click();
 
-  for (const nome of ["Combate", "Habilidades", "Perícias", "Magias", "Inventário", "Notas"]) {
+  for (const nome of ["Combate", "Habilidades", "Proficiências", "Magias", "Inventário", "Notas"]) {
     await page.getByRole("tab", { name: nome }).click();
     await expect(page.getByRole("tabpanel")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

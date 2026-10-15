@@ -1,0 +1,56 @@
+{
+  "fullRegressionBeforeFinalNavigationPolish": {
+    "startTime": "2026-10-14T15:19:43.342Z",
+    "duration": 3587086.597,
+    "expected": 236,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "postFloatingRun": {
+    "startTime": "2026-10-15T02:16:08.500Z",
+    "duration": 1638446.356,
+    "expected": 119,
+    "skipped": 0,
+    "unexpected": 7,
+    "flaky": 0
+  },
+  "finalRelatedRun": {
+    "startTime": "2026-10-15T02:52:00.626Z",
+    "duration": 38868117.316,
+    "expected": 64,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "finalRecheck": {
+    "startTime": "2026-10-15T13:41:12.501Z",
+    "duration": 1173179.26,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "finalRemainingCase": {
+    "startTime": "2026-10-15T14:05:04.365Z",
+    "duration": 19778.461,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "finalRelatedCasesWithPassingResult": 66,
+  "postFloatingCasesWithPassingResultAcrossStages": 126,
+  "configuredA11yCasesWithPassingResultAcrossStages": 70,
+  "broadCasesWithPassingResultAcrossStages": 238,
+  "newRouteFocusCasesPassed": 4,
+  "finalPages": {
+    "startTime": "2026-10-15T14:05:27.435Z",
+    "duration": 85012.162,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "note": "A regressao ampla antecede os ajustes finais de posicionamento/foco. Na ultima versao, os 66 casos relacionados foram aprovados contando as reexecucoes; os relatorios brutos preservam os timeouts. Nao representa uma execucao unica global de 242 testes sem falhas."
+}

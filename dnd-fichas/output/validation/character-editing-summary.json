@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-15",
+  "branch": "main",
+  "baseHead": "b001bd8502963193e3632fcc97fee148d30d322d",
+  "committedByThisTask": false,
+  "publishedByThisTask": false,
+  "unit": {
+    "passed": 283,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browserRuns": {
+    "related": {
+      "startTime": "2026-10-15T15:10:34.726Z",
+      "duration": 314361.865,
+      "expected": 58,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "reflow": {
+      "startTime": "2026-10-15T15:16:39.820Z",
+      "duration": 170083.658,
+      "expected": 16,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "builds": {
+    "dist": {
+      "mainAsset": "assets/index-DGJFblFj.js",
+      "mainBytes": 277354,
+      "adapterAsset": "assets/adapter-B-xs3G3F.js",
+      "adapterBytes": 94049
+    },
+    "dist-pages": {
+      "mainAsset": "assets/index-C8IaX0Pq.js",
+      "mainBytes": 277387,
+      "adapterAsset": "assets/adapter-D4pOvdaK.js",
+      "adapterBytes": 94049
+    }
+  },
+  "files": [
+    {
+      "path": "src/components/ficha/AtributoCard.jsx",
+      "sha256": "86818453fbb54cae32123b8f4b677ec419d6482bc97d074d6f6a74b16eff76bd"
+    },
+    {
+      "path": "src/components/ficha/BlocoHabilidades.jsx",
+      "sha256": "f7f5f9856c9b5ec8ca3de0b2393aa16f0ee05cc9388eedf5639cb7092aea22cc"
+    },
+    {
+      "path": "src/components/ficha/BlocoPericias.jsx",
+      "sha256": "d41c9adccb5f3ecfc861b0753188901347fdb3b66b75cf69155de01183bba327"
+    },
+    {
+      "path": "src/components/ficha/BlocoProficiencias.css",
+      "sha256": "3a24f60da02dec19eeb70169c562eba4152a57b3be3dce3adecd1ef796252214"
+    },
+    {
+      "path": "src/components/ficha/BlocoProficiencias.jsx",
+      "sha256": "7fd12ac87f8d7d2d05eac6cc624c5b8fdd106ad8b43365c3f7f766b58f526ef2"
+    },
+    {
+      "path": "src/components/ficha/BlocoRacaClasse.jsx",
+      "sha256": "b3b8eb753f9203c0721dd436d1adde3e5895884e9bb4b27152108a60fa6aa4bf"
+    },
+    {
+      "path": "src/components/ficha/BlocoStatus.jsx",
+      "sha256": "796305577a339be1745b3e9bffc543c5565a270bd2367903c6e122c2c7f3132b"
+    },
+    {
+      "path": "src/components/ficha/FichaImpressao.css",
+      "sha256": "bc707b97454beb3dc49465b5b957f8841c28ff71ec197be555b35e6d297c9033"
+    },
+    {
+      "path": "src/components/ficha/FichaImpressao.jsx",
+      "sha256": "afcd69be649738ac62d984681bcbcc083b09069ebb14e8b7f955378cdf99b609"
+    },
+    {
+      "path": "src/components/ficha/RetratoPersonagem.css",
+      "sha256": "af51499a77cd59af9ae6b280eeb2bf2c4c0d8e66a3873bb2014ea312c266c92c"
+    },
+    {
+      "path": "src/components/ficha/RetratoPersonagem.jsx",
+      "sha256": "26fe0b41b38a480511973cdf9b0e31ec71dea9a56823e2c6860221547fd2abe9"
+    },
+    {
+      "path": "src/components/modal/ModalCatalogoHabilidades.jsx",
+      "sha256": "2d3c5715fba9f57c52fc4daa53b90cfa4e609410a38dcccc63c098eefff792ea"
+    },
+    {
+      "path": "src/components/modal/ModalCatalogoItens.css",
+      "sha256": "36c88c342846f0824b43878fb7650d0616281912cbe3d6ff29b470c3e508912c"
+    },
+    {
+      "path": "src/pages/Ficha.jsx",
+      "sha256": "a2ab28469c8322f4cf8515bab9cbb2b5b48dd15b499d03bc77bb11b55d5330fc"
+    },
+    {
+      "path": "src/pages/NovaFicha.css",
+      "sha256": "692c5db1e54957008a05bec7b8bca0a25a7646d5651051951baeb8a04d31deea"
+    },
+    {
+      "path": "src/pages/NovaFicha.jsx",
+      "sha256": "43d3bb456d5f386fadfcf718d61d819f3d1151b9e8eaa36728933c92c251bb01"
+    },
+    {
+      "path": "src/utils/atributos.js",
+      "sha256": "e36ce56d592b4d419f9294a489970f8f1676222ce3c94c83af2b0d7d6d44a1d6"
+    },
+    {
+      "path": "src/utils/ficha.js",
+      "sha256": "30e5283f7e36b3f581f79bafabcf15feb2e29801650d9eb570bcd0a7f041fe97"
+    },
+    {
+      "path": "src/utils/habilidade.js",
+      "sha256": "4a6714fdf4df19cb1203b3091035ad4c1b2854370296b3f9f34c9b0824b54603"
+    },
+    {
+      "path": "src/utils/proficienciasCriacao.js",
+      "sha256": "2091542a3bfc9889ecf28d9f96712792cb8939d6aff980c07e840e9fa62626ea"
+    },
+    {
+      "path": "src/utils/retrato.js",
+      "sha256": "2962016f047ef4918e5b97f88a123bbf6a6e331ab2311c5606c369dbfe8db266"
+    },
+    {
+      "path": "tests-e2e/accessibility.spec.js",
+      "sha256": "cd43b46cd971fe1f8eb959a55b1d9134c5efe502e783823029d1af5c1f73d246"
+    },
+    {
+      "path": "tests-e2e/character-editing.spec.js",
+      "sha256": "8015676e20292212246641b552b60f2736bf409bd8773257c30958d938206f77"
+    },
+    {
+      "path": "tests-e2e/dnd5e-adapter.spec.js",
+      "sha256": "92d77a1838dc79ccc573bcb4d0ae2d2f758764616340a78da8b3e76da3f508b5"
+    },
+    {
+      "path": "tests-e2e/grimoire-sheet.spec.js",
+      "sha256": "3427de3e473fd1632ee86fd7b82b09724aad9b4c54b6f3d979cf67048e7f4686"
+    },
+    {
+      "path": "tests-e2e/reading-preferences.spec.js",
+      "sha256": "efb54b78c87cfcd7f0805aafc91a7e22d2b4a5d1dbed463a49fc296f13f57c6b"
+    },
+    {
+      "path": "tests-e2e/sheet-accessibility.spec.js",
+      "sha256": "3d6ba35537b3e2a025828299902127c3278b6bb70d82e869cedce492994bacd3"
+    },
+    {
+      "path": "tests-e2e/text-reflow.spec.js",
+      "sha256": "3518b53736343c9c74b34dfd1a1edac0ba5f3f317da7896129d71ec10f06a22e"
+    },
+    {
+      "path": "tests/character-editing.test.mjs",
+      "sha256": "083102be0691689c2068a70e458f40bdf8d03f8f5d2db109d8bd6962ef983865"
+    },
+    {
+      "path": "docs/FICHA_CRIACAO_EDICAO.md",
+      "sha256": "6a5ebf18a64d43166f981dde89cc131c78eb5f839d023aaaba2e8ddfb2836784"
+    },
+    {
+      "path": "docs/IMPLEMENTATION_STATUS.md",
+      "sha256": "108ad909fa43a542d3e35a42822b27ef7e9822e83ac16940047e7aebe2e30af9"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+.personagem-retrato { display: grid; justify-items: start; gap: var(--space-2); margin-block: var(--space-3); min-width: 0; }
+.personagem-retrato-quadro { position: relative; width: min(144px, 100%); aspect-ratio: 1; }
+.personagem-retrato .personagem-retrato-escolher {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  min-height: 44px;
+  padding: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, var(--color-bg-raised), var(--color-bg-inset));
+  border: 1px solid var(--color-ink-soft);
+  border-radius: var(--grimoire-radius, var(--radius-sm));
+  color: var(--color-ink);
+  font-weight: 400;
+}
+.personagem-retrato-escolher img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.personagem-retrato .personagem-retrato-escolher:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
+.personagem-retrato p { margin: 0; font-size: var(--text-sm); overflow-wrap: anywhere; }
+.personagem-retrato-ajuda { max-width: 30ch; }
+.personagem-retrato .personagem-retrato-remover { position: absolute; top: 6px; right: 6px; z-index: 1; width: 28px; min-width: 28px; height: 28px; min-height: 28px; padding: 0; border: 1px solid var(--color-danger); border-radius: var(--radius-sm); background: var(--color-bg-raised); color: var(--color-danger); }
+@media (pointer: coarse) {
+  .personagem-retrato .personagem-retrato-remover { width: 36px; min-width: 36px; height: 36px; min-height: 36px; }
+}

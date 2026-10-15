@@ -1,5 +1,6 @@
 import { calcularModificador, formatarModificador } from "../../utils/dnd";
 import { useRolagem } from "../../context/useRolagem";
+import { limitarAtributo } from "../../utils/atributos";
 import "./AtributoCard.css";
 
 export default function AtributoCard({
@@ -15,7 +16,7 @@ export default function AtributoCard({
 
   function handleChange(evento) {
     const novoValor = Number(evento.target.value);
-    onChange(Number.isNaN(novoValor) ? 0 : novoValor);
+    if (evento.target.value !== "") onChange(limitarAtributo(novoValor, bonusRacial, valor));
   }
 
   function handleRolar() {
@@ -30,7 +31,7 @@ export default function AtributoCard({
         className="atributo-input"
         type="number"
         min="1"
-        max="30"
+        max={30 - bonusRacial}
         value={valor}
         onChange={handleChange}
         aria-label={`Valor base de ${label}`}

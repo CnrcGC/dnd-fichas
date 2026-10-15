@@ -11,7 +11,10 @@ O frontend fica em [`dnd-fichas/`](./dnd-fichas). O serviço em [`server/`](./se
 ## Recursos
 
 - Criação guiada em cinco capítulos numerados, com seleção e pendências explícitas, além de ficha em branco. Entrega visual em [VIS_G04.md](./dnd-fichas/docs/VIS_G04.md).
+- Rolagem de atributos (4d6, descarta o menor) com distribuição dos seis resultados; retrato local na criação, ficha, biblioteca, JSON e impressão. Edição limitada ao total 30, PV máximo somente leitura, idiomas reversíveis e aba Proficiências com seções retráteis. [Registro da entrega](./dnd-fichas/docs/FICHA_CRIACAO_EDICAO.md). Alterações locais, ainda não publicadas.
 - Biblioteca e ficha com aparência de grimório; identidade, vida, defesa e atributos destacados, com atalho para as ações. Estado da entrega visual em [VIS_G03.md](./dnd-fichas/docs/VIS_G03.md).
+- Detalhes de mesa em revisão local: magias, inventário, recursos e modais com tratamentos comuns; dados com resultado/tipo/detalhes separados e estados de salvamento explícitos. [VIS_G05.md](./dnd-fichas/docs/VIS_G05.md). Esta etapa ainda não foi publicada.
+- Revisão global da candidata visual, com foco dos catálogos e da navegação, título mobile, contraste da falha crítica e posição do retorno ao topo corrigidos: [VIS_G06.md](./dnd-fichas/docs/VIS_G06.md). Validação automatizada concluída na main local; NVDA, zoom nativo e aparelho real permanecem pendentes. Esta candidata ainda não foi publicada.
 - Catálogo local com 9 raças, 9 sub-raças, 12 classes, 13 antecedentes, 41 subclasses, talentos e magias; automação varia conforme a regra.
 - Proficiências iniciais por classe, raça e antecedente, com idiomas, ferramentas e origem de cada concessão.
 - Multiclasse com pré-requisitos, nível total máximo 20, proficiências reduzidas, pools de dados de vida e PV por classe de origem.

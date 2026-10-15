@@ -16,6 +16,7 @@ export function criarFichaVazia(nome) {
     notas: "",
     jogador: "",
     aparencia: "",
+    retrato: "",
     personalidade: "",
     historico: "",
     objetivo: "",

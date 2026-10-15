@@ -440,7 +440,14 @@
 }
 @media (max-width: 640px) {
   .criacao-abertura { padding: var(--space-3); }
-  .criacao-abertura h1 { font-size: var(--text-xl); }
+  .criacao-abertura h1 { font-size: var(--text-lg); }
   .criacao-grimoire .criacao-card { align-items: stretch; }
   .criacao-grimoire .criacao-escolhas { padding: var(--space-3); }
 }
+@media (max-width: 390px) {
+  .criacao-abertura { padding-inline: var(--space-2); }
+}
+.criacao-metodo { display: grid; gap: var(--space-2); margin-block: var(--space-3); font-weight: 700; }
+.criacao-metodo select { max-width: 100%; min-width: 0; min-height: 44px; }
+.criacao-rolagens { overflow-wrap: anywhere; }
+.criacao-rolagens li { margin-block: var(--space-1); }

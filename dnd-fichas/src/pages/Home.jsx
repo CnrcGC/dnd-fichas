@@ -5,6 +5,7 @@ import { obterClasse } from "../data/classes";
 import Icon from "../components/icons/Icon";
 import { calcularNivelTotal } from "../utils/niveis";
 import { exportarFicha, lerArquivoFicha } from "../utils/backup";
+import { retratoLocalValido } from "../utils/retrato";
 import "./Home.css";
 
 export default function Home() {
@@ -169,9 +170,9 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="ficha-card-corpo">
-                  <span className="ficha-card-simbolo">
+                  {retratoLocalValido(ficha.retrato) ? <img className="ficha-card-retrato" src={ficha.retrato} alt={`Retrato de ${ficha.nome || "personagem"}`} width="160" height="160" loading="lazy" decoding="async" /> : <span className="ficha-card-simbolo">
                     <Icon name={["mago", "feiticeiro", "bruxo"].includes(ficha.classeId) ? "spell" : ["guerreiro", "paladino", "clerigo"].includes(ficha.classeId) ? "shield" : "book"} size={32} />
-                  </span>
+                  </span>}
                   <h3 className="ficha-card-nome">{ficha.nome}</h3>
                   <span className="ficha-card-classe">
                     {classe ? classe.nome : "Sem classe"}

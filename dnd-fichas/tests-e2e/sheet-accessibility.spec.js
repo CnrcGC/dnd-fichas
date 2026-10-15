@@ -4,7 +4,7 @@ import { importCharacter } from "./helpers/dnd.js";
 import { setTheme } from "./helpers/preferences.js";
 
 for (const theme of ["dark", "light"]) {
-  for (const tab of ["Combate", "Habilidades", "Perícias", "Magias", "Inventário", "Notas"]) {
+  for (const tab of ["Combate", "Habilidades", "Proficiências", "Magias", "Inventário", "Notas"]) {
     test(`A11Y-01 ficha ${tab} / ${theme} não possui violações axe`, async ({ page }) => {
       await importCharacter(page, {
         classeId: "mago", subclasseId: "escola-evocacao",

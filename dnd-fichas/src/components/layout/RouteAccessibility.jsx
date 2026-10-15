@@ -27,7 +27,7 @@ export default function RouteAccessibility() {
     document.title = `${routeTitle}${systemName ? ` — ${systemName}` : ""} · D&D Fichas`;
     if (navigationType === "POP") return;
     const initialFocus = document.activeElement;
-    if (navigationType === "REPLACE" && initialFocus === document.body && /^\/(dnd5e|yusong|feiticeiros-maldicoes)$/.test(location.pathname)) return;
+    if (navigationType === "REPLACE" && (initialFocus === document.body || initialFocus?.matches(".skip-link")) && /^\/(dnd5e|yusong|feiticeiros-maldicoes)$/.test(location.pathname)) return;
     const main = document.querySelector("main");
     function focusReadyHeading() {
       const heading = main?.querySelector("h1");

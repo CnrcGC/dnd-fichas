@@ -5,6 +5,7 @@ import DetalheHabilidade from "./DetalheHabilidade";
 import { useModalA11y } from "../../hooks/useModalA11y";
 import Icon from "../icons/Icon";
 import { talentoDisponivel } from "../../utils/talentos";
+import { habilidadeClasseDisponivel } from "../../utils/habilidade";
 import "./ModalCatalogoItens.css";
 
 export default function ModalCatalogoHabilidades({
@@ -136,7 +137,7 @@ export default function ModalCatalogoHabilidades({
               const { atendido, texto: textoPreRequisito } =
                 abaAtiva === "talento"
                   ? verificarPreRequisito(item)
-                  : { atendido: true, texto: null };
+                  : habilidadeClasseDisponivel(ficha, item);
 
               return (
                 <div
@@ -172,7 +173,7 @@ export default function ModalCatalogoHabilidades({
                   <button
                     type="button"
                     className="item-catalogo-adicionar"
-                    onClick={() => onAdicionarHabilidade(item, abaAtiva)}
+                    onClick={() => { if (atendido) onAdicionarHabilidade(item, abaAtiva); }}
                     aria-label={`Adicionar ${item.nome}`}
                     disabled={!atendido}
                     title={!atendido ? textoPreRequisito : undefined}
@@ -182,6 +183,7 @@ export default function ModalCatalogoHabilidades({
 
                   {expandido && (
                     <div className="item-catalogo-corpo">
+                      {!atendido && <p>{textoPreRequisito}</p>}
                       <DetalheHabilidade item={item} tipo={abaAtiva} />
                     </div>
                   )}

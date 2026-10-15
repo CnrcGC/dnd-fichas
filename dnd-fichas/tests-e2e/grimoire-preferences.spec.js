@@ -72,6 +72,7 @@ test("Voltar ao topo aparece após rolar e devolve o foco ao título", async ({ 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 320, height: 500 });
   await page.goto("/dnd5e");
+  await expect(page.getByRole("heading", { name: "Sua próxima aventura começa aqui", exact: true })).toBeVisible();
   const back = page.getByRole("button", { name: "Voltar ao topo", exact: true });
   await expect(back).toHaveCount(0);
   await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" }));

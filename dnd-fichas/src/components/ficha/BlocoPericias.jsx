@@ -28,8 +28,8 @@ export default function BlocoPericias({
   }
 
   return (
-    <section>
-      <h2 className="bloco-titulo">Perícias</h2>
+    <details className="proficiencia-retratil" open>
+      <summary><h2 className="bloco-titulo">Perícias</h2></summary>
       <ul className="pericias-lista">
         {PERICIAS.map((pericia) => {
           const proficiente = Boolean(pericias[pericia.chave]);
@@ -99,6 +99,6 @@ export default function BlocoPericias({
           );
         })}
       </ul>
-    </section>
+    </details>
   );
 }

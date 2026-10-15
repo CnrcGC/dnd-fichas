@@ -38,7 +38,7 @@ export default function BlocoRecursos({
   }
 
   return (
-    <section>
+    <section className="mesa-recursos">
       <h2 className="bloco-titulo">Recursos rastreáveis</h2>
 
       {sugestoes && sugestoes.length > 0 && (
@@ -77,6 +77,7 @@ export default function BlocoRecursos({
                   }
                 />
                 <small>{rotuloOrigem(recurso)}</small>
+                <span className="recurso-usos">{Math.max(0, recurso.usosMax - recurso.usosGastos)} de {recurso.usosMax} usos disponíveis</span>
               </div>
 
               <div className="recurso-pips">
@@ -92,7 +93,7 @@ export default function BlocoRecursos({
                     onClick={() => handleTogglePip(recurso, indice)}
                     aria-label={`${recurso.nome || "Recurso"} — uso ${indice + 1}`}
                     aria-pressed={indice < recurso.usosGastos}
-                  />
+                  ><span aria-hidden="true">{indice + 1}</span></button>
                 ))}
               </div>
 

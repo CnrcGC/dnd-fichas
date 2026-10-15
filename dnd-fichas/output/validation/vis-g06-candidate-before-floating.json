@@ -1,0 +1,69 @@
+{
+  "pagesAsset": "assets/index-BlbR7ytP.js",
+  "branch": "main",
+  "pagesBytes": 276589,
+  "head": "b001bd8502963193e3632fcc97fee148d30d322d",
+  "mainAsset": "assets/index-CX6WRAeT.js",
+  "date": "2026-10-14",
+  "budgets": {
+    "main": 435200,
+    "adapter": 102400
+  },
+  "mainBytes": 276556,
+  "publishedByThisTask": false,
+  "sourceFingerprint": [
+    {
+      "path": "src/hooks/useModalA11y.js",
+      "sha256": "13D4D78B03885368F102DAD367D30DB3D1AC382043CF5E7CBBEF6728FFDD0A57"
+    },
+    {
+      "path": "src/pages/NovaFicha.css",
+      "sha256": "2C4CCDEF31C69BED5E4AEA2E9FE044F5577E28AB9C5A506B0514890DD571238C"
+    },
+    {
+      "path": "src/styles/components/grimoire.css",
+      "sha256": "C85F2105517AC9BE83E7E70DE99F5C29D7B3494CBBCF76EBC0C5CD4D43E582C0"
+    },
+    {
+      "path": "src/components/rolagem/PainelRolagens.jsx",
+      "sha256": "CDCE581B60D8DFDE33164AFF17F79BB08B6E8A305ACDA003D18A07239B73B7CF"
+    },
+    {
+      "path": "src/components/rolagem/PainelRolagens.css",
+      "sha256": "3B0FC642ED50B222508F1C3B35D8F6E80369F3C24FE84B505217BF1D61E5D1CD"
+    },
+    {
+      "path": "src/components/ficha/BlocoRecursos.jsx",
+      "sha256": "8C204A567DE7E5D42F5C4918FADFB45470473E2F298CDA391BE81EBACC66DA26"
+    },
+    {
+      "path": "src/components/layout/AvisoPersistencia.jsx",
+      "sha256": "6DC0F786C64D67A685EB008E130B4E2EC2B4C953A200F7502FDC6E9E55B184C8"
+    },
+    {
+      "path": "src/components/modal/ModalCatalogoItens.jsx",
+      "sha256": "81B38690D7232C6B987CB55B575CC4345FDBED9C0B6044D9B65A92AE331318EA"
+    },
+    {
+      "path": "tests-e2e/helpers/preferences.js",
+      "sha256": "4F3B1FFD34B64761431D631D03743E2748D5B6DB38110E8A7B1EDBC4E792C68A"
+    },
+    {
+      "path": "tests-e2e/grimoire-creation.spec.js",
+      "sha256": "8D778AA1494E92BCCE4C25780531E897E1E8B08B6C36C6A951C94B01C6B33C3F"
+    },
+    {
+      "path": "tests-e2e/modal-reflow.spec.js",
+      "sha256": "F7059DF66724C0117BD0103DAAB2FB5FB200EF38351F301E7051DFBE1A5463FA"
+    },
+    {
+      "path": "scripts/capture-visual-review.mjs",
+      "sha256": "0C998A8796332AB78976E9DEF2C4F945FB1BCA0FB68B1BCCA251985AE3E0C7BC"
+    },
+    {
+      "sha256": "6F6A213C498709EF07BE06656B4375CC7C5F801852C6E763CE338453214ADEC2",
+      "path": "tests-e2e/grimoire-table.spec.js"
+    }
+  ],
+  "adapterBytes": 93854
+}

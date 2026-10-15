@@ -264,7 +264,7 @@
   border-color: var(--color-accent);
 }
 .item-catalogo.is-bloqueado {
-  opacity: 0.5;
+  border-style: dashed;
 }
 
 .item-catalogo.is-bloqueado .item-catalogo-resumo {

@@ -1,0 +1,11 @@
+{
+  "passed": 117,
+  "failures": [
+    "  x   42 [chromium-desktop] › tests-e2e\\grimoire-sheet.spec.js:32:3 › VIS-G03 resumo e atributos precedem a edição / dark (2.4s)",
+    "  x  115 [chromium-desktop] › tests-e2e\\trash.spec.js:50:1 › lixeira reverte transação abortada, mantém recuperação e permite nova tentativa (17.1s)"
+  ],
+  "planned": 232,
+  "failed": 2,
+  "status": "interrupted",
+  "reason": "Reiniciar em servidor limpo após corrigir revelação do foco e aguardar transições no helper; HMR criou outra identidade de módulo no teste de falha transacional."
+}

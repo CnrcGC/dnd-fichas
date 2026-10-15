@@ -27,6 +27,14 @@
   font-size: var(--text-lg);
 }
 
+.painel-rolagens-chamada { display: grid; gap: 2px; min-width: 0; text-align: start; }
+.painel-rolagens-legenda, .item-rolagem-tipo { margin: 0; color: var(--color-ink-soft); font-size: var(--text-xs); }
+.painel-rolagens-heading { font-size: var(--text-lg); }
+.item-rolagem-cabecalho { gap: var(--space-3); align-items: start; }
+.item-rolagem-cabecalho > div { min-width: 0; }
+.item-rolagem-resultado { display: grid; flex-shrink: 0; text-align: end; }
+.item-rolagem-resultado strong { font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-accent); line-height: 1.2; }
+
 .painel-rolagens-titulo {
   font-size: var(--text-sm);
   color: var(--color-ink-soft);

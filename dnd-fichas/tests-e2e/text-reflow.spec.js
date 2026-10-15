@@ -40,7 +40,7 @@ for (const width of [320, 390, 768, 1280]) {
       }
     };
     await capture("ficha");
-    for (const tab of ["Combate", "Habilidades", "Perícias", "Magias", "Inventário", "Notas"]) {
+    for (const tab of ["Combate", "Habilidades", "Proficiências", "Magias", "Inventário", "Notas"]) {
       await page.getByRole("tab", { name: tab, exact: true }).click();
       await expect(page.getByRole("tabpanel").locator("h2").first()).toBeVisible();
       await expect(page.getByRole("tabpanel").locator(".ficha-carregando-secao")).toHaveCount(0);

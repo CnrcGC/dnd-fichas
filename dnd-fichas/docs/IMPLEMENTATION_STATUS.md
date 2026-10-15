@@ -1,5 +1,28 @@
 # Estado da implementação — D&D 5e
 
+## Criação e edição — complementos de 2026-10-15
+
+- **IMPLEMENTADO LOCALMENTE:** arranjo padrão ou rolagem 4d6 com descarte, distribuição por posições e histórico; retrato local com validação, compressão, biblioteca, JSON e impressão; atributos inteiros até total 30; PV máximo somente leitura.
+- **CORRIGIDO:** remoção de concessões manuais sem recriação como legado; requisito do nível de classe no catálogo de habilidades; contraste do texto das opções bloqueadas.
+- **RETORNO VISUAL:** campos de espaços de magia com largura útil para os números, ações de catálogo compactas, seletor quadrado Imagem e retratos nos cartões da biblioteca. Após selecionar, retrato sem legenda e remoção por X no canto, com nome acessível e retorno de foco. 22 cenários relacionados aprovados contando reexecuções e quatro casos de leitura ampliada aprovados; lint/builds/budgets conferidos. Evidências e limites desta revisão no registro abaixo.
+- **INTERFACE:** aba Proficiências com quatro seções nativas retráteis. Testes existentes usam o novo nome sem perder assertions.
+- **VALIDAÇÃO:** 283 unitários aprovados (oito novos), 58 casos relacionados de navegador e 16 verificações adicionais de reflow/print aprovados, com sobreposição documentada; lint/builds/budgets aprovados. PDF de duas páginas inspecionado e 116 evidências históricas preservadas. Sem commit/publicação. Detalhes em [FICHA_CRIACAO_EDICAO.md](./FICHA_CRIACAO_EDICAO.md). Os registros VIS-G06 abaixo representam a candidata anterior.
+
+
+## VIS-G06 — Revisão global — 2026-10-14/15
+
+- **IMPLEMENTADO LOCALMENTE:** revelação completa de controles focados em faixas horizontais dentro de modais; título mobile da criação com palavra inteira em texto ampliado; contraste de “Falha crítica” corrigido na capa escura. Também corrigidos o retorno ao topo sobre o painel ampliado e a preservação do skip link focado no redirecionamento inicial. Reutiliza hook e tokens existentes.
+- **VALIDADO:** 275 unitários, 18 verificações dirigidas, quatro casos de contraste, seis ensaios de produção, 11 de Pages e 70 casos de acessibilidade aprovados. Regressão integral: 236/238 passaram; dois timeouts durante atrasos do ambiente passaram na reexecução sem alterar código/assertions/limites. Essa rodada antecede os últimos ajustes de posição/foco. Na fonte final, os 66 casos relacionados passaram contando as reexecuções, incluindo quatro novos casos de foco, e os 11 de Pages passaram em nova execução serial. Não representa uma execução única global sem falhas; relatórios preservam os timeouts. Seis páginas A4 inspecionadas; 144 verificações de layout e 48 capturas; lint/builds/budgets aprovados e 116 artefatos anteriores preservados.
+- **PARCIAL:** NVDA, zoom nativo 200%, dispositivo real e avaliação final do proprietário. Sem commit/push/publicação desta candidata. Evidências e limites em [VIS_G06.md](./VIS_G06.md).
+
+## VIS-G05 — Detalhes de mesa e estados — 2026-10-14
+
+- **IMPLEMENTADO LOCALMENTE:** tratamentos de papel/campo/filete em magias, inventário, recursos e modais D&D; usos disponíveis em texto e marcadores numerados; resultado, tipo e cálculo separados no histórico.
+- **CORRIGIDO:** anúncio duplicado de rolagem, atributos ARIA repetidos no toggle, categoria ativa do catálogo de itens sem estado acessível, contraste da legenda nova em tema automático, proteção do foco contra o histórico expandido e Escape com retorno ao toggle. No mobile, voltar ao topo aguarda o fechamento do histórico para não sobrepor seu conteúdo.
+- **IMPLEMENTADO LOCALMENTE:** selo de gravação somente no estado confirmado, edição em curso e falha com texto/ícone, alerta e retry preservados. Impressão separada, dados, regras, IDs, lazy loading e persistência intactos.
+- **VALIDADO:** regressão relacionada com 40 testes aprovados; oito verificações de feedback; 16 testes finais de VIS-G05/abertura/axe/temas automáticos após a correção do contraste; lint/builds/budgets e 11 ensaios Chrome Pages aprovados nesta etapa. A matriz ampla original teve 85/86 passando; a revisão posterior e a correção do estado de falha crítica estão documentadas na VIS-G06 acima. Histórico e limites em [VIS_G05.md](./VIS_G05.md).
+- **PARCIAL:** avaliação visual do proprietário, NVDA, zoom nativo 200% e dispositivo real. Sem novo commit, push ou publicação desta etapa; site público conserva a entrega anterior.
+
 ## Hospedagem e lixeira — 2026-10-13/14
 
 - **IMPLEMENTADO:** exclusão permanente individual na lixeira, com confirmação, retorno de foco, aviso acessível, commit IndexedDB antes de remover da lista, remoção de recuperação interna associada e reserva mínima do ID para impedir ressurreição por snapshot antigo. Fontes legadas/exportações e demais fichas preservadas.

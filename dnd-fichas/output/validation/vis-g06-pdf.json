@@ -1,0 +1,67 @@
+{
+  "results": [
+    {
+      "file": "output\\pdf\\vis-g06\\01-guerreiro-nivel-1.pdf",
+      "namePresent": true,
+      "screenControlsAbsent": true,
+      "pages": [
+        {
+          "width": 594.95996,
+          "height": 841.91998,
+          "a4": true,
+          "textCharacters": 1245,
+          "outside": []
+        },
+        {
+          "width": 594.95996,
+          "height": 841.91998,
+          "a4": true,
+          "textCharacters": 336,
+          "outside": []
+        }
+      ]
+    },
+    {
+      "file": "output\\pdf\\vis-g06\\02-guerreiro-nivel-4.pdf",
+      "namePresent": true,
+      "screenControlsAbsent": true,
+      "pages": [
+        {
+          "width": 594.95996,
+          "height": 841.91998,
+          "a4": true,
+          "textCharacters": 976,
+          "outside": []
+        },
+        {
+          "width": 594.95996,
+          "height": 841.91998,
+          "a4": true,
+          "textCharacters": 846,
+          "outside": []
+        }
+      ]
+    },
+    {
+      "file": "output\\pdf\\vis-g06\\03-mago-nivel-4.pdf",
+      "namePresent": true,
+      "screenControlsAbsent": true,
+      "pages": [
+        {
+          "width": 594.95996,
+          "height": 841.91998,
+          "a4": true,
+          "textCharacters": 1299,
+          "outside": []
+        },
+        {
+          "width": 594.95996,
+          "height": 841.91998,
+          "a4": true,
+          "textCharacters": 642,
+          "outside": []
+        }
+      ]
+    }
+  ]
+}

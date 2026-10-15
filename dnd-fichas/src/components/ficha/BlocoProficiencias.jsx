@@ -38,6 +38,8 @@ export default function BlocoProficiencias({
   function renderChipsIdiomas(lista) {
     return lista.map((idioma) => {
       const conhecido = idiomas.includes(idioma.id);
+      const origens = origensProficiencias.idiomas?.[idioma.id] ?? [];
+      const automatico = conhecido && origens.length > 0 && !origens.some((origem) => origem.startsWith("manual:"));
       return (
         <label
           key={idioma.id}
@@ -46,9 +48,11 @@ export default function BlocoProficiencias({
           <input
             type="checkbox"
             checked={conhecido}
+            disabled={automatico}
             onChange={() => onToggleIdioma(idioma.id)}
           />
           {idioma.nome}
+          {automatico && <small> · concedido pela criação ou por característica</small>}
         </label>
       );
     });
@@ -64,11 +68,12 @@ export default function BlocoProficiencias({
 
   return (
     <>
-      <section>
-        <h2 className="bloco-titulo">Idiomas</h2>
+      <details className="proficiencia-retratil">
+        <summary><h2 className="bloco-titulo">Idiomas</h2></summary>
         <p className="proficiencias-nota">
           Idiomas, ferramentas e proficiências de criação são aplicados automaticamente.
           Você ainda pode registrar concessões manuais ou de regra da mesa aqui.
+          Para trocar um idioma escolhido na criação, use as escolhas em Identidade e progressão.
         </p>
 
         <h3 className="proficiencias-subtitulo">Padrão</h3>
@@ -79,7 +84,7 @@ export default function BlocoProficiencias({
 
         {IDIOMAS_SECRETOS.some((idioma) => idiomas.includes(idioma.id)) && (
           <>
-            <h4 className="proficiencias-subtitulo">Secretos de classe</h4>
+            <h3 className="proficiencias-subtitulo">Secretos de classe</h3>
             <div className="idiomas-grid">{renderChipsIdiomas(IDIOMAS_SECRETOS.filter((idioma) => idiomas.includes(idioma.id)))}</div>
           </>
         )}
@@ -90,19 +95,19 @@ export default function BlocoProficiencias({
             <div className="idiomas-grid">{renderChipsIdiomas(idiomasLegados)}</div>
           </>
         )}
-      </section>
+      </details>
 
-      <section>
-        <h2 className="bloco-titulo">Proficiências de combate</h2>
+      <details className="proficiencia-retratil">
+        <summary><h2 className="bloco-titulo">Proficiências de combate</h2></summary>
         <p className="proficiencias-nota">
           Armas: {proficienciasArmas.length ? proficienciasArmas.join(", ") : "nenhuma registrada"}.<br />
           Armaduras: {proficienciasArmaduras.length ? proficienciasArmaduras.join(", ") : "nenhuma registrada"}.<br />
           Escudos: {proficienciasEscudos ? "proficiente" : "não registrado"}.
         </p>
-      </section>
+      </details>
 
-      <section>
-        <h2 className="bloco-titulo">Ferramentas</h2>
+      <details className="proficiencia-retratil">
+        <summary><h2 className="bloco-titulo">Ferramentas</h2></summary>
         <p className="proficiencias-nota">
           Proficiência com ferramentas, separada do inventário: marque aqui
           mesmo que o item físico ainda não tenha sido comprado na aba
@@ -157,7 +162,7 @@ export default function BlocoProficiencias({
             );
           })}
         </ul>
-      </section>
+      </details>
     </>
   );
 }

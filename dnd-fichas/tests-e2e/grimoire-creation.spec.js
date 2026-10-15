@@ -11,6 +11,14 @@ async function assertReflow(page, width) {
     .filter((element) => { const rect = element.getBoundingClientRect(); return rect.left < -1 || rect.right > window.innerWidth + 1; })
     .map((element) => element.getAttribute("aria-label") || element.textContent));
   expect(outside, `Controles fora da página em ${width}px`).toEqual([]);
+  expect(await page.locator(".criacao-abertura h1").evaluate((element) => {
+    const text = element.firstChild;
+    const start = text.textContent.indexOf("personagem");
+    const word = document.createRange();
+    word.setStart(text, start);
+    word.setEnd(text, start + "personagem".length);
+    return word.getClientRects().length;
+  }), `Palavra inteira no título em ${width}px`).toBe(1);
 }
 
 for (const theme of ["light", "dark"]) {

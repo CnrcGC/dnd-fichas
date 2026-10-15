@@ -86,7 +86,7 @@ for (const theme of ["light", "dark"]) {
     await page.keyboard.press("Escape");
     for (const width of [320, 390, 768, 1280]) {
       await page.setViewportSize({ width, height: 900 });
-      for (const tab of ["Combate", "Habilidades", "Perícias", "Magias", "Inventário", "Notas"]) {
+      for (const tab of ["Combate", "Habilidades", "Proficiências", "Magias", "Inventário", "Notas"]) {
         await page.getByRole("tab", { name: tab, exact: true }).click();
         await expect(page.getByRole("tabpanel").locator("h2").first()).toBeVisible();
         const overflow = await page.locator("header a, header button, main button, main input, main select, main textarea").evaluateAll((elements) =>

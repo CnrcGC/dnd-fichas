@@ -1,6 +1,6 @@
 # D&D Fichas — Plano visual: Grimório de aventureiro
 
-**Base atual:** por decisão do proprietário, a biblioteca e as preferências foram integradas diretamente na `main` 1.21, em `Área de Trabalho/Jogo/dnd-fichas`, e registradas no commit `70636e8`. Resultados da integração em [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md). As matrizes e números anteriores deste documento são históricos da cópia candidata. VIS-G03 e VIS-G04 aplicadas sobre esse commit; evidências específicas em [VIS_G03.md](./VIS_G03.md) e [VIS_G04.md](./VIS_G04.md).
+**Base atual:** trabalho somente na `main`, em `Área de Trabalho/Jogo/dnd-fichas`, sobre `b001bd8`. Biblioteca, criação e ficha aprovadas pelo proprietário; publicação por GitHub Actions concluída em 2026-10-14, com lixeira corrigida. VIS-G05 e VIS-G06 aplicadas localmente depois dessa publicação. Revisão ampla e verificações automatizadas finais das áreas alteradas concluídas, com reexecuções e limites documentados na VIS-G06; NVDA, zoom nativo, aparelho real e avaliação visual final permanecem pendentes. Integração em [MAIN_INTEGRATION.md](./MAIN_INTEGRATION.md), publicação em [HOSPEDAGEM_E_LIXEIRA.md](./HOSPEDAGEM_E_LIXEIRA.md) e entregas visuais em [VIS_G03.md](./VIS_G03.md), [VIS_G04.md](./VIS_G04.md), [VIS_G05.md](./VIS_G05.md) e [VIS_G06.md](./VIS_G06.md). As matrizes anteriores são registros históricos; a validação atual e seus limites ficam na VIS-G06. Esta candidata ainda não foi commitada ou publicada.
 
 Data: 2026-10-12. Direção escolhida pelo usuário: **papel, tinta, selos e detalhes de fantasia**.
 
@@ -120,6 +120,8 @@ Arquivos principais: `src/pages/NovaFicha.jsx` e `NovaFicha.css`.
 
 **Prioridade: média. Dependências: VIS-G03 e VIS-G04.**
 
+**Execução em 2026-10-14:** tratamentos de papel/campo/filete em magias, inventário, recursos e modais; usos numerados e disponíveis em texto; histórico com resultado/tipo/cálculo separados, anúncio único e Escape. O painel expandido recolhe quando encobre o foco externo; voltar ao topo deixa de sobrepor o histórico no mobile. Estados de gravação usam texto e ícone sem antecipar confirmação. Dados e impressão preservados. Em revisão local, sem publicação. Evidências e aceite em [VIS_G05.md](./VIS_G05.md).
+
 - Aplicar a linguagem comum a magias, inventário, recursos e modais: título, ação e conteúdo bem separados.
 - Dar ao resultado de rolagem uma composição que destaque resultado, tipo de teste e detalhes; preservar o anúncio textual.
 - Refinar o painel flutuante de dados para combinar com a ficha e manter espaço de foco e rolagem.
@@ -165,7 +167,7 @@ A personalização também deve funcionar com fallback de fonte, movimento reduz
 - Informações visuais necessárias para reconhecer controles/estados devem respeitar o contraste aplicável de 3:1. Ornamentos não substituem foco nem limites de controles. [W3C — Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 - Reflow como referência de leitura em 320 CSS px, considerando exceções previstas. [W3C — Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html).
 
-## Estado da entrega deste plano
+## Histórico da primeira entrega deste plano
 
 VIS-G01 e VIS-G02 aplicadas localmente em 2026-10-12. Prévia: `http://127.0.0.1:4175/dnd5e`. O site publicado e a tag do MVP seguem como referência; biblioteca e preferências aprovadas em 2026-10-13; esta iteração ainda não foi publicada.
 

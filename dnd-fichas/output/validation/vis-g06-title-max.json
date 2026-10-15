@@ -1,0 +1,12 @@
+{
+  "failures": [
+    "  x    1 [chromium-desktop] › tests-e2e\\accessibility.spec.js:11:3 › / não possui violações axe automáticas (5.7s)",
+    "  x   33 [chromium-desktop] › tests-e2e\\grimoire-creation.spec.js:62:3 › VIS-G04 cinco capítulos com texto máximo / light (7.7s)",
+    "  x   35 [chromium-desktop] › tests-e2e\\grimoire-creation.spec.js:62:3 › VIS-G04 cinco capítulos com texto máximo / dark (6.2s)"
+  ],
+  "status": "interrupted",
+  "passed": 35,
+  "reason": "Assertion nova revelou palavra dividida em texto 28 px com espaçamento: largura útil 201 px para palavra de 206 px. Padding horizontal reduzido na abertura até 390 px, largura útil 229 px.",
+  "failed": 3,
+  "planned": 236
+}

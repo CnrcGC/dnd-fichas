@@ -917,3 +917,9 @@ Caminhos relativos à raiz Git. 73 arquivos rastreados modificados e 49 arquivos
 - `dnd-fichas/tests/pages-routing.test.mjs`
 - `dnd-fichas/tests/subraces.test.mjs`
 - `dnd-fichas/tests/text-size.test.mjs`
+
+## Revisão visual atual — VIS-G06 — 2026-10-14/15
+
+A main local inclui VIS-G05 e a revisão global VIS-G06, posteriores à publicação `b001bd8`. Resultados atuais, correções, evidências e limites humanos ficam em [VIS_G06.md](./VIS_G06.md); os números históricos acima não representam esta rodada. Nenhum novo deploy foi realizado nesta etapa.
+
+Validação automatizada concluída: 275 unitários; 70 casos da suíte de acessibilidade aprovados dentro da regressão; 238 cenários E2E com aprovação entre a rodada ampla e suas reexecuções (236 na rodada integral e dois timeouts aprovados isoladamente). Essa rodada antecede os últimos ajustes de posição/foco: a fonte final teve 66 casos relacionados aprovados contando as reexecuções, incluindo quatro novos casos de foco, e nova execução serial de Pages com 11 aprovações. Seis ensaios de produção; lint/builds/budgets. PDFs de demonstração inspecionados em seis páginas A4 e 116 artefatos anteriores preservados. Os relatórios mantêm as falhas históricas e os timeouts. NVDA, zoom nativo 200%, aparelho real e revisão final do proprietário permanecem pendentes.

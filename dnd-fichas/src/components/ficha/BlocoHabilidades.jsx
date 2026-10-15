@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { criarHabilidadeVazia } from "../../utils/habilidade";
+import { criarHabilidadeVazia, habilidadeClasseDisponivel } from "../../utils/habilidade";
 import { obterHabilidadeClasse } from "../../data/habilidadesClasses";
 import { obterSubclasse } from "../../data/subclasses";
 import { obterHabilidadeSubclasse } from "../../data/habilidadesSubclasses";
@@ -57,6 +57,8 @@ export default function BlocoHabilidades({
   }
 
   function handleAdicionarDoCatalogo(item, tipo) {
+    if (tipo === "classe" && !habilidadeClasseDisponivel(ficha, item).atendido) return;
+    if (habilidades.some((atual) => atual.tipo === tipo && atual.origemId === item.id)) return;
     onChangeHabilidades([
       ...habilidades,
       {

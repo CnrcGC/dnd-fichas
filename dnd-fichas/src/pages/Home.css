@@ -73,6 +73,7 @@
 .home-grimoire .ficha-card-exportar:hover { color: var(--color-accent); border-color: var(--color-accent); }
 .ficha-card-corpo { display: flex; flex-direction: column; align-items: center; min-width: 0; flex: 1; gap: var(--space-2); padding-block: var(--space-4); text-align: center; }
 .ficha-card-simbolo { display: flex; align-items: center; justify-content: center; width: 3.75rem; height: 3.75rem; border: 1px solid var(--grimoire-rule); border-radius: 50%; color: var(--color-accent); margin-bottom: var(--space-2); }
+.ficha-card-retrato { display: block; width: min(100%, 160px); height: auto; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--grimoire-rule); border-radius: var(--grimoire-radius); margin-bottom: var(--space-2); }
 .ficha-card-nome { overflow-wrap: anywhere; max-width: 100%; font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.2; font-weight: 600; }
 .ficha-card-classe { color: var(--color-accent); font-size: var(--text-sm); font-weight: 500; }
 .ficha-card-data { margin-top: auto; padding-top: var(--space-3); color: var(--color-ink-soft); font-size: var(--text-xs); }

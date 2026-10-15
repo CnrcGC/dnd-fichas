@@ -1,0 +1,427 @@
+{
+  "source": "vis-g06-e2e.json",
+  "passed": 70,
+  "failed": 0,
+  "tests": [
+    {
+      "file": "accessibility.spec.js",
+      "title": "/ não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/characters/new não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/dnd5e não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/yusong não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/feiticeiros-maldicoes não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/settings não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/missing-route não possui violações axe automáticas",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "skip link e botão de tema funcionam por teclado",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "FE-01 entrada e criação genéricas encaminham diretamente para D&D",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 modal mantém foco, torna o fundo inerte e devolve foco ao acionador",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 abas lazy usam ativação manual e permanecem visíveis por teclado",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 criação anuncia etapas, move foco e mantém campos nomeados",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 importação, gravação e rolagem possuem feedback acessível",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 ficha mantém reflow em 320 px e passa axe nas seções atuais",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/ não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/characters/new não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/dnd5e não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/yusong não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/feiticeiros-maldicoes não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/settings não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "/missing-route não possui violações axe automáticas",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "skip link e botão de tema funcionam por teclado",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "FE-01 entrada e criação genéricas encaminham diretamente para D&D",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 modal mantém foco, torna o fundo inerte e devolve foco ao acionador",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 abas lazy usam ativação manual e permanecem visíveis por teclado",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 criação anuncia etapas, move foco e mantém campos nomeados",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 importação, gravação e rolagem possuem feedback acessível",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "accessibility.spec.js",
+      "title": "VA-01 ficha mantém reflow em 320 px e passa axe nas seções atuais",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 biblioteca, criação e level up funcionam somente com teclado e movimento reduzido",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 abas aceitam setas, Home e End; catálogo prende e devolve foco",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 level up usa somente controles visíveis e fecha por Escape",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 biblioteca, criação e level up funcionam somente com teclado e movimento reduzido",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 abas aceitam setas, Home e End; catálogo prende e devolve foco",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "keyboard.spec.js",
+      "title": "A11Y-04 level up usa somente controles visíveis e fecha por Escape",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / dark não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / light não possui violações axe",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 rolagem é anunciada em texto e criação lazy recebe foco",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 duas rolagens iguais atualizam o anúncio acessível",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / dark não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Combate / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Habilidades / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Perícias / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Magias / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Inventário / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 ficha Notas / light não possui violações axe",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 rolagem é anunciada em texto e criação lazy recebe foco",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "sheet-accessibility.spec.js",
+      "title": "A11Y-01 duas rolagens iguais atualizam o anúncio acessível",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 320px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 390px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 768px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 1280px persiste e mantém ações acessíveis",
+      "project": "chromium-desktop",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 320px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 390px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 768px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "passed"
+    },
+    {
+      "file": "text-reflow.spec.js",
+      "title": "A11Y-02/05 texto ampliado em 1280px persiste e mantém ações acessíveis",
+      "project": "chromium-mobile",
+      "status": "passed"
+    }
+  ]
+}

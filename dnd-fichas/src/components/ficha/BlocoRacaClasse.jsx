@@ -575,6 +575,7 @@ function CampoEscolhaCriacao({ titulo, chave, quantidade, opcoes, bloqueadas = [
         }}
       >
         <option value="">Selecione...</option>
+        {valores[indice] && (!opcoes.includes(valores[indice]) || bloqueadas.includes(valores[indice])) && <option value={valores[indice]}>Escolha a corrigir: {nomes[valores[indice]] ?? valores[indice]}</option>}
         {opcoes.filter((id) => !bloqueadas.includes(id) && (!valores.includes(id) || valores[indice] === id)).map((id) => <option key={id} value={id}>{nomes[id] ?? id}</option>)}
       </select>)}
     </div>

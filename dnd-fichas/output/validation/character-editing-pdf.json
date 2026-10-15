@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "page": 1,
+      "width": 595.91998,
+      "height": 842.88,
+      "textOutsidePage": 0,
+      "embeddedImages": 1
+    },
+    {
+      "page": 2,
+      "width": 595.91998,
+      "height": 842.88,
+      "textOutsidePage": 0,
+      "embeddedImages": 0
+    }
+  ],
+  "sample": "synthetic raster test image",
+  "visualReview": "Two rendered pages inspected; no cuts or overlaps in sample."
+}

@@ -277,3 +277,20 @@ export function atualizarEscolhaCriacao(ficha, chave, valores) {
 export function classeInicialValida(classeId) {
   return Boolean(CLASSES.some((classe) => classe.id === classeId));
 }
+
+export function alternarProficienciaManual(ficha, tipo, id) {
+  const origens = structuredClone(ficha.origensProficiencias ?? {});
+  const campo = { idiomas: "idiomas", ferramentas: "proficienciasFerramentas", pericias: "pericias" }[tipo];
+  if (!campo) return ficha;
+  const ativo = tipo === "pericias" ? Boolean(ficha.pericias?.[id]) : (ficha[campo] ?? []).includes(id);
+  origens[tipo] ??= {};
+  origens[tipo][id] = ativo
+    ? (origens[tipo][id] ?? []).filter((origem) => !origem.startsWith("manual:"))
+    : [...new Set([...(origens[tipo][id] ?? []), `manual:${tipo}`])];
+  // Retirar também da projeção impede a migração de recriar a concessão
+  // removida como manual:legado. Origens automáticas continuam preservadas.
+  const projecao = tipo === "pericias"
+    ? { ...ficha.pericias, [id]: false }
+    : (ficha[campo] ?? []).filter((valor) => valor !== id);
+  return reconciliarProficienciasCriacao({ ...ficha, [campo]: projecao, origensProficiencias: origens });
+}

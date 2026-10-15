@@ -59,7 +59,7 @@ test("FE-04C carrega sob demanda as seções pesadas e o level-up D&D", async ({
 
   await page.getByRole("tab", { name: "Habilidades" }).click();
   await expect(page.getByRole("heading", { name: "Habilidades e Talentos" })).toBeVisible();
-  await page.getByRole("tab", { name: "Perícias" }).click();
+  await page.getByRole("tab", { name: "Proficiências" }).click();
   await expect(page.getByRole("heading", { name: "Perícias" })).toBeVisible();
   await page.getByRole("tab", { name: "Magias" }).click();
   await expect(page.getByRole("heading", { name: "Conjuração" })).toBeVisible();

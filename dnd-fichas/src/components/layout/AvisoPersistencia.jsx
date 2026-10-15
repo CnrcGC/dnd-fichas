@@ -16,7 +16,9 @@ export default function AvisoPersistencia() {
 
   return (
     <>
-    <p className="persistencia-status" data-persistence-status role="status" aria-live="polite" aria-atomic="true">{textoEstado}</p>
+    <p className="persistencia-status" data-persistence-status={estadoSalvamento} role="status" aria-live="polite" aria-atomic="true">
+      {textoEstado && <><Icon name={estadoSalvamento === "salvo" ? "success" : estadoSalvamento === "falhou" ? "warning" : "edit"} /><span>{textoEstado}</span></>}
+    </p>
     {falhaPersistencia && !avisoDispensado && (
     <div className="aviso-persistencia" role="alert" aria-live="assertive">
       <div className="aviso-persistencia-texto">

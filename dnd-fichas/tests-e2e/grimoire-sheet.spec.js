@@ -43,7 +43,7 @@ for (const theme of ["light", "dark"]) {
     const attributes = page.getByRole("heading", { name: "Atributos", exact: true });
     const identity = page.getByRole("heading", { name: "Identidade e progressão", exact: true });
     expect((await attributes.boundingBox()).y).toBeLessThan((await identity.boundingBox()).y);
-    await expect(page.getByRole("tab")).toHaveText(["Combate", "Habilidades", "Perícias", "Magias", "Inventário", "Notas"]);
+    await expect(page.getByRole("tab")).toHaveText(["Combate", "Habilidades", "Proficiências", "Magias", "Inventário", "Notas"]);
     const jump = page.getByRole("link", { name: "Ir para ações", exact: true });
     await jump.focus();
     await jump.press("Enter");

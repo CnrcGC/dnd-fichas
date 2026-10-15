@@ -1,0 +1,7 @@
+{
+  "failed": 0,
+  "passed": 37,
+  "planned": 236,
+  "status": "interrupted",
+  "reason": "Revisão visual identificou palavra partida no título mobile com texto ampliado; ajuste de token e assertion adicional aplicados antes de reiniciar a rodada final."
+}

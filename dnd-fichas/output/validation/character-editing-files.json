@@ -1,0 +1,33 @@
+{
+  "changedSinceTaskStart": [
+    "src/components/ficha/AtributoCard.jsx",
+    "src/components/ficha/BlocoHabilidades.jsx",
+    "src/components/ficha/BlocoPericias.jsx",
+    "src/components/ficha/BlocoProficiencias.css",
+    "src/components/ficha/BlocoProficiencias.jsx",
+    "src/components/ficha/BlocoRacaClasse.jsx",
+    "src/components/ficha/BlocoStatus.jsx",
+    "src/components/ficha/FichaImpressao.css",
+    "src/components/ficha/FichaImpressao.jsx",
+    "src/components/ficha/RetratoPersonagem.css",
+    "src/components/ficha/RetratoPersonagem.jsx",
+    "src/components/modal/ModalCatalogoHabilidades.jsx",
+    "src/components/modal/ModalCatalogoItens.css",
+    "src/pages/Ficha.jsx",
+    "src/pages/NovaFicha.css",
+    "src/pages/NovaFicha.jsx",
+    "src/utils/atributos.js",
+    "src/utils/ficha.js",
+    "src/utils/habilidade.js",
+    "src/utils/proficienciasCriacao.js",
+    "src/utils/retrato.js",
+    "tests-e2e/accessibility.spec.js",
+    "tests-e2e/character-editing.spec.js",
+    "tests-e2e/dnd5e-adapter.spec.js",
+    "tests-e2e/grimoire-sheet.spec.js",
+    "tests-e2e/reading-preferences.spec.js",
+    "tests-e2e/sheet-accessibility.spec.js",
+    "tests-e2e/text-reflow.spec.js"
+  ],
+  "deleted": false
+}
